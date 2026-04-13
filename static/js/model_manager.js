@@ -1016,7 +1016,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 逐帧小幅位移，避开 LookAt 奇点 / 四元数跨半球长路径 / 物理飞甩。
     // previousAction 的延迟 stop 已下沉到 vrm-animation.js `_playAction` 的每次 fadeOut，
     // 跟 idle/手动切换路径解耦，不在此处维护 pending 槽。
-    const IDLE_VRM_FADE_SEC = 0.15;
+    //
+    // 0.35s 选型理由：aa2458e 之后的保护（LookAt proxy 永久 no-op / _alignClipToCurrentPose
+    // 跨 clip 同半球对齐）都是根因修复，与 fadeDuration 无关，窗口可自由放宽。配合下方
+    // 视觉 fade：fade-in 在 ~370ms 完成，若 crossfade 仍取 0.15s（300ms 结束），用户第一眼
+    // 看到的是已定格的新 pose —— 正是主诉「硬直」的来源。拉到 0.35s 让 fade-in 完成后仍有
+    // ~130ms 可见 slerp 尾巴，用户看到的第一帧是「正在微动」而不是「突然定格」，才真正
+    // 消除硬直感。再长（>0.6s）无视觉 fade 配合会暴露两段无关 pose 中间态的「融化感」。
+    const IDLE_VRM_FADE_SEC = 0.35;
+
+    // 待机动作切换的视觉渐隐渐显（material opacity）。骨骼 crossfade 只平滑骨旋转，
+    // 无法掩盖两段不相关待机 clip 之间的「pose 跳变感」（用户主诉的 VRM 硬直）；
+    // MMD 侧 loadAnimation 走 skeleton.pose() → mixer.update(0)，期间会短暂显露
+    // T-pose（bind pose）。两者统一用 fade-out → 切换 → fade-in 遮盖过渡瞬间。
+    // 时间窗口要覆盖：fade-out 完成前切换骨骼，fade-in 在 MMD 物理 reset 后再显形。
+    const IDLE_VRM_VISUAL_FADE_OUT_MS = 150;
+    const IDLE_VRM_VISUAL_FADE_IN_MS = 220;
+    const IDLE_MMD_VISUAL_FADE_OUT_MS = 180;
+    const IDLE_MMD_VISUAL_FADE_IN_MS = 220;
+    const IDLE_MMD_PHYSICS_RESTORE_MS = 250;
 
     // 更新模型类型按钮文字的函数（使用统一管理器）
     function updateModelTypeButtonText() {
@@ -4662,7 +4680,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    /** 延迟 250ms 让 mixer 把新动画首帧应用到骨架，再对齐 MMDPhysics 并解冻。 */
+    /** 延迟 IDLE_MMD_PHYSICS_RESTORE_MS 让 mixer 把新动画首帧应用到骨架，再对齐 MMDPhysics 并解冻。 */
     function _scheduleRestoreMmdIdlePhysics() {
         if (_idleMmdPhysicsRestoreTimer.mmd) {
             clearTimeout(_idleMmdPhysicsRestoreTimer.mmd);
@@ -4670,7 +4688,170 @@ document.addEventListener('DOMContentLoaded', async () => {
         _idleMmdPhysicsRestoreTimer.mmd = setTimeout(() => {
             _idleMmdPhysicsRestoreTimer.mmd = null;
             _alignAndRestoreMmdIdlePhysics();
-        }, 250);
+        }, IDLE_MMD_PHYSICS_RESTORE_MS);
+    }
+
+    // ═══════════════════ 待机动作视觉渐隐渐显 ═══════════════════
+    // 每个材质保存 {mat, origOpacity, origTransparent}，tween 期间临时翻 transparent=true
+    // 让 opacity 真正生效；结束在 alpha=1 时还原 transparent，避免 MToon/MMDToonShader
+    // 长期开 transparent 后的 z-sort 混乱。按 scene root uuid 验证材质身份，模型换装时
+    // 旧快照自动作废（避免 setOpacity 打到已 dispose 的材质）。
+    const _idleFadeState = { vrm: null, mmd: null };
+
+    function _getFadeSceneRootUuid(type) {
+        if (type === 'vrm') return vrmManager?.currentModel?.vrm?.scene?.uuid || null;
+        if (type === 'mmd') return window.mmdManager?.currentModel?.mesh?.uuid || null;
+        return null;
+    }
+
+    function _collectFadeMaterials(type) {
+        const mats = [];
+        if (type === 'vrm') {
+            const scene = vrmManager?.currentModel?.vrm?.scene;
+            if (!scene) return mats;
+            scene.traverse(obj => {
+                if (!obj.material) return;
+                const arr = Array.isArray(obj.material) ? obj.material : [obj.material];
+                for (const m of arr) {
+                    if (m && typeof m.opacity === 'number') mats.push(m);
+                }
+            });
+        } else if (type === 'mmd') {
+            const mesh = window.mmdManager?.currentModel?.mesh;
+            if (!mesh || !mesh.material) return mats;
+            const arr = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+            for (const m of arr) {
+                if (m && typeof m.opacity === 'number') mats.push(m);
+            }
+        }
+        return mats;
+    }
+
+    // 同时取消：rAF tween / 延迟 fade-in setTimeout / 未决的 _fadeAlpha Promise。
+    //
+    // 关键点：不 resolve pendingResolve 的话，上一轮 `await _fadeAlpha(...)` 会
+    // 永远挂住，调用方（_playIdleAnimation）的 try/finally 永远不执行 → MMD
+    // 物理冻结无法恢复 / loop 监听器无法注册 / 回退定时器无法启动（Codex PR#774 P1）。
+    // 延迟 fade-in 的 setTimeout 若不清，过期回调会在下一轮 fade-out 期间触发
+    // `_fadeAlpha(type, 1, ...)`，cancel 当前 tween 并让新 await 挂住（Codex PR#774 P2）。
+    function _cancelFadeTween(type) {
+        const st = _idleFadeState[type];
+        if (!st) return;
+        if (st.rafId) {
+            cancelAnimationFrame(st.rafId);
+            st.rafId = null;
+        }
+        if (st.delayTimerId) {
+            clearTimeout(st.delayTimerId);
+            st.delayTimerId = null;
+        }
+        if (st.pendingResolve) {
+            const r = st.pendingResolve;
+            st.pendingResolve = null;
+            try { r(); } catch (_) { /* resolve 不应抛，防御性忽略 */ }
+        }
+    }
+
+    function _ensureFadeState(type) {
+        const rootUuid = _getFadeSceneRootUuid(type);
+        if (!rootUuid) return null;
+
+        const existing = _idleFadeState[type];
+        if (existing && existing.rootUuid === rootUuid && existing.targets.length > 0) {
+            return existing;
+        }
+        // 根节点换了（模型切换）：丢弃旧快照，旧材质已随旧 scene 一起释放
+        if (existing) _cancelFadeTween(type);
+
+        const mats = _collectFadeMaterials(type);
+        if (mats.length === 0) return null;
+
+        _idleFadeState[type] = {
+            rootUuid,
+            rafId: null,
+            targets: mats.map(m => ({
+                mat: m,
+                origOpacity: m.opacity,
+                origTransparent: m.transparent,
+            })),
+        };
+        return _idleFadeState[type];
+    }
+
+    /** 立即把所有材质还原到原始 opacity/transparent，清空快照。 */
+    function _restoreFadeMaterials(type) {
+        _cancelFadeTween(type);
+        const st = _idleFadeState[type];
+        if (!st) return;
+        for (const t of st.targets) {
+            if (!t.mat) continue;
+            try {
+                t.mat.opacity = t.origOpacity;
+                t.mat.transparent = t.origTransparent;
+            } catch (_) { /* 材质已 dispose，忽略 */ }
+        }
+        _idleFadeState[type] = null;
+    }
+
+    /**
+     * 把指定模型的材质 opacity 在 durationMs 内 tween 到 toAlpha * origOpacity。
+     * toAlpha: 0 = 完全不可见，1 = 还原原始 opacity。
+     * 到达 alpha=1 时自动还原 transparent 标志，避免长期开 transparent 导致的 z-sort 问题。
+     * 返回 Promise，tween 完成或被取消时都会 resolve（被 `_cancelFadeTween` 取消时
+     * 由 cancel 端 drain pendingResolve，防止 await 挂住调用方的 try/finally）。
+     */
+    function _fadeAlpha(type, toAlpha, durationMs) {
+        return new Promise(resolve => {
+            const state = _ensureFadeState(type);
+            if (!state) { resolve(); return; }
+            // 先 cancel 上一次（包括 drain 其 pendingResolve），再把自己的 resolve 装进 state
+            _cancelFadeTween(type);
+            state.pendingResolve = resolve;
+
+            // tween 期间强制 transparent=true，否则 opacity 在不透明材质上无视觉效果
+            for (const t of state.targets) {
+                if (t.mat && !t.mat.transparent) t.mat.transparent = true;
+            }
+
+            const startTs = performance.now();
+            const startAlphas = state.targets.map(t =>
+                (t.mat && t.origOpacity > 0) ? Math.max(0, Math.min(1, t.mat.opacity / t.origOpacity)) : 0
+            );
+
+            const safeDur = Math.max(1, durationMs);
+            const step = (now) => {
+                const elapsed = now - startTs;
+                const p = Math.min(1, elapsed / safeDur);
+                // ease-in-out cubic
+                const eased = p < 0.5
+                    ? 4 * p * p * p
+                    : 1 - Math.pow(-2 * p + 2, 3) / 2;
+
+                for (let i = 0; i < state.targets.length; i++) {
+                    const t = state.targets[i];
+                    if (!t.mat) continue;
+                    const a = startAlphas[i] + (toAlpha - startAlphas[i]) * eased;
+                    const clamped = Math.max(0, Math.min(1, a));
+                    try { t.mat.opacity = t.origOpacity * clamped; } catch (_) {}
+                }
+
+                if (p < 1) {
+                    state.rafId = requestAnimationFrame(step);
+                } else {
+                    state.rafId = null;
+                    // 先把 pendingResolve 摘下来再做 restore（_restoreFadeMaterials 会调
+                    // _cancelFadeTween，若 pendingResolve 还在 state 上会被再 resolve 一次
+                    // —— Promise 第二次 resolve 是 no-op，但避免顺序混乱更清楚）
+                    state.pendingResolve = null;
+                    if (toAlpha >= 1) {
+                        // 完全不透明：还原 transparent，清空快照，下次 fade 重新 ensure
+                        _restoreFadeMaterials(type);
+                    }
+                    resolve();
+                }
+            };
+            state.rafId = requestAnimationFrame(step);
+        });
     }
 
     /** 停止待机动作轮换 */
@@ -4689,6 +4870,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
             _alignAndRestoreMmdIdlePhysics();
         }
+        // 若 _playIdleAnimation 被中途打断（用户手动切换动画/禁用轮换），
+        // 材质可能停留在 opacity<1 的半透明状态。立即还原，避免模型永久半隐。
+        _restoreFadeMaterials(type);
         _idleRotationLast[type] = null;
     }
 
@@ -4798,9 +4982,28 @@ document.addEventListener('DOMContentLoaded', async () => {
             mmdFrozen = true;
         }
 
+        // 视觉渐隐：在骨骼层切换之前把模型 opacity tween 到 0，遮盖
+        //   - VRM: 两段待机 clip 姿态差异造成的「硬直」感（mixer 0.15s slerp 视觉上仍突兀）
+        //   - MMD: loadAnimation 内部 skeleton.pose() → mixer.update(0) 的 T-pose 闪帧
+        // 失败分支（guard return / model 未就绪）会在 finally 里 fade-in 还原，不留残影。
+        const fadeOutMs = type === 'vrm' ? IDLE_VRM_VISUAL_FADE_OUT_MS : IDLE_MMD_VISUAL_FADE_OUT_MS;
+        await _fadeAlpha(type, 0, fadeOutMs);
+
+        // await 期间可能发生：stopIdleRotation 清空轮换（会 drain pendingResolve 唤醒这里）/
+        // 用户手动播 VRMA/VMD / 切模式。原先 `_cancelFadeTween` 不 resolve Promise，await
+        // 永挂成事实上的 stop gate；Codex PR#774 P1 修复后必须显式重校 guards，否则会
+        // 绕过 stopIdleRotation 继续激活 mixer、注册 loop 监听器、启动回退定时器。
+        // aborted 分支走完 try 仍进 finally：played=false → _alignAndRestoreMmdIdlePhysics
+        // (idempotent) + fade-in（materials 已被 stopIdleRotation 还原则是 1→1 的 no-op tween）。
+        const aborted = !_isIdleTypeActive(type) ||
+                        (type === 'vrm' && isVrmAnimationPlaying) ||
+                        (type === 'mmd' && isMmdAnimationPlaying);
+
         let played = false;
         try {
-            if (type === 'vrm') {
+            if (aborted) {
+                console.debug(`[${type.toUpperCase()} IdleAnimation] fade-out 期间被打断，跳过动画切换`);
+            } else if (type === 'vrm') {
                 if (vrmManager && vrmManager.animation && vrmManager.currentModel) {
                     // 不再先 stopVRMAAnimation（它会 0.5s fadeOut，过长且是为手动动画设计的），
                     // 改由 _playAction 的 crossfade 分支直接 fadeOut(old) + fadeIn(new)。
@@ -4863,6 +5066,37 @@ document.addEventListener('DOMContentLoaded', async () => {
                     }
                     _alignAndRestoreMmdIdlePhysics();
                 }
+            }
+
+            // 视觉渐显：骨骼层已切换完毕，把 opacity tween 回原值。
+            // - VRM：playVRMAAnimation 已 await 返回，currentAction 已是新 action，立即淡入。
+            // - MMD：loadAnimation 一步落位但 physics.reset 还在 IDLE_MMD_PHYSICS_RESTORE_MS
+            //   后执行；等物理稳定再淡入，避免让用户看到头发/裙摆 reset 瞬间的跳变。
+            // 失败分支（played=false）也淡入还原，防止模型永久不可见。
+            //
+            // 延迟 timer 登记到 state.delayTimerId，stopIdleRotation / _cancelFadeTween
+            // 能一并清掉；否则上一轮 MMD 切换残留的 setTimeout 会在下一轮 fade-out
+            // 期间触发 `_fadeAlpha(type, 1, ...)`，cancel 当前 tween 并让新 await 挂住
+            // （Codex PR#774 P2 / CodeRabbit）。回调内再校一次 `_idleFadeState[type] === st`
+            // 防御 state 被另一条路径（stopIdleRotation → _restoreFadeMaterials）清空后
+            // 重建的情况。
+            const fadeInMs = type === 'vrm' ? IDLE_VRM_VISUAL_FADE_IN_MS : IDLE_MMD_VISUAL_FADE_IN_MS;
+            const fadeInDelayMs = (type === 'mmd' && played) ? IDLE_MMD_PHYSICS_RESTORE_MS + 30 : 0;
+            if (fadeInDelayMs > 0) {
+                const st = _ensureFadeState(type);
+                if (st) {
+                    if (st.delayTimerId) clearTimeout(st.delayTimerId);
+                    st.delayTimerId = setTimeout(() => {
+                        if (_idleFadeState[type] !== st) return; // state 已被替换/清空，回调过期
+                        st.delayTimerId = null;
+                        _fadeAlpha(type, 1, fadeInMs);
+                    }, fadeInDelayMs);
+                } else {
+                    // state 建不起来（模型未就绪）：直接 fade-in（会 resolve 空 Promise）
+                    _fadeAlpha(type, 1, fadeInMs);
+                }
+            } else {
+                _fadeAlpha(type, 1, fadeInMs);
             }
         }
     }
