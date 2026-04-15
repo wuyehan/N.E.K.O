@@ -46,7 +46,7 @@
     "glm": {
       "key": "glm",
       "name": "GLM-Realtime（智谱，需手动去水印）",
-      "description": "有免费额度，支持联网搜索，语音默认含水印滴滴声（已自动检测裁剪，可在智谱控制台手动关闭）",
+      "description": "有免费额度，支持联网搜索，语音默认含水印滴滴声（可在智谱控制台手动关闭）",
       "core_url": "wss://open.bigmodel.cn/api/paas/v4/realtime",
       "core_model": "glm-realtime-air"
     }
