@@ -17,7 +17,7 @@ from utils.frontend_utils import contains_chinese, replace_blank, replace_corner
 from utils.screenshot_utils import process_screen_data
 from main_logic.omni_realtime_client import OmniRealtimeClient
 from main_logic.omni_offline_client import OmniOfflineClient
-from main_logic.tts_client import get_tts_worker
+from main_logic.tts_client import get_tts_worker, TTS_PROVIDER_REGISTRY
 from utils.preferences import load_global_conversation_settings
 from config import MEMORY_SERVER_PORT, TOOL_SERVER_PORT
 from config.prompts_sys import (
@@ -156,8 +156,12 @@ class LLMSessionManager:
         # 跨 chunk 规范化器：Gemini Live 输出转录会在中文 token 之间插入 ASCII
         # 空格，让 MiniMax / CosyVoice 等 streaming TTS 把中文读断。normalizer
         # 按 replace_blank 的语义剔除空格，同时延后处理 chunk 尾部空格以保证边界正确。
+        # 注意：仅对 http_sentence 类 TTS provider 启用（它们做客户端切句，需要干净文本）。
+        # ws_bistream 类 provider（qwen / step / cosyvoice）直接把文本碎片发给服务端，
+        # normalizer 的 pending_spaces 延迟投递 + CJK 边界空格删除会干扰服务端处理节奏。
         self._tts_stream_normalizer = TtsStreamNormalizer()
         self._tts_norm_speech_id: Optional[str] = None
+        self._tts_normalize_enabled: bool = True  # 默认启用，_start_tts_thread 按 provider 类别覆盖
         # 流式音频重采样器（24kHz→48kHz）- 维护内部状态避免 chunk 边界不连续
         self.audio_resampler = soxr.ResampleStream(24000, 48000, 1, dtype='float32')
         self.lock = asyncio.Lock()  # 使用异步锁替代同步锁
@@ -338,21 +342,23 @@ class LLMSessionManager:
             return 350
 
     def _enqueue_tts_text_chunk(self, speech_id, text: str) -> None:
-        """通过 stream normalizer 把一段文本 chunk 入 TTS 队列。
+        """把一段文本 chunk 入 TTS 队列，http_sentence 类 provider 走 normalizer。
 
         调用方必须已持有 ``self.tts_cache_lock``（与现有 put 调用点一致）。
-        speech_id 变化会触发 normalizer 重置；规范化后若 chunk 为空则不入队，
-        避免给 TTS worker 发无意义的空串。控制信号（``__interrupt__`` /
+        对于 ws_bistream 类 provider（qwen / step / cosyvoice），文本碎片直接
+        发给服务端处理，跳过 normalizer 以避免 pending_spaces 延迟和 CJK 边界
+        空格删除干扰服务端合成节奏。控制信号（``__interrupt__`` /
         ``(None, None)``）请继续用 ``tts_request_queue.put`` 直接发送，
         并在合适时机调用 ``_reset_tts_stream_normalizer``。
         """
-        if speech_id != self._tts_norm_speech_id:
-            self._tts_stream_normalizer.reset()
-            self._tts_norm_speech_id = speech_id
-        normalized = self._tts_stream_normalizer.feed(text)
-        if not normalized:
-            return
-        self.tts_request_queue.put((speech_id, normalized))
+        if self._tts_normalize_enabled:
+            if speech_id != self._tts_norm_speech_id:
+                self._tts_stream_normalizer.reset()
+                self._tts_norm_speech_id = speech_id
+            text = self._tts_stream_normalizer.feed(text)
+            if not text:
+                return
+        self.tts_request_queue.put((speech_id, text))
 
     def _reset_tts_stream_normalizer(self) -> None:
         """清空 normalizer 状态。中断 / 轮次结束 / session 重建时调用。"""
@@ -940,7 +946,7 @@ class LLMSessionManager:
         self.tts_ready = False
 
         has_custom = self._has_custom_tts()
-        tts_worker, api_key_override = get_tts_worker(
+        tts_worker, api_key_override, provider_key = get_tts_worker(
             core_api_type=self.core_api_type,
             has_custom_voice=has_custom,
             voice_id=self.voice_id or '',
@@ -949,6 +955,16 @@ class LLMSessionManager:
             'tts_custom' if has_custom else 'tts_default'
         )
         api_key = api_key_override or tts_config['api_key']
+
+        # 根据实际选中的 TTS provider 类别决定是否启用流式文本规范化。
+        # ws_bistream 类（qwen / step / cosyvoice）直接把文本碎片发给服务端处理，
+        # normalizer 的 pending_spaces 延迟投递和 CJK 边界空格删除会干扰送达节奏。
+        # http_sentence 类（cogtts / gemini / openai / minimax）做客户端句子分割，
+        # 需要干净的文本，normalizer 在此有意义。
+        # 注意：'free' 不在 registry 中 → meta 为 None → 走 fallthrough 启用 normalizer，
+        # 因为 free 国外模式走 Gemini 后端，需要 CJK 空格清理。
+        meta = TTS_PROVIDER_REGISTRY.get(provider_key) if provider_key else None
+        self._tts_normalize_enabled = not meta or meta.category != "ws_bistream"
 
         self.tts_request_queue = Queue()
         self.tts_response_queue = Queue()
@@ -2715,6 +2731,14 @@ class LLMSessionManager:
                                 await self.session.prompt_ephemeral(
                                     _loc(AGENT_CALLBACK_NOTIFICATION, normalize_language_code(self.user_language, format='short')) + ctx,
                                 )
+                                # prompt_ephemeral 通过 on_proactive_done → handle_proactive_complete
+                                # 发送 (None, None) 并置 _tts_done_queued_for_turn = True。
+                                # 对于 qwen-tts 的 server_commit 模式，需要为主回复生成新的
+                                # speech_id（触发 qwen worker 重建连接、重置 buffer_committed），
+                                # 并重置 done flag 允许 handle_response_complete 正常发送。
+                                async with self.lock:
+                                    self.current_speech_id = str(uuid4())
+                                    self._tts_done_queued_for_turn = False
                         except Exception as _cb_err:
                             logger.warning(f"⚠️ Agent callback injection failed: {_cb_err}")
 
