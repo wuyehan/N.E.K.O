@@ -3949,32 +3949,18 @@ async def export_catgirl_with_portrait(
             draw.text((text_x + shadow_offset, text_y + shadow_offset), _name, fill='#00000040', font=font)
             draw.text((text_x, text_y), _name, fill='white', font=font)
 
-            portrait_area_x = 20
-            portrait_area_y = header_height + 20
-            portrait_area_width = width - 40
-            portrait_area_height = height - header_height - 40
-            logger.info(f"[导出角色卡] 立绘区域: ({portrait_area_x}, {portrait_area_y}, {portrait_area_width}, {portrait_area_height})")
+            # 4. 合成立绘到角色卡
+            # 立绘区域：紧贴顶部蓝色区域下方到卡片底部，与前端预览一致
+            portrait_area_y = header_height
+            portrait_area_width = width
+            portrait_area_height = height - header_height
 
-            portrait_width, portrait_height = portrait_img.size
-            target_aspect = portrait_area_width / portrait_area_height
-            source_aspect = portrait_width / portrait_height
-            logger.info(f"[导出角色卡] 立绘原始尺寸: {portrait_width}x{portrait_height}, 目标比例: {target_aspect:.2f}, 源比例: {source_aspect:.2f}")
+            # 前端已按 (width × portrait_area_height) 渲染立绘，直接缩放到目标尺寸后粘贴
+            portrait_resized = portrait_img.resize((portrait_area_width, portrait_area_height), Image.Resampling.LANCZOS)
+            logger.info(f"[导出角色卡] 立绘调整后尺寸: {portrait_resized.size}, 粘贴位置: (0, {portrait_area_y})")
 
-            if source_aspect > target_aspect:
-                new_height = portrait_area_height
-                new_width = int(new_height * source_aspect)
-            else:
-                new_width = portrait_area_width
-                new_height = int(new_width / source_aspect)
-
-            portrait_resized = portrait_img.resize((new_width, new_height), Image.Resampling.LANCZOS)
-            logger.info(f"[导出角色卡] 立绘调整后尺寸: {new_width}x{new_height}")
-
-            paste_x = portrait_area_x + (portrait_area_width - new_width) // 2
-            paste_y = portrait_area_y + (portrait_area_height - new_height) // 2
-            logger.info(f"[导出角色卡] 立绘粘贴位置: ({paste_x}, {paste_y})")
-
-            card_img.paste(portrait_resized, (paste_x, paste_y), portrait_resized)
+            # 粘贴立绘（使用alpha通道）
+            card_img.paste(portrait_resized, (0, portrait_area_y), portrait_resized)
             logger.info("[导出角色卡] 立绘粘贴完成")
 
             final_img = Image.new('RGB', (width, height), color='#E8F4F8')
