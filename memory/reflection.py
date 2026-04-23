@@ -191,6 +191,20 @@ class ReflectionEngine:
         Also adds the `recent_mentions` / `suppress` mention抑制 fields so
         confirmed reflections can share persona's 5h-window rate-limit
         machinery (AI 自我克制，不在 5h 内反复提同一条)。
+
+        Note on token-count cache: persona entries carry a
+        `token_count` / `token_count_text_sha256` / `token_count_tokenizer`
+        cache that survives across renders because `PersonaManager._personas`
+        is a process-resident view — render-time cache writes land on the
+        same dict that the next render reads. Reflections do NOT have an
+        equivalent in-memory view; `aload_reflections` /
+        `_aload_reflections_full` always read fresh from disk, so any cache
+        writeback on a reflection entry would be garbage-collected right
+        after the render. We deliberately do NOT add the cache fields to
+        this schema — populating them would be misleading (they'd look like
+        a working cache but every render still tokenizes from scratch).
+        Reflection tokenization stays live; in typical workloads the
+        persona-side cache captures the bulk of render time anyway.
         """
         defaults = {
             # Evidence counters

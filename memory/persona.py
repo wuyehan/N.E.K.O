@@ -41,7 +41,7 @@ from utils.file_utils import (
     robust_json_loads,
 )
 from utils.logger_config import get_module_logger
-from utils.tokenize import acount_tokens, count_tokens
+from utils.tokenize import acount_tokens, count_tokens, tokenizer_identity
 
 logger = get_module_logger(__name__, "Memory")
 
@@ -510,6 +510,11 @@ class PersonaManager:
                         # 文本变化 → 更新
                         old_text = entry.get('text', '')
                         entry['text'] = text
+                        # token_count 缓存是从 text 派生的；这里原地改写
+                        # text 必须同步失效缓存，否则渲染路径要等到
+                        # fingerprint mismatch 才补算，还会额外浪费一次
+                        # sha256（对偶于 amerge_into 的 _sync_mutate_entry）。
+                        self._invalidate_token_count_cache(entry)
                         modified = True
                         logger.info(f"[Persona] {name}: card 同步更新 [{entity}] \"{old_text[:30]}\" → \"{text[:30]}\"")
                     new_card_entries.append(entry)
@@ -662,6 +667,21 @@ class PersonaManager:
         - rein_last_signal_at / disp_last_signal_at: 各自独立的衰减时钟
         - sub_zero_days + sub_zero_last_increment_date: archive 倒计时
         - merged_from_ids: LLM merge_into 决策吸收的 reflection id 列表
+
+        Token-count cache fields (derived, cache-only — not event-sourced):
+        - token_count: int | None — cached acount_tokens(text)
+        - token_count_text_sha256: str | None — fingerprint of the text that
+          was tokenized; a mismatch triggers recompute on the next render.
+        - token_count_tokenizer: str | None — fingerprint of the counter
+          used when `token_count` was written (e.g. `tiktoken:o200k_base`
+          or `heuristic:v1`). A mismatch with the current tokenizer
+          identity also triggers recompute, so a cache warmed under
+          tiktoken doesn't get served to a heuristic-fallback render.
+
+        Zero-migration schema addition: existing on-disk entries without
+        these fields naturally read as None via `.get()`, which counts as a
+        cache miss and triggers a clean recompute on first render. No
+        explicit migration event is needed.
         """
         defaults = {
             'id': '',                   # 唯一标识
@@ -684,6 +704,16 @@ class PersonaManager:
             'user_fact_reinforce_count': 0,
             # 溯源：merge_into 吸收的 reflection id 列表
             'merged_from_ids': [],
+            # Derived token-count cache — populated by the render path
+            # (`_get_cached_token_count` / `_aget_cached_token_count`)
+            # on first render and ride-alongs with normal persona saves.
+            # Both text-sha and tokenizer-identity must match for a hit,
+            # so a cache warmed under tiktoken can't be served to a
+            # heuristic-fallback render (e.g. packaging without encoding
+            # data file).
+            'token_count': None,
+            'token_count_text_sha256': None,
+            'token_count_tokenizer': None,
         }
         if isinstance(entry, str):
             d = dict(defaults)
@@ -1122,6 +1152,13 @@ class PersonaManager:
                 target_entry['disp_last_signal_at'] = now_iso
                 target_entry['sub_zero_days'] = 0
                 target_entry['merged_from_ids'] = new_merged_from
+                # Token-count cache is derived from `text`; rewriting text
+                # must drop the cache so the next render recomputes. The
+                # fingerprint check would catch the drift anyway, but
+                # explicit invalidation avoids the tiny window where a
+                # concurrent reader might see new text + stale count and
+                # saves one sha256 compute on the next render.
+                self._invalidate_token_count_cache(target_entry)
 
             # _sync_save: cloudsave gate + write + cache-evict-on-failure
             # (CodeRabbit PR #936 round-5 Major #1). See
@@ -1742,9 +1779,166 @@ class PersonaManager:
     # thread on the async path so the FastAPI event loop doesn't stall on
     # batches of ~100 entries.
 
+    # ── token-count cache helpers ────────────────────────────────────
+    #
+    # Each persona entry dict may carry three derived fields populated
+    # on first render: `token_count` (int), `token_count_text_sha256`
+    # (str) and `token_count_tokenizer` (str). `_normalize_entry`
+    # defaults all three to None.
+    #
+    # Reflection entries deliberately do NOT default these fields —
+    # `_normalize_reflection` leaves them absent because reflections
+    # have no process-resident cache (each render re-reads from disk),
+    # so any writeback would be garbage-collected with the transient
+    # list. Reflection renders therefore call the same helpers with
+    # `writeback=False` and never persist cache fields. See the
+    # commentary on `_get_cached_token_count` for the contract.
+    #
+    # Read path (persona): compute sha256(text); if it matches the
+    # stored fingerprint AND the count is populated, use the cached
+    # value. Otherwise compute (sync `count_tokens` / async
+    # `acount_tokens`) and write all three fields back to the in-memory
+    # entry. The cache is never written to disk directly — it rides
+    # along whenever the persona is otherwise saved (add_fact,
+    # amerge_into, asave_persona, etc.). A fresh process boot
+    # re-tokenizes on first render which is an acceptable warm-up cost.
+    #
+    # Red line compliance: the cache is purely derived from `text`, so
+    # event-sourcing it would duplicate the source of truth (see
+    # RFC §3.6.8 + the "derived values shouldn't produce events"
+    # principle). The in-memory update + ride-along-on-save approach
+    # also avoids "view mutations outside an event" — we only ever
+    # invoke a disk write through existing event-sourced or save-
+    # permitted paths.
+
     @staticmethod
+    def _text_fingerprint(text: str) -> str:
+        """sha256 hex digest of `text` used as the cache key. Same
+        encoding as the `rewrite_text_sha256` payload in amerge_into so
+        the two stay consistent if we ever cross-check."""
+        return hashlib.sha256((text or '').encode('utf-8')).hexdigest()
+
+    @classmethod
+    def _get_cached_token_count(cls, entry: dict, *, writeback: bool = True) -> int:
+        """Sync cache-aware token count. Writes `token_count`,
+        `token_count_text_sha256` and `token_count_tokenizer` back to
+        `entry` on miss when `writeback=True` (the default, for persona
+        entries that live in the `_personas` in-memory view and therefore
+        benefit from across-render cache reuse).
+
+        Callers should pass `writeback=False` for entries that do not have
+        a process-resident view (currently: reflection entries, which are
+        always loaded fresh from disk via `aload_reflections`). In that
+        mode we still short-circuit on a pre-existing cache hit — that's
+        free — but we never pollute the entry dict with fields that
+        wouldn't survive the next render anyway.
+
+        Cache hit requires BOTH fingerprints to match:
+        - text sha256 (catches text mutation)
+        - tokenizer identity (catches tiktoken↔heuristic transition;
+          see `utils.tokenize.tokenizer_identity` docstring for the
+          motivating scenario — packaging without encoding data file).
+
+        Additionally, `token_count` must coerce cleanly to a non-negative
+        int. A hand-edited or corrupted `persona.json` could plant a
+        non-numeric or negative value with fingerprints that still happen
+        to match (or match after someone also hand-rewrote the sha256
+        field) — in which case `int(...)` on the cached value would
+        either raise or return garbage and bomb the render. On coercion
+        failure we treat it as a cache miss and recompute.
+        """
+        text = entry.get('text', '') or ''
+        if not text:
+            return 0
+        fp = cls._text_fingerprint(text)
+        tid = tokenizer_identity()
+        cached_count = cls._coerce_cached_count(entry.get('token_count'))
+        if (
+            cached_count is not None
+            and entry.get('token_count_text_sha256') == fp
+            and entry.get('token_count_tokenizer') == tid
+        ):
+            return cached_count
+        n = count_tokens(text)
+        if writeback:
+            entry['token_count'] = int(n)
+            entry['token_count_text_sha256'] = fp
+            entry['token_count_tokenizer'] = tid
+        return int(n)
+
+    @classmethod
+    async def _aget_cached_token_count(cls, entry: dict, *, writeback: bool = True) -> int:
+        """Async twin — uses `acount_tokens` (worker-thread tiktoken).
+        Write-back semantics match the sync helper (both fingerprints).
+        See `_get_cached_token_count` for the `writeback=False` contract
+        (used by reflection render path, which has no in-memory view),
+        and for the defensive coercion of poisoned `token_count` values
+        from a hand-edited or corrupted `persona.json`."""
+        text = entry.get('text', '') or ''
+        if not text:
+            return 0
+        fp = cls._text_fingerprint(text)
+        tid = tokenizer_identity()
+        cached_count = cls._coerce_cached_count(entry.get('token_count'))
+        if (
+            cached_count is not None
+            and entry.get('token_count_text_sha256') == fp
+            and entry.get('token_count_tokenizer') == tid
+        ):
+            return cached_count
+        n = await acount_tokens(text)
+        if writeback:
+            entry['token_count'] = int(n)
+            entry['token_count_text_sha256'] = fp
+            entry['token_count_tokenizer'] = tid
+        return int(n)
+
+    @staticmethod
+    def _coerce_cached_count(raw) -> int | None:
+        """Validate a `token_count` value loaded from an entry dict.
+
+        Returns the non-negative int when `raw` is coercible and sane;
+        returns None (→ force a cache miss) when `raw` is missing,
+        non-numeric, a bool, a non-integer float (1.9 would silently
+        truncate to 1), `inf` / `nan` (`int(inf)` raises
+        `OverflowError`), or negative.
+
+        `bool` is a subclass of `int` in Python, so the explicit
+        `isinstance(raw, bool)` reject keeps us from accepting `True`/
+        `False` as legitimate cached counts if persona.json was hand-
+        edited with boolean-looking garbage."""
+        if raw is None or isinstance(raw, bool):
+            return None
+        if isinstance(raw, float):
+            if not raw.is_integer():
+                return None
+            if raw < 0:
+                return None
+            return int(raw)
+        try:
+            value = int(raw)
+        except (TypeError, ValueError, OverflowError):
+            return None
+        if value < 0:
+            return None
+        return value
+
+    @staticmethod
+    def _invalidate_token_count_cache(entry: dict) -> None:
+        """Explicitly drop the cached count. Called by code paths that
+        rewrite `entry['text']` (e.g. `amerge_into`) to avoid the tiny
+        window where a concurrent reader sees new text + stale count.
+        The fingerprint check would catch it anyway, but explicit
+        invalidation is clearer and saves one sha256 compute on the
+        next render."""
+        entry['token_count'] = None
+        entry['token_count_text_sha256'] = None
+        entry['token_count_tokenizer'] = None
+
+    @classmethod
     def _score_trim_entries(
-        entries: list, budget: int, now: datetime,
+        cls, entries: list, budget: int, now: datetime,
+        *, cache_writeback: bool = True,
     ) -> list:
         """Sync score-trim: sort by (evidence_score, importance) DESC, keep
         entries whose accumulated `count_tokens(text)` ≤ `budget`. Stops at
@@ -1753,6 +1947,13 @@ class PersonaManager:
 
         `entries` is a list of dicts (no entity tagging — caller sorts/keys
         as needed). Returns the kept subset preserving the score-DESC order.
+
+        `cache_writeback`: default True writes `token_count` fields back
+        onto each entry for across-render reuse (persona path — entries
+        live in `_personas`). Pass False for reflection entries, which are
+        loaded fresh from disk every render and would have no persistent
+        view to cache against; writing cache fields there would be
+        misleading and pollute reflection.json on the next save.
         """
         sorted_entries = sorted(
             entries,
@@ -1765,19 +1966,21 @@ class PersonaManager:
         kept = []
         total = 0
         for e in sorted_entries:
-            t = count_tokens(e.get('text', '') or '')
+            t = cls._get_cached_token_count(e, writeback=cache_writeback)
             if total + t > budget:
                 break
             kept.append(e)
             total += t
         return kept
 
-    @staticmethod
+    @classmethod
     async def _ascore_trim_entries(
-        entries: list, budget: int, now: datetime,
+        cls, entries: list, budget: int, now: datetime,
+        *, cache_writeback: bool = True,
     ) -> list:
         """Async twin of `_score_trim_entries`. Identical math; the only
-        difference is `acount_tokens` (worker-thread tiktoken)."""
+        difference is `acount_tokens` (worker-thread tiktoken). See the
+        sync twin for the `cache_writeback` contract."""
         sorted_entries = sorted(
             entries,
             key=lambda e: (
@@ -1789,7 +1992,7 @@ class PersonaManager:
         kept = []
         total = 0
         for e in sorted_entries:
-            t = await acount_tokens(e.get('text', '') or '')
+            t = await cls._aget_cached_token_count(e, writeback=cache_writeback)
             if total + t > budget:
                 break
             kept.append(e)
@@ -1993,6 +2196,11 @@ class PersonaManager:
                 persona, suppressed_text_set,
             ),
             REFLECTION_RENDER_TOKEN_BUDGET, now,
+            # Reflections have no `_personas`-style in-memory view — they're
+            # always loaded fresh from disk. Writing cache fields onto the
+            # transient dicts would be garbage-collected on render exit and
+            # could only pollute reflection.json on the next save.
+            cache_writeback=False,
         )
         # Preserve the score-DESC order produced by _score_trim_entries.
         # The previous implementation filtered the ORIGINAL source lists by
@@ -2089,6 +2297,10 @@ class PersonaManager:
                 persona, suppressed_text_set,
             ),
             REFLECTION_RENDER_TOKEN_BUDGET, now,
+            # See sync twin: reflections have no `_personas`-style
+            # in-memory view, so we compute fresh every render without
+            # writing cache fields back onto the transient dicts.
+            cache_writeback=False,
         )
         # Preserve score-DESC order from _ascore_trim_entries — mirror of
         # the sync path fix in _compose_persona_markdown (CodeRabbit PR
