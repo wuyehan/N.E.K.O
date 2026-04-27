@@ -71,6 +71,9 @@ WORKSHOP_REFERENCE_AUDIO_CONTENT_TYPES = {
 }
 WORKSHOP_REFERENCE_LANGUAGES = {'ch', 'en', 'fr', 'de', 'ja', 'ko', 'ru'}
 WORKSHOP_REFERENCE_PROVIDER_HINTS = {'cosyvoice', 'minimax', 'minimax_intl'}
+WORKSHOP_CARD_FACE_SIZE = (768, 1024)
+WORKSHOP_CARD_FACE_PADDING = 48
+WORKSHOP_CARD_FACE_RATIO_TOLERANCE = 0.02
 
 
 async def cancel_background_tasks(*, timeout: float = 5.0) -> None:
@@ -661,6 +664,93 @@ def _build_workshop_card_face_meta(item: dict) -> dict:
     }
 
 
+def _read_card_face_origin(meta_path: Path) -> str | None:
+    try:
+        if not meta_path.exists():
+            return None
+        with open(meta_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        if not isinstance(data, dict):
+            return None
+        origin = str(data.get('origin', '') or '').strip()
+        return origin or None
+    except Exception:
+        return None
+
+
+def _is_workshop_card_face_normalized(face_path: Path) -> bool:
+    if not face_path.exists():
+        return False
+
+    from PIL import Image as PILImage
+
+    try:
+        with PILImage.open(face_path) as img:
+            width, height = img.size
+    except Exception:
+        return False
+
+    if width <= 0 or height <= 0:
+        return False
+
+    target_ratio = WORKSHOP_CARD_FACE_SIZE[0] / WORKSHOP_CARD_FACE_SIZE[1]
+    current_ratio = width / height
+    return abs(current_ratio - target_ratio) <= WORKSHOP_CARD_FACE_RATIO_TOLERANCE
+
+
+def _should_refresh_workshop_card_face(face_path: Path, meta_path: Path) -> bool:
+    if not face_path.exists():
+        return True
+
+    origin = _read_card_face_origin(meta_path)
+    if origin in {'self', 'imported'}:
+        return False
+
+    return not _is_workshop_card_face_normalized(face_path)
+
+
+def _render_workshop_card_face_image(img):
+    from PIL import Image as PILImage, ImageFilter, ImageOps
+
+    resampling = getattr(PILImage, 'Resampling', PILImage)
+    lanczos = getattr(resampling, 'LANCZOS', PILImage.BICUBIC)
+
+    img = ImageOps.exif_transpose(img)
+    has_alpha = 'A' in img.getbands() or 'transparency' in (img.info or {})
+    working = img.convert('RGBA' if has_alpha else 'RGB')
+    if working.mode != 'RGBA':
+        working = working.convert('RGBA')
+
+    canvas = PILImage.new('RGBA', WORKSHOP_CARD_FACE_SIZE, (231, 245, 255, 255))
+    background = ImageOps.fit(
+        working,
+        WORKSHOP_CARD_FACE_SIZE,
+        method=lanczos,
+        centering=(0.5, 0.5),
+    )
+    background = background.filter(ImageFilter.GaussianBlur(radius=28))
+    canvas = PILImage.blend(canvas, background, 0.82)
+    canvas = PILImage.alpha_composite(
+        canvas,
+        PILImage.new('RGBA', WORKSHOP_CARD_FACE_SIZE, (255, 255, 255, 30)),
+    )
+
+    foreground = working.copy()
+    foreground.thumbnail(
+        (
+            max(64, WORKSHOP_CARD_FACE_SIZE[0] - WORKSHOP_CARD_FACE_PADDING * 2),
+            max(64, WORKSHOP_CARD_FACE_SIZE[1] - WORKSHOP_CARD_FACE_PADDING * 2),
+        ),
+        resample=lanczos,
+    )
+    foreground = ImageOps.expand(foreground, border=8, fill=(255, 255, 255, 28))
+
+    offset_x = (WORKSHOP_CARD_FACE_SIZE[0] - foreground.width) // 2
+    offset_y = (WORKSHOP_CARD_FACE_SIZE[1] - foreground.height) // 2
+    canvas.alpha_composite(foreground, (offset_x, offset_y))
+    return canvas
+
+
 def _is_matching_workshop_character(catgirl_data: dict, item_id) -> bool:
     if not isinstance(catgirl_data, dict):
         return False
@@ -686,10 +776,11 @@ def _ensure_workshop_card_face_from_preview(config_mgr, chara_name: str, preview
         return False
 
     face_path = config_mgr.card_faces_dir / f"{chara_name}.png"
-    if face_path.exists():
+    meta_path = config_mgr.card_face_meta_path(chara_name)
+    if not _should_refresh_workshop_card_face(face_path, meta_path):
         return False
 
-    from PIL import Image as PILImage, ImageOps
+    from PIL import Image as PILImage
 
     fd, temp_path = tempfile.mkstemp(
         prefix=f".{face_path.name}.",
@@ -700,11 +791,8 @@ def _ensure_workshop_card_face_from_preview(config_mgr, chara_name: str, preview
     try:
         with os.fdopen(fd, 'w+b') as temp_file:
             with PILImage.open(preview_image_path) as img:
-                img = ImageOps.exif_transpose(img)
-                if img.mode not in ('RGB', 'RGBA', 'L'):
-                    has_alpha = 'A' in img.getbands() or 'transparency' in (img.info or {})
-                    img = img.convert('RGBA' if has_alpha else 'RGB')
-                img.save(temp_file, format='PNG')
+                normalized = _render_workshop_card_face_image(img)
+                normalized.save(temp_file, format='PNG', optimize=True)
             temp_file.flush()
             os.fsync(temp_file.fileno())
         os.replace(temp_path, face_path)
@@ -4007,7 +4095,7 @@ async def sync_workshop_character_cards() -> dict:
                                         if face_created:
                                             backfilled_face_count += 1
                                             logger.info(
-                                                "sync_workshop_character_cards: 已回填角色卡封面 '%s' (来自物品 %s)",
+                                                "sync_workshop_character_cards: 已同步角色卡封面 '%s' (来自物品 %s)",
                                                 chara_name,
                                                 item_id,
                                             )

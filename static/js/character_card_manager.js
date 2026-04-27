@@ -7165,9 +7165,12 @@ async function clearLive2DPreview(showModelNotSetMessage = false) {
 // 通过模型名称加载Live2D模型
 async function loadLive2DModelByName(modelName, modelInfo = null) {
     try {
-        // 确保live2dPreviewManager已初始化
+        // 每次加载前都重新校验预览上下文。
+        // Steam 详情面板会动态销毁并重建 canvas，仅凭 manager 是否存在
+        // 无法判断它是否还绑定在当前这次打开的预览节点上。
+        await initLive2DPreview();
         if (!live2dPreviewManager || !live2dPreviewManager.pixi_app) {
-            await initLive2DPreview();
+            throw new Error('Live2D preview is not ready');
         }
 
         // 强制resize PIXI应用，确保canvas尺寸正确
@@ -7494,43 +7497,70 @@ async function initLive2DPreview() {
             throw new Error('Live2DManager class not found');
         }
 
-        // 避免重复初始化
-        if (live2dPreviewManager && live2dPreviewManager.pixi_app) {
-            return; // 已经正常初始化，不需要重新初始化
+        const canvasId = 'live2d-preview-canvas';
+        const containerId = 'live2d-preview-content';
+        const canvas = document.getElementById(canvasId);
+        const container = document.getElementById(containerId);
+
+        // Steam 预览区域是动态创建的；在 DOM 尚未生成时静默跳过，
+        // 避免页面初始加载阶段提前报错并污染后续初始化状态。
+        if (!canvas || !container) {
+            return;
         }
 
-        // 清理可能存在的残缺实例
-        live2dPreviewManager = null;
+        if (!live2dPreviewManager) {
+            live2dPreviewManager = new Live2DManager();
+        }
 
-        // 创建一个新的Live2DManager实例
-        live2dPreviewManager = new Live2DManager();
-        await live2dPreviewManager.initPIXI('live2d-preview-canvas', 'live2d-preview-content');
+        const existingView = live2dPreviewManager.pixi_app?.view || null;
+        const needsPixiRebuild = !!(
+            existingView && (
+                existingView !== canvas ||
+                !existingView.isConnected
+            )
+        );
+
+        if (needsPixiRebuild && typeof live2dPreviewManager.rebuildPIXI === 'function') {
+            await live2dPreviewManager.rebuildPIXI(canvasId, containerId);
+        } else if (typeof live2dPreviewManager.ensurePIXIReady === 'function') {
+            await live2dPreviewManager.ensurePIXIReady(canvasId, containerId);
+        } else if (!live2dPreviewManager.pixi_app) {
+            await live2dPreviewManager.initPIXI(canvasId, containerId);
+        }
 
         // 覆盖applyModelSettings方法，为预览模式实现专门的显示逻辑
-        const originalApplyModelSettings = live2dPreviewManager.applyModelSettings;
-        live2dPreviewManager.applyModelSettings = function (model, options) {
-            // 获取预览容器的尺寸
-            const container = document.getElementById('live2d-preview-content');
-            if (!container || !this.pixi_app || !this.pixi_app.renderer) {
-                return originalApplyModelSettings(model, options);
-            }
-            fitLive2DPreviewModelToContainer(model);
-        };
+        if (!live2dPreviewManager._previewApplyModelSettingsPatched) {
+            const originalApplyModelSettings = live2dPreviewManager.applyModelSettings;
+            live2dPreviewManager.applyModelSettings = function (model, options) {
+                // 获取预览容器的尺寸
+                const previewContainer = document.getElementById(containerId);
+                if (!previewContainer || !this.pixi_app || !this.pixi_app.renderer) {
+                    return originalApplyModelSettings.call(this, model, options);
+                }
+                fitLive2DPreviewModelToContainer(model);
+            };
+            live2dPreviewManager._previewApplyModelSettingsPatched = true;
+        }
 
         // 添加窗口大小变化的监听，当预览区域大小变化时重新计算模型缩放和位置
-        function resizePreviewModel() {
-            const container = document.getElementById('live2d-preview-content');
-            if (live2dPreviewManager && live2dPreviewManager.pixi_app && container &&
-                container.clientWidth > 0 && container.clientHeight > 0) {
-                live2dPreviewManager.pixi_app.renderer.resize(container.clientWidth, container.clientHeight);
-            }
-            if (live2dPreviewManager && live2dPreviewManager.currentModel) {
-                // 调用我们覆盖的applyModelSettings方法，重新计算模型缩放和位置
-                live2dPreviewManager.applyModelSettings(live2dPreviewManager.currentModel, {});
-                if (live2dPreviewManager.pixi_app && live2dPreviewManager.pixi_app.renderer) {
-                    live2dPreviewManager.pixi_app.renderer.render(live2dPreviewManager.pixi_app.stage);
+        if (!live2dPreviewManager._previewResizeHandlerBound) {
+            function resizePreviewModel() {
+                const previewContainer = document.getElementById(containerId);
+                if (live2dPreviewManager && live2dPreviewManager.pixi_app && previewContainer &&
+                    previewContainer.clientWidth > 0 && previewContainer.clientHeight > 0) {
+                    live2dPreviewManager.pixi_app.renderer.resize(previewContainer.clientWidth, previewContainer.clientHeight);
+                }
+                if (live2dPreviewManager && live2dPreviewManager.currentModel) {
+                    // 调用我们覆盖的applyModelSettings方法，重新计算模型缩放和位置
+                    live2dPreviewManager.applyModelSettings(live2dPreviewManager.currentModel, {});
+                    if (live2dPreviewManager.pixi_app && live2dPreviewManager.pixi_app.renderer) {
+                        live2dPreviewManager.pixi_app.renderer.render(live2dPreviewManager.pixi_app.stage);
+                    }
                 }
             }
+            live2dPreviewManager._previewResizeHandler = resizePreviewModel;
+            live2dPreviewManager._previewResizeHandlerBound = true;
+            window.addEventListener('resize', resizePreviewModel);
         }
 
         // 添加removeModel方法的fallback，防止调用时出错
@@ -7553,9 +7583,6 @@ async function initLive2DPreview() {
             };
         }
 
-        // 添加窗口大小变化监听
-        window.addEventListener('resize', resizePreviewModel);
-
     } catch (error) {
         console.error('Failed to initialize Live2D preview:', error);
         live2dPreviewManager = null;
@@ -7566,8 +7593,9 @@ async function initLive2DPreview() {
 // 从文件夹加载Live2D模型
 async function loadLive2DModelFromFolder(files) {
     try {
+        await initLive2DPreview();
         if (!live2dPreviewManager || !live2dPreviewManager.pixi_app) {
-            await initLive2DPreview();
+            throw new Error('Live2D preview is not ready');
         }
 
         // 获取第一个文件夹的名称
@@ -7814,12 +7842,6 @@ if (playExpressionBtn) {
         }
     });
 }
-
-// 页面加载完成后初始化Live2D预览环境
-document.addEventListener('DOMContentLoaded', function () {
-    // 延迟初始化，确保其他资源已加载
-    setTimeout(initLive2DPreview, 1000);
-});
 
 // 注意事项标签功能
 (function () {
