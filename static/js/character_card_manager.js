@@ -7191,10 +7191,10 @@ async function loadLive2DModelByName(modelName, modelInfo = null) {
         // Steam 详情面板会动态销毁并重建 canvas，仅凭 manager 是否存在
         // 无法判断它是否还绑定在当前这次打开的预览节点上。
         await initLive2DPreview();
+        await ensureCurrentLoad();
         if (!live2dPreviewManager || !live2dPreviewManager.pixi_app) {
             throw new Error('Live2D preview is not ready');
         }
-        await ensureCurrentLoad();
 
         // 强制resize PIXI应用，确保canvas尺寸正确
         // 这是必要的，因为当容器最初是隐藏的(display:none)时，PIXI的尺寸会是0
