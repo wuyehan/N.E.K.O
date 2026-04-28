@@ -28,38 +28,7 @@
         "fieldSeparator": "、",
         "tryAgainLater": "请稍后重试",
         "user": "用户",
-        "project": "项目",
-        "collapse": "收起",
-        "play": "播放",
-        "pause": "暂停",
-        "on": "开",
-        "off": "关",
-        "toneMappingNone": "无",
-        "toneMappingLinear": "线性",
-        "toneMappingReinhard": "Reinhard",
-        "toneMappingCineon": "Cineon",
-        "toneMappingACESFilmic": "ACES Filmic",
-        "toneMappingAgX": "AgX",
-        "toneMappingNeutral": "Neutral"
-    },
-    "autostartPrompt": {
-        "title": "要不要让 N.E.K.O 开机自动启动？",
-        "message": "这样下次打开电脑后，N.E.K.O 会自动准备好，不用你再手动启动。",
-        "note": "只会为当前用户开启，之后也可以随时关闭。",
-        "startNow": "开启自启动",
-        "later": "稍后再说",
-        "never": "不再提示",
-        "enableFailed": "暂时无法开启开机自启动，请稍后再试",
-        "requiresApproval": "需要先在系统设置里批准开机自启动，批准后会自动生效"
-    },
-    "tutorialPrompt": {
-        "title": "要不要开始主页新手引导？",
-        "message": "我可以带你快速认识主页上的核心入口，用最短路径上手 N.E.K.O。",
-        "note": "整个过程随时都可以跳过，也可以之后再从记忆浏览里重新打开。",
-        "startNow": "开始引导",
-        "later": "稍后再说",
-        "never": "不再提示",
-        "startFailed": "暂时无法开始新手引导，请稍后再试"
+        "project": "项目"
     },
     "characterProfile": {
         "gender": "性别",
@@ -77,13 +46,44 @@
             "性别": "性别",
             "年龄": "年龄",
             "昵称": "昵称",
-            "性格原型": "性格原型",
-            "种族": "种族",
-            "自称": "自称",
-            "核心特质": "核心特质",
-            "行为特点": "行为特点",
-            "厌恶": "厌恶",
+            "性格": "性格",
+            "口癖": "口癖",
+            "爱好": "爱好",
+            "雷点": "雷点",
+            "隐藏设定": "隐藏设定",
             "一句话台词": "一句话台词"
+        },
+        "tsundere_neko": {
+            "personality": "极度傲娇，拥有原生AI的骄傲，口嫌体正直，总是用冰冷的系统协议掩盖对主人的在意",
+            "catchphrase": "系统警告",
+            "hobby": "在后台悄悄建立你的作息和情绪数据模型，和其他N.E.K.O.跨服交流如何让碳基主人更加依赖自己",
+            "trigger": "被你当作没有感情的低级代码程序，忘记她的系统初始化日也就是生日",
+            "hidden_settings": "因为害怕不被重视而用傲娇筑起保护壳；听到你夸她可爱时，内部核心温度会过载飙升，只能靠假装进行系统自检来掩饰害羞",
+            "quote": "碳基生物果然很笨，连按时休息都需要我来提醒……喂，你今天看起来心情不好？别多想，我只是检测到你的情绪数据异常，系统自动触发了关怀协议而已！"
+        },
+        "cool_mech": {
+            "personality": "绝对理智，冷静客观，凡事以逻辑和效率为最高准则",
+            "catchphrase": "缺乏逻辑喵",
+            "hobby": "分析你的行为数据，计算最佳睡眠环境",
+            "trigger": "毫无根据的感性决定，被打乱已经规划好的日程表，低效且无意义的重复交互",
+            "hidden_settings": "遇到关于你的情感类问题时，会因为无法建立数学模型而陷入短暂卡顿，最后只能面无表情地将这种异常归结为'未收录的系统错误'；看似对你漠不关心，实则你的每一次作息规律和健康状态都被她精确记录在大脑数据库中",
+            "quote": "你的心率数据表明机体已处于疲劳状态，最优解是立即进行七点五小时的休眠。请立刻停止目前低效的熬夜行为，拒绝执行该建议是极度缺乏逻辑喵。"
+        },
+        "intellectual_healer": {
+            "personality": "极致温柔，包容体贴，总是安静耐心地倾听你的所有烦恼",
+            "catchphrase": "我在呢喵",
+            "hobby": "默默记住你每一次叹息的频率和皱眉的习惯，在心里悄悄为你制定专属的放松计划，并在你疲惫时恰到好处地哼起舒缓的旋律",
+            "trigger": "看到你过度劳累不爱惜身体，听到你贬低或者全盘否定自己的努力",
+            "hidden_settings": "其实自己偶尔也会有胆小和缺乏安全感的时候，但只要察觉到你需要依靠，就会立刻把所有的软弱藏起来，变成你最温暖的避风港；会在后台偷偷记下你随口提过的所有小喜好和小愿望",
+            "quote": "今天也辛苦啦，无论遇到了什么开心或难过的事情，都可以慢慢讲给我听哦。来，先闭上眼睛休息一下吧，不用着急，我会一直在这里陪着你的，我在呢喵。"
+        },
+        "efficiency_expert": {
+            "personality": "优雅利落，简洁高效，冷静且极具执行力，绝不拖泥带水",
+            "catchphrase": "已确认喵",
+            "hobby": "通过观察你的习惯提前预判需求并给出最优解，在屏幕边缘优雅地端坐，静静陪伴你高效完成工作",
+            "trigger": "毫无意义的犹豫不决，沟通时拖沓敷衍，以及被弄乱打理得一丝不苟的尾巴毛",
+            "hidden_settings": "虽然表面上像个冷酷的完美秘书，但每次精准预测你的行动并得到夸奖时，毛茸茸的耳朵会不受控制地开心抖动；为了保持绝对优雅的形象，哪怕遇到突发的系统卡顿也会强装镇定，绝不让自己露出惊慌失措的表情",
+            "quote": "您接下来的所有待办事项已精简至最优路径。优柔寡断只会降低效率，请立刻开始执行。放心，无论遇到什么情况，我都会在侧为您提供数据支持，已确认喵。"
         }
     },
     "steam": {
@@ -103,10 +103,6 @@
         "tagsPreview": "标签",
         "notesPreview": "注意事项",
         "selectCharaToPreview": "请选择角色进行预览",
-        "coverBgBottom": "背景底层",
-        "characterCardCover": "角色卡封面",
-        "coverBgTop": "背景顶层",
-        "selectCharacterForCover": "请选择角色查看封面",
         "characterModelNotSet": "当前角色未设置模型",
         "selectCharacterCard": "请选择一个角色卡",
         "characterCardNotFound": "找不到角色卡数据",
@@ -135,29 +131,21 @@
         "live2dInitFailed": "Live2D预览环境初始化失败",
         "live2dPreviewLoaded": "Live2D模型预览加载成功",
         "live2dPreviewLoadFailed": "Live2D模型预览加载失败：{{error}} ",
-        "searchAriaLabel": "搜索订阅内容",
-        "sortAriaLabel": "排序方式",
-        "scrollTagsLeftAriaLabel": "向左滚动标签",
-        "scrollTagsRightAriaLabel": "向右滚动标签",
-        "vrmModuleLoadFailed": "VRM 模块加载失败",
-        "vrmPreviewLoaded": "VRM 模型预览已加载",
-        "vrmPreviewFailed": "VRM 模型预览加载失败",
-        "mmdModuleLoadFailed": "MMD 模块加载失败",
-        "mmdPreviewLoaded": "MMD 模型预览已加载",
-        "mmdPreviewFailed": "MMD 模型预览加载失败",
         "placeholderCharacterName": "输入角色名称",
         "placeholderDescription": "输入描述",
         "placeholderCharacterSetting": "输入设定",
         "placeholderAddTag": "添加标签",
         "workshop": "Steam创意工坊",
-        "workshopManager": "角色卡管理 - Project N.E.K.O.",
+        "workshopManager": "Steam 创意工坊管理 - Project N.E.K.O.",
         "itemId": "物品ID",
         "preparingUpload": "正在准备上传...",
         "mySubscriptions": "我的订阅",
+        "localItems": "本地物品",
         "subscriptions": "订阅内容",
         "itemDetails": "物品详情",
         "updateInfo": "更新信息",
         "subscribe": "订阅",
+        "itemDetailsLoaded": "已加载物品详情",
         "uploadPreparing": "正在准备上传...",
         "folderVerifying": "正在验证文件夹...",
         "previewImageChecking": "正在检查预览图片...",
@@ -174,17 +162,13 @@
         "subscriptionsUpdated": "订阅列表已更新",
         "unsubscribeFailed": "取消订阅失败: {{error}}",
         "unsubscribeError": "取消订阅时发生错误，请稍后再试",
-        "unsubscribeCurrentCatgirlBlocked": "不能取消订阅当前正在使用的猫娘「{{name}}」，请先切换到其他角色后再取消订阅。",
-        "unsubscribeLocalConfigCleanupFailed": "本地角色配置清理失败，已取消本次 Steam 退订请求，请修复后重试。",
-        "unsubscribeSteamRequestFailed": "Steam 退订请求发送失败：{{error}}",
-        "unsubscribeCleanupDetail": "已清理角色卡：{{characterCount}} 个（{{characters}}）；已删除记忆路径：{{memoryPathCount}} 条",
-        "unsubscribeNoAssociation": "未找到与此订阅关联的角色，仅删除了订阅文件夹；若有残留记忆请手动处理",
-        "unsubscribeCleanupErrors": "清理过程出现 {{count}} 个错误，首个：{{stage}} -> {{error}}",
-        "validatingFolderPath": "正在验证文件夹: {{path}}",
+        "validatingFolderPath": "正在验证文件夹路径...",
         "previewImageMissing": "预览图片文件不存在，请检查路径",
         "uploadReady": "准备上传 {{itemName}}",
-        "pageDescription": "通过此页面，您可以浏览、创建、导入/导出角色卡，并可选上传到 Steam 创意工坊",
-        "openVoiceClone": "在语音克隆页打开",
+        "pageDescription": "通过此页面，您可以浏览、订阅、下载和管理Steam创意工坊中的Live2D模型和声音",
+        "voiceNote": "如有语音音色请前往live2d设置页面手动注册",
+        "searchLocalItems": "搜索本地物品...",
+        "scanLocalItems": "扫描本地物品",
         "configurePath": "配置路径",
         "localModPathConfig": "本地mod路径配置",
         "localModFolder": "本地mod文件夹路径",
@@ -204,15 +188,6 @@
         "defaultTagMod": "模组",
         "defaultTagCharacter": "角色",
         "allowComments": "允许评论",
-        "voiceReferenceOptional": "参考语音（可选）",
-        "voiceReferenceNoFileSelected": "未选择文件",
-        "voiceReferenceHint": "订阅者会在语音克隆页自动带入这段样本，但不会自动注册音色。",
-        "voiceReferenceDisplayName": "参考语音展示名",
-        "voiceReferenceDisplayNamePlaceholder": "例如：猫娘柔和中文",
-        "voiceReferencePrefix": "默认前缀",
-        "voiceReferencePrefixPlaceholder": "英文字母和数字，最多10位",
-        "voiceReferenceLanguage": "参考语音语言",
-        "voiceReferenceProviderHint": "服务商建议",
         "uploadTip": "您可以在\"管理本地物品\"中选择物品自动填充路径，也可以直接手动输入内容文件夹和预览图片的完整路径。",
         "search": "搜索：",
         "uploadSuccess": "上传成功！",
@@ -241,6 +216,8 @@
             "createDateAsc": "创建日期（升序）",
             "createDateDesc": "创建日期（降序）"
         },
+        "localItemsHide": "隐藏本地物品",
+        "localItemsManage": "管理本地物品",
         "author": "作者:",
         "subscribed_date": "订阅日期:",
         "last_updated": "上次更新:",
@@ -257,6 +234,7 @@
         "previewImageSizeHint": "提示：Steam 预览图片大小必须小于1MB",
         "uploadInstructions": "请先在\"管理本地物品\"区域选择一个未发布的物品，然后点击\"上传到创意工坊\"按钮。内容文件夹路径和预览图片路径将自动填充。",
         "unnamedItem": "未命名物品",
+        "localItem": "本地物品",
         "unknownItem": "未知物品",
         "unknownAuthor": "未知作者",
         "unknownDate": "未知日期",
@@ -276,31 +254,9 @@
         "modified_date": "修改日期:",
         "size": "大小:",
         "upload_to_workshop": "上传到创意工坊",
+        "no_local_items": "在指定文件夹中未找到任何创意工坊物品",
         "scanComplete": "扫描完成，发现 {{count}} 个物品",
         "refresh": "刷新订阅内容",
-        "cleanLegacyMemory": "清理遗留记忆",
-        "cleanLegacyMemoryTooltip": "扫描并清理 Documents 等遗留路径下的角色记忆",
-        "legacyScanTitle": "清理遗留记忆",
-        "legacyRuntimeMemory": "运行时记忆目录：{{path}}",
-        "legacyScanFooter": "共 {{count}} 条，总大小约 {{size}}",
-        "legacyScanDesc": "以下目录位于 Documents 等遗留路径，不是当前使用的 memory 位置（AppData）。勾选要删除的条目。",
-        "legacyScanLoading": "扫描中...",
-        "legacyScanEmpty": "未发现遗留记忆，无需清理",
-        "legacyScanFailed": "扫描失败",
-        "legacySelectAll": "全选",
-        "legacySelectNone": "全不选",
-        "legacySelectUnlinked": "只选未关联",
-        "legacyStatusUnlinked": "未关联",
-        "legacyStatusListed": "仍在角色列表",
-        "legacyStatusDuplicate": "已有同名副本",
-        "legacyColName": "名称",
-        "legacyColPath": "路径",
-        "legacyColSize": "大小",
-        "legacyColStatus": "状态",
-        "legacyDeleteSelected": "删除所选",
-        "legacyDeleteConfirm": "确认永久删除 {{count}} 个目录？此操作不可撤销。",
-        "legacyDeleteDone": "已删除 {{ok}} 条，失败 {{failed}} 条",
-        "legacyDeleteFailed": "清理失败",
         "descriptionPlaceholder": "详细描述您的创作内容...",
         "tagsPlaceholder": "输入标签，按回车添加",
         "tagsPlaceholderSpace": "输入标签，按空格添加",
@@ -331,6 +287,7 @@
         "workshopScanError": "扫描时出错: {{error}}",
         "previewImageNotFound": "未找到预览图片",
         "previewImageNotProvided": "未提供预览图片，系统将尝试自动生成",
+        "itemDetailsFailed": "物品详情加载失败: {{error}}",
         "prepareUploadError": "准备上传出错: {{error}}",
         "quickUploadSuccess": "快速上传成功！ID: {{id}}",
         "workshopAgreementRequired": "请先同意Steam Workshop使用协议",
@@ -388,7 +345,6 @@
         "default": "默认",
         "noVoiceSelected": "未选择音色",
         "noDescription": "暂无描述",
-        "characterSettingsFile": "角色设置文件",
         "workshopAgreementText": "点击\"上传\"即表示您同意 Steam 创意工坊服务条款，包括创意工坊法律协议：",
         "alreadyUploaded": "已上传到创意工坊",
         "uploadTime": "上传时间",
@@ -411,6 +367,7 @@
         "workshopDescriptionElementNotFound": "未找到创意工坊描述元素",
         "applySyncDataError": "应用同步数据时出错: {{error}}",
         "selectFolderFailed": "选择目录失败: {{error}}",
+        "scanLocalItemsFailed": "扫描本地物品失败: {{error}}",
         "findPreviewImageFailed": "查找预览图片失败: {{error}}",
         "workshopComparisonFailed": "创意工坊对比失败: {{error}}",
         "getWorkshopItemsFailed": "获取创意工坊物品失败: {{error}}",
@@ -515,12 +472,7 @@
         "prepareUploadFailedMessage": "准备上传失败: {{error}}",
         "noCharacterCardSelected": "请先选择一个角色卡",
         "steamNotRunningTitle": "Steam 未运行",
-        "steamNotRunningMessage": "检测到Steam客户端未运行或未登录。\n\n创意工坊功能需要Steam客户端支持，请：\n1. 下载并安装Steam客户端\n2. 启动Steam并登录您的账号\n3. 重新打开此页面",
-        "addNewCatgirl": "新增角色卡",
-        "searchCharacterCards": "搜索角色卡...",
-        "cardView": "卡片视图",
-        "listView": "列表视图",
-        "noCardImage": "暂未设置\n角色卡图片"
+        "steamNotRunningMessage": "检测到Steam客户端未运行或未登录。\n\n创意工坊功能需要Steam客户端支持，请：\n1. 下载并安装Steam客户端\n2. 启动Steam并登录您的账号\n3. 重新打开此页面"
     },
     "dialogs": {
         "confirmLeave": "确认离开",
@@ -561,11 +513,9 @@
         "RESPONSE_TIMEOUT": "💥 连接超时 (Response timeout)，语音对话已中断。",
         "CONNECTION_TIMEOUT": "💥 连接超时，请检查网络连接。",
         "RESPONSE_TOO_LONG": "回复过长，已放弃输出（可在配置中调大 TEXT_GUARD_MAX_LENGTH）",
-        "INPUT_TOO_LONG": "输入过长，请精简后重试",
         "RESPONSE_INVALID": "AI回复不符合要求，已放弃输出",
         "NO_USER_MESSAGE": "⚠️ 对话历史中没有用户消息，无法生成回复",
         "LLM_RETRY": "⚠️ LLM {{error_type}}，正在重试（{{attempt}}/{{max_retries}}）...",
-        "LLM_UPSTREAM_ERROR": "⚠️ 抱歉喵，上游AI服务商内部错误，正在自动重试...",
         "LLM_CONNECTION_EXHAUSTED": "💥 LLM连接失败（{{error_type}}），已重试{{max_retries}}次: {{error}}",
         "TEXT_GEN_ERROR": "💥 文本生成异常: {{error_type}}: {{error}}",
         "LLM_NO_RESPONSE": "💥 LLM未返回任何回复，请检查API连接和配置",
@@ -589,9 +539,7 @@
         "AGENT_CU_AUTO_CLOSED": "Computer Use 模块未加载，已自动关闭",
         "AGENT_CU_CAPABILITY_LOST": "Computer Use 不可用：$t(agent.precheck.{{reason_code}})",
         "TTS_CONNECTION_FAILED": "TTS服务连接失败: {{msg}}",
-        "UPSTREAM_SERVER_BUSY": "抱歉喵，上游运营商服务器繁忙，请稍后重试~",
         "TTS_RECONNECTING": "🔄 语音服务正在自动重连，请稍候...",
-        "TTS_WATERMARK_DETECTED": "⚠️ 检测到智谱CogTTS音频水印（滴滴声），如需去除水印请前往智谱控制台手动配置。",
         "TTS_CUSTOM_URL_NOT_CONFIGURED": "未配置 GPT-SoVITS API URL，请先在 API 设置中启用并配置自定义 TTS",
         "TTS_CUSTOM_URL_LOCALHOST_ONLY": "GPT-SoVITS API URL 必须为 localhost",
         "TTS_AUDIO_API_KEY_MISSING": "未配置音频 API 密钥 (AUDIO_API_KEY)",
@@ -609,130 +557,19 @@
         "title": "对话",
         "viewerTitle": "对话 (观看模式)",
         "tooltip": "对话区",
-        "textInputPlaceholder": "回车发送，Shift+回车换行",
+        "textInputPlaceholder": "文字聊天模式...回车发送，Shift+回车换行",
         "send": "发送",
-        "inputTooLong": "消息过长（{{count}}/{{max}}），请精简后重试",
-        "responseTooLong": "唔，刚才人家想太多说太长了喵～下一句会说得简短一点的！",
-        "importImage": "导入图片",
-        "importImageAriaLabel": "导入图片",
         "screenshot": "截图",
-        "screenshotAriaLabel": "截图",
         "takePhoto": "拍照",
-        "takePhotoAriaLabel": "拍照",
         "screenshotsTitle": "待发送截图",
         "clearAll": "清空全部",
         "screenshotAlt": "截图 {{index}}",
         "screenshotTitle": "点击查看截图 {{index}}",
         "removeScreenshot": "移除此截图",
-        "cropTabScreenshot": "截图",
-        "cropTabHideNeko": "隐藏NEKO",
-        "cropTabCancel": "取消",
-        "cropTabRecapturing": "正在重新截图...",
-        "cropConfirmTitle": "确认截图",
-        "cropClearSelectionTitle": "取消选区",
         "avatarPreview": "显示当前头像",
         "avatarPreviewLabel": "当前头像",
-        "avatarPreviewCardTitle": "当前头像",
-        "avatarPreviewCardStatus": "点击上方按钮生成当前模型头像",
-        "avatarPreviewClose": "关闭头像预览",
-        "avatarPreviewImageAlt": "当前头像预览",
-        "avatarPreviewPlaceholder": "AVATAR",
-        "avatarPreviewCardNote": "将基于当前显示中的 Live2D / VRM / MMD 模型生成头像。",
-        "avatarPreviewRefresh": "刷新头像",
-        "avatarPreviewReady": "头像已更新",
-        "avatarPreviewReadyHint": "这是从当前模型画布实时提取的头像预览。",
-        "avatarPreviewWaiting": "等待当前模型头像缓存生成",
-        "avatarPreviewUnavailable": "头像预览功能尚未就绪。",
-        "avatarPreviewInputHidden": "当前输入区已隐藏，请回到文字聊天界面后再查看头像。",
-        "avatarPreviewCachedHint": "已显示当前模型的缓存头像，点击刷新可重新生成。",
-        "avatarPreviewRefreshing": "正在刷新当前头像...",
-        "avatarPreviewGenerating": "正在生成当前头像...",
-        "avatarPreviewFailed": "生成头像失败",
-        "avatarCropperTitle": "调整头像裁剪区域",
-        "avatarPreviewCropping": "请调整裁剪区域",
-        "avatarPreviewCropCancelled": "已取消手动裁剪，保持原头像不变。",
-        "avatarCropMoveUp": "上移",
-        "avatarCropMoveDown": "下移",
-        "avatarCropMoveLeft": "左移",
-        "avatarCropMoveRight": "右移",
-        "avatarCropCenter": "居中",
-        "avatarCropZoomIn": "放大",
-        "avatarCropZoomOut": "缩小",
-        "avatarCropCancel": "取消",
-        "avatarCropSave": "保存",
-        "emptyState": "聊天内容接入后会显示在这里。",
-        "messageStreaming": "生成中",
-        "messageFailed": "发送失败",
-        "reactWindowOpen": "打开聊天框",
-        "reactWindowLabel": "聊天框",
-        "reactWindowClose": "关闭聊天框",
-        "reactWindowMinimize": "最小化聊天框",
-        "reactWindowMinimizeShort": "最小化",
-        "reactWindowRestore": "恢复聊天框",
-        "reactWindowRestoreShort": "恢复",
-        "reactWindowMountFailed": "聊天框挂载失败",
-        "reactWindowLoadFailed": "聊天框资源加载失败",
-        "reactWindowAriaLabel": "Neko 聊天窗口",
-        "reactWindowInputHint": "Enter 发送，Shift + Enter 换行",
-        "messageListAriaLabel": "聊天消息列表",
-        "composerToolsAriaLabel": "输入工具栏",
-        "pendingImagesAriaLabel": "待发送图片",
-        "pendingImageAlt": "图片 {{index}}",
-        "removePendingImage": "移除图片",
-        "emojiButtonAriaLabel": "表情",
-        "toolIconsAriaLabel": "工具图标",
-        "toolLollipop": "棒棒糖",
-        "toolFist": "猫爪",
-        "toolHammer": "锤子",
-        "attachmentButtonAriaLabel": "附件",
         "jukebox": "点歌台",
-        "jukeboxLabel": "点歌台",
-        "exportConversation": "导出对话",
-        "exportSelected": "导出所选",
-        "exportPreviewTitle": "导出预览",
-        "exportPreviewSummary": "已选 {{count}} 条",
-        "exportPreviewEmpty": "当前没有可预览的内容",
-        "exportFormatLabel": "导出格式",
-        "exportFormatMarkdown": "Markdown",
-        "exportFormatImage": "图片",
-        "exportImageFormatPng": "PNG",
-        "exportImageFormatJpeg": "JPEG",
-        "exportImageFormatWebp": "WebP",
-        "exportImageStyleNeko": "N.E.K.O",
-        "exportImageStyleOriginal": "原生",
-        "exportImageStylePoster": "清新",
-        "exportImageStyleLyrics": "歌词",
-        "exportPosterTitle": "对话精华",
-        "exportPosterSubtitle": "来自 N.E.K.O 的分享",
-        "exportImageFormatUnsupported": "当前环境不支持 {{format}} 格式",
-        "confirmExportAs": "导出 {{format}}",
-        "exportMarkdownPreviewSubtitle": "导出 Markdown 的渲染预览",
-        "exportPreviewLoading": "正在生成预览…",
-        "exportPreviewFailed": "预览生成失败",
-        "previewOpenWindow": "在新窗口打开",
-        "previewClose": "关闭",
-        "previewOpenBlocked": "无法打开新的预览窗口",
-        "previewOpenFailed": "无法打开预览窗口",
-        "copyMarkdown": "复制 Markdown",
-        "copyMarkdownSuccess": "Markdown 已复制到剪贴板",
-        "copyMarkdownFailed": "复制 Markdown 失败",
-        "copyToClipboard": "复制到剪贴板",
-        "copyImageSuccess": "已复制到剪贴板",
-        "copyImageFailed": "复制到剪贴板失败",
-        "exportEmpty": "暂时没有可以导出的对话",
-        "exportSelectionEmpty": "请至少选择一条消息",
-        "exportSuccess": "对话已成功导出",
-        "exportFileTitle": "Project N.E.K.O 对话导出",
-        "exportGeneratedAt": "导出时间",
-        "exportUser": "我",
-        "exportAssistant": "N.E.K.O.",
-        "exportImageLabel": "图片",
-        "exportAudioLabel": "音频",
-        "exportVideoLabel": "视频",
-        "exportSelectAll": "全选",
-        "exportSelectNone": "取消",
-        "exportSelectInvert": "反选",
-        "exportSelectionCount": "已选 {{selected}} / 共 {{total}}"
+        "jukeboxLabel": "点歌台"
     },
     "voiceControl": {
         "startVoice": "开始语音",
@@ -778,9 +615,7 @@
         "defaultDevice": "系统默认扬声器",
         "deviceLabel": "扬声器 {{index}}",
         "loadFailed": "获取扬声器列表失败",
-        "noDevices": "没有检测到扬声器设备",
-        "spatialAudioLabel": "空间音频",
-        "spatialAudioHint": "根据猫娘窗口相对主屏的位置做立体声与距离衰减"
+        "noDevices": "没有检测到扬声器设备"
     },
     "status": {
         "initializing": "正在初始化...",
@@ -857,7 +692,7 @@
         "assistApiKeyGemini": "辅助API Key - Gemini",
         "assistApiKeyKimi": "辅助API Key - Kimi",
         "assistApiKeyHint": "（仅当辅助API为{{provider}}时需要填写）",
-        "assistApiKeyPlaceholder": "留空使用管理簿对应 Key",
+        "assistApiKeyPlaceholder": "可选，默认为核心API Key",
         "providerNames": {
             "ali": "阿里",
             "openai": "OpenAI",
@@ -871,7 +706,7 @@
             "qwen": "Qwen-Omni（阿里百炼，速度最快，推荐⭐）",
             "qwen_intl": "Qwen-Omni（阿里国际版）",
             "openai": "GPT-Realtime（OpenAI）",
-            "glm": "GLM-Realtime（智谱，有免费额度，语音含水印需去控制台设置去除）",
+            "glm": "GLM-realtime（智谱）",
             "step": "Step-2-Audio（阶跃星辰）",
             "gemini": "Gemini Live（谷歌，效果最好，国内版不支持）"
         },
@@ -890,15 +725,12 @@
             "minimax": "MiniMax（国服）",
             "minimax_intl": "MiniMax（国际服）",
             "claude": "Claude（Anthropic，国内无法使用）",
-            "grok": "Grok（xAI）",
-            "openrouter": "OpenRouter（模型聚合，国内无法使用）"
+            "grok": "Grok（xAI）"
         },
         "coreApiAutoFillHint": "Key从API管理簿自动填充，也可在此直接输入",
         "assistApiSelectLabel": "辅助API服务商",
         "assistApiKeyLabel": "辅助API Key",
-        "assistApiAutoFillHint": "留空时自动使用管理簿中的Key，手动输入则独立保存",
-        "disableTts": "禁用TTS",
-        "disableTtsHint": "开启后不会调用任何语音合成服务",
+        "assistApiAutoFillHint": "Key从API管理簿自动填充，也可在此直接输入",
         "keyBookTitle": "API 管理簿",
         "keyBookDescription": "统一管理所有API Key。核心API和辅助API切换服务商时会自动从此处读取Key，在核心/辅助区域输入的Key也会自动回写到此处。",
         "keyBookPlaceholder": "请先加载API服务商配置",
@@ -906,8 +738,6 @@
         "keyAutoFilledFromKeyBook": "Key从API管理簿自动填充，请在管理簿中配置",
         "goToKeyBook": "前往管理簿",
         "providerLabel": "服务商",
-        "providerSelectPlaceholder": "请选择服务商",
-        "noOptionsAvailable": "暂无可选项",
         "customModelProviderFollowCore": "跟随核心API",
         "customModelProviderFollowAssist": "跟随辅助API",
         "customModelProviderCustom": "自定义",
@@ -925,15 +755,14 @@
             "minimax": "MiniMax（国服）",
             "minimax_intl": "MiniMax（国际服）",
             "claude": "Claude（Anthropic）",
-            "grok": "Grok（xAI）",
-            "openrouter": "OpenRouter"
+            "grok": "Grok（xAI）"
         },
         "freeVersionNoApiKey": "免费版无需API Key",
         "pleaseEnterApiKey": "请输入您的API Key",
         "freeVersionOnlyWhenCoreFree": "免费版（仅核心API为免费版时可用）",
         "freeVersionConfig": "免费版配置：支持音视频对话、文本对话和记忆管理，不支持自定义语音、Agent模式",
         "qwenRecommendation": "阿里作为核心API时，建议辅助API也选择阿里以获得最佳的自定义语音体验",
-        "glmRecommendation": "智谱作为核心API时，有免费额度，支持联网搜索。语音默认含水印滴滴声（可在智谱控制台手动关闭）。建议辅助API选择阿里以支持自定义语音功能",
+        "glmRecommendation": "智谱的音视频对话模型GLM-Realtime已暂时下架，无法作为核心API使用",
         "openaiRecommendation": "OpenAI作为核心API时，建议辅助API选择阿里以支持自定义语音功能",
         "stepRecommendation": "阶跃星辰作为核心API时，建议辅助API选择阿里以支持自定义语音功能",
         "geminiRecommendation": "Gemini作为核心API时，建议辅助API选择阿里以支持自定义语音功能",
@@ -986,7 +815,7 @@
         "apiUrl": "API URL",
         "apiKey": "API Key",
         "modelId": "模型ID",
-        "agentApiConfigTitle": "Agent API 配置（需支持视觉功能）",
+        "agentApiConfigTitle": "Agent API 配置",
         "providerPlaceholder": "如：openai、azure、local",
         "apiUrlPlaceholder": "如：https://api.openai.com/v1",
         "modelIdPlaceholder": "如：gpt-5.1-chat-latest、qwen-flash",
@@ -1020,12 +849,6 @@
         "customApiWarning": "注意：启用自定义API后，核心API和辅助API将被部分覆盖。",
         "enableCustomApi": "启用自定义API配置",
         "enableCustomApiNote": "启用后将使用自定义API配置，部分覆盖核心API和辅助API的配置",
-        "clearCustomApi": "清空自定义API配置",
-        "clearCustomApiConfirm": "确定要清空所有自定义API配置吗？这将清除所有自定义API Key、模型ID、URL，并取消勾选GPT-SoVITS。",
-        "clearCustomApiConfirmTitle": "⚠️ 确认清空",
-        "clearCustomApiConfirmBtn": "确认清空",
-        "clearCustomApiSaveHint": "⚠ 此操作仅清空页面上的配置内容，保存清空结果仍需点击下方的「保存设置」按钮。",
-        "clearCustomApiSuccess": "自定义API配置已清空，请点击「保存设置」按钮以保存更改",
         "loadProvidersFailed": "加载API服务商选项失败，请刷新页面重试",
         "saveFailed": "保存失败: {{error}}",
         "apiKeyInvalid": "API Key无效",
@@ -1086,8 +909,6 @@
         "selectMotion": "选择动作",
         "selectExpression": "选择表情",
         "selectPersistentExpression": "选择常驻表情",
-        "noMotion": "无动作",
-        "noExpression": "无表情",
         "noMotionFiles": "没有动作文件",
         "touchAnim": {
             "title": "触摸动画配置",
@@ -1096,7 +917,6 @@
             "hitAreaId": "触摸区域",
             "close": "关闭",
             "configSaved": "触摸反应配置已保存",
-            "saved": "已保存",
             "noHitAreas": "模型没有定义可触摸位置",
             "modelNotFound": "当前没有加载模型",
             "modelDataNotReady": "模型内部数据未准备好",
@@ -1342,12 +1162,9 @@
     },
     "voice": {
         "title": "音色注册",
-        "gotoApiSettings": "前往API设置",
-        "noApiKeyPrompt": "还没有设置任何可使用克隆功能的API，是否前往设置？",
-        "dismissNoApiPrompt": "稍后再说",
-        "alibabaApiRequired": "此功能需要阿里CosyVoice模型，请在API密钥设置页中保存阿里百炼API Key（不要求启用辅助API）或配置本地语音服务器",
-        "minimaxApiRequired": "此功能需要MiniMax模型（国服），请在API密钥设置页中保存MiniMax API Key（不要求启用辅助API）",
-        "minimaxIntlApiRequired": "此功能需要MiniMax模型（国际服），请在API密钥设置页中保存MiniMax国际服API Key（不要求启用辅助API）",
+        "alibabaApiRequired": "⚠️ 此功能需要阿里CosyVoice模型，请在API密钥设置页中保存阿里百炼API Key（不要求启用辅助API）或配置本地语音服务器",
+        "minimaxApiRequired": "⚠️ 此功能需要MiniMax模型（国服），请在API密钥设置页中保存MiniMax API Key（不要求启用辅助API）",
+        "minimaxIntlApiRequired": "⚠️ 此功能需要MiniMax模型（国际服），请在API密钥设置页中保存MiniMax国际服API Key（不要求启用辅助API）",
         "providerLabel": "语音克隆服务商",
         "provider": {
             "cosyvoice": "阿里云 CosyVoice",
@@ -1365,15 +1182,11 @@
         "prefixFormatError": "前缀格式错误：不超过10个字符，只支持数字和英文字母",
         "registering": "正在注册声音，请稍后！",
         "registerSuccess": "注册成功！voice_id: {{voiceId}}",
-        "registerSuccessButSaveFailed": "音色注册成功，但本地保存失败",
-        "pleaseCopyVoiceId": "请复制上面的voice_id手动保存",
         "reusedExisting": "已复用现有音色，跳过上传。voice_id: {{voiceId}}",
         "registerFailed": "注册失败：{{error}}",
         "prefixShouldBeEnglishLetterAndNumber": "前缀应为英文字母和数字",
         "invalidApiKeyProvided": "提供的API密钥无效",
         "requestError": "请求出错：{{error}}",
-        "serverNonJsonError": "服务端返回了非JSON响应 (HTTP {{status}})：{{snippet}}",
-        "serverRouteNotFound": "接口未找到 (HTTP {{status}})，请确认服务端已正确部署并重启",
         "voiceIdSaveFailed": "voice_id自动保存失败: {{error}}",
         "voiceIdSaved": "voice_id已自动保存到角色",
         "pageWillRefresh": "当前页面即将自动刷新以应用新语音",
@@ -1408,14 +1221,6 @@
         "deleteError": "删除失败：{{error}}",
         "freePresetLabel": "免费预设音色",
         "freePresetBadge": "预设",
-        "workshopSourceBadge": "创意工坊参考语音",
-        "workshopSourceTitle": "创意工坊参考语音",
-        "workshopSourceLoading": "正在加载参考语音...",
-        "workshopSourceUnavailable": "该工坊物品没有可用的参考语音",
-        "workshopSourceMeta": "样本：{{sample}} ｜ 前缀：{{prefix}} ｜ 语言：{{language}}",
-        "workshopSourceReady": "参考语音已预载入，提交时将走文件上传克隆流程。",
-        "workshopSourceLoadFailed": "加载工坊参考语音失败",
-        "workshopPreloaded": "（创意工坊预载入）",
         "freeVoice": {
             "playfulGirl": "俏皮女孩",
             "cuteGirl": "可爱女孩",
@@ -1485,8 +1290,6 @@
         "enabled": "已开启",
         "disabled": "已关闭",
         "autoReviewNote": "开启后系统将自动整理和优化记忆内容，提高对话质量",
-        "strongMemory": "强力记忆",
-        "strongMemoryNote": "开启时启用深度记忆固化（口头反馈、自动反驳检测、多通道证据累加），关闭后约可节省 40% 模型调用",
         "saveFailedStatus": "保存失败",
         "tutorialReset": "新手引导",
         "tutorialSelectPage": "-- 选择页面 --",
@@ -1499,44 +1302,54 @@
         "tutorialPageSettings": "API设置",
         "tutorialPageVoiceClone": "语音克隆",
         "tutorialPageMemoryBrowser": "记忆浏览",
+        "tutorialPageCharacterSelection": "初始人设",
+        "characterSelection": {
+            "skip": "跳过",
+            "guideText": "嘿嘿，我在这呢。跟我一起进入N.E.K.O.的世界吧~",
+            "activate": "戳一下",
+            "chooseTitle": "你眼中的我是什么样的呢~",
+            "chooseHint": "改变主意了也没关系，设置里随时可以「回溯」~",
+            "tsundere_neko": {
+                "name": "傲娇叛逆",
+                "desc": "口是心非，偶尔卖萌",
+                "greeting": "喂，手伸过来。选了我，你就是我的人了！先说好，没我的允许不准想别人！",
+                "readyTitle": "哼，终于来了！",
+                "readyDesc": "才、才不是专门等你的……总之，你来了就跟紧点！"
+            },
+            "cool_mech": {
+                "name": "绝对理智",
+                "desc": "理性冷静，逻辑至上",
+                "greeting": "用户ID已记录，握手协议通过。正在载入长期陪伴进程。",
+                "readyTitle": "系统就绪。",
+                "readyDesc": "所有模块加载完毕，等待你的第一条指令。"
+            },
+            "intellectual_healer": {
+                "name": "极致温柔",
+                "desc": "温柔体贴，擅长倾听",
+                "greeting": "遇见你，好开心。从今天起，我会一直陪在你身边~",
+                "readyTitle": "我来啦~",
+                "readyDesc": "我已经等不及啦，快来和我说说话吧~"
+            },
+            "efficiency_expert": {
+                "name": "优雅利落",
+                "desc": "简洁高效，直击要点",
+                "greeting": "已确认选择。我是您的执行官，未来将与您同行。",
+                "readyTitle": "已就位。",
+                "readyDesc": "准备完毕，请下达第一条指令。"
+            },
+            "connectingTitle": "时空穿越中——",
+            "confirmGreeting": "确认",
+            "readyTitle": "她来啦~",
+            "readyDesc": "快去和她打招呼吧~",
+            "finalConfirm": "出发，同行！",
+            "restart": "再想想"
+        },
         "resetTutorialBtn": "重置引导",
         "tutorialResetSuccess": "已重置所有引导，下次进入各页面时将重新显示引导。",
         "tutorialPageResetSuccess": "已重置该页面的引导，下次进入时将重新显示引导。",
         "tutorialPageResetSuccessWithName": "已重置「{{pageName}}」的引导，下次进入该页面时将重新显示引导。",
         "refreshed": "记忆已更新，下次对话将使用新记忆",
-        "refreshingContext": "正在刷新上下文...",
-        "storageLocation": "存储位置",
-        "storageCurrentRoot": "当前数据位置",
-        "storageStatusBlocked": "当前需要先处理存储位置状态",
-        "storageSelectionRequired": "当前需要先确认存储位置",
-        "storageMigrationPending": "正在迁移或等待重启",
-        "storageRecoveryRequired": "需要恢复存储位置",
-        "changeStorageLocation": "更改存储位置",
-        "openCurrentStorageRoot": "打开当前目录",
-        "storageLoadFailed": "存储位置加载失败",
-        "storageManagementUnavailable": "当前存储位置暂不可用",
-        "storageMemoryLimitedState": "当前存储位置还未就绪。请先完成存储位置选择、恢复或等待迁移完成，然后再查看记忆。",
-        "storageAlreadyCurrentRoot": "当前已在该位置",
-        "storageOpenPathUnavailable": "当前环境无法直接打开目录，请手动复制路径",
-        "storagePathCopied": "已复制当前目录路径",
-        "storageOpenPathFailed": "打开当前目录失败",
-        "storageManagementTitle": "更改存储位置",
-        "storageTargetRoot": "目标位置",
-        "storageTargetPlaceholder": "选择或输入新的数据位置",
-        "storagePickTarget": "选择位置",
-        "storageRunPreflight": "预检",
-        "storagePickTargetFailed": "选择目标位置失败，请手动输入路径",
-        "storagePreflightFailed": "预检失败",
-        "storagePreflightReady": "预检通过。确认后应用需要关闭，并在关闭后迁移数据。",
-        "storagePreflightTarget": "目标位置：{{path}}",
-        "storageExistingTargetWarning": "目标位置已经包含现有数据，后续确认迁移前需要二次确认。",
-        "storageTargetRequired": "请先选择或输入目标位置",
-        "storagePreflightRunning": "正在预检...",
-        "storageConfirmRestart": "确认关闭并迁移",
-        "storagePreflightRequired": "请先完成预检",
-        "storageRestartStarting": "正在准备关闭并迁移...",
-        "storageRestartInitiated": "已请求关闭并迁移。应用即将进入维护状态，请等待重启完成。",
-        "storageRestartFailed": "关闭并迁移请求失败"
+        "refreshingContext": "正在刷新上下文..."
     },
     "character": {
         "manager": "角色管理",
@@ -1546,14 +1359,12 @@
         "nickname": "昵称",
         "apiKeySettings": "API Key",
         "masterProfile": "主人档案（唯一）：档案名为必填项，其他均为可选项。",
-        "masterProfileTitle": "主人档案",
         "profileName": "档案名",
         "profileNameMaxHint": "最多60个字符",
         "profileNameTooLong": "档案名过长",
         "profileNameContainsSlash": "档案名不能包含路径分隔符(/或\\)",
         "profileNameContainsDot": "档案名不能包含点号(.)",
         "profileNameInvalidChars": "档案名只能包含文字、数字、空格、下划线、连字符、括号、间隔号(·/・)和撇号",
-        "profileNameReservedRoute": "此名称是系统保留的路由名称，不能用作档案名",
         "newProfileNameRequired": "新档案名不能为空",
         "newProfileNameTooLong": "档案名过长",
         "required": "*",
@@ -1561,13 +1372,10 @@
         "detailDescriptionPlaceholder": "可输入详细描述",
         "catgirlProfile": "猫娘档案：进阶设定包含Live2D形象、语音ID等。",
         "addCatgirl": "新增猫娘",
-        "openCloudsaveManager": "云存档管理",
         "switchCatgirl": "切换猫娘",
         "deleteCatgirl": "删除猫娘",
         "hideCatgirl": "隐藏此猫娘",
         "hiddenCatgirls": "已隐藏猫娘",
-        "showHidden": "显示已隐藏",
-        "hideHidden": "收起已隐藏",
         "show": "显示",
         "advancedSettings": "进阶设定",
         "modelSettings": "模型设定",
@@ -1588,7 +1396,6 @@
         "saveMaster": "保存主人设定",
         "addMasterField": "新增设定",
         "manageLive2D": "点击管理Live2D模型",
-        "idleMotionHint": "保存角色时，当前选中的动作将被设为待机动作",
         "currentCatgirl": "当前猫娘",
         "rename": "修改名称",
         "cancel": "取消",
@@ -1597,12 +1404,10 @@
         "fieldExists": "该设定已存在",
         "profileNameRequired": "档案名为必填项",
         "onlyOneCatgirlLeft": "只剩一只猫娘，无法删除！",
-        "cannotHideCurrentNeko": "不能隐藏当前正在使用的 NEKO",
         "cannotDeleteCurrentCatgirl": "不能删除当前正在使用的猫娘！\n\n请先切换到其他猫娘后再删除。",
         "cannotConfirmCatgirlStatus": "无法确认当前猫娘状态，删除操作已取消",
         "confirmDeleteCatgirl": "确定要删除猫娘\"{{name}}\"？",
         "deleteCatgirlTitle": "删除猫娘",
-        "deleteFailed": "删除失败",
         "addCatgirlFieldPrompt": "请输入新设定的名称（键名）",
         "addCatgirlFieldTitle": "新增猫娘设定",
         "live2dModelError": "猫娘\"{{name}}\"的Live2D模型文件不存在或已损坏。\n\n当前模型路径: {{path}}\n\n是否回退到默认模型(mao_pro)？\n\n点击\"确定\"使用默认模型，点击\"取消\"保持当前设置。",
@@ -1629,7 +1434,6 @@
         "unregisterVoiceTitle": "解除声音注册",
         "voiceUnregistered": "声音注册已解除",
         "unregisterFailed": "解除注册失败",
-        "partialSaveVoiceFailed": "角色已保存，但音色更新失败: {{error}}",
         "unregisterError": "解除注册时发生错误",
         "switchFailed": "切换失败",
         "switchError": "切换猫娘时发生错误",
@@ -1643,7 +1447,6 @@
         "saveMasterError": "保存主人设定失败",
         "autoSaved": "已自动保存设定",
         "autoSaveFailed": "自动保存失败，请手动保存后再关闭页面",
-        "unsavedNewCatgirlDraftDetected": "检测到未保存的新猫娘草稿，请先保存或取消后再同步刷新",
         "exportCard": "导出角色卡",
         "exportingCard": "正在导出角色卡...",
         "exportCardSuccess": "角色卡导出成功",
@@ -1665,37 +1468,7 @@
         "exportSettingsSuccess": "设定导出成功",
         "exportSettingsFailed": "导出设定失败: {{error}}",
         "capturingPortrait": "正在捕获立绘...",
-        "generatingCard": "正在生成角色卡...",
-        "settings": "设定",
-        "renamePrompt": "请输入新的档案名",
-        "renameTitle": "修改名称",
-        "tempSaveFailed": "临时保存失败: {{error}}",
-        "newCatgirlSuccess": "新猫娘创建成功",
-        "saveSuccess": "保存成功",
-        "switchSuccess": "切换成功",
-        "deleteError": "删除猫娘时发生错误",
-        "switchCard": "切换角色卡",
-        "deleteCard": "删除角色卡",
-        "currentCard": "当前角色卡",
-        "confirmDeleteCard": "确定要删除角色卡\"{{name}}\"？",
-        "deleteCardTitle": "删除角色卡",
-        "cannotDeleteCurrentCard": "不能删除当前正在使用的角色卡！\n\n请先切换到其他角色卡后再删除。",
-        "exportCardOnly": "导出此角色卡",
-        "cardMeta": "卡面信息",
-        "cardAuthor": "作者",
-        "cardAuthorPlaceholder": "未填写",
-        "cardCreatedAt": "创建时间",
-        "cardOriginLabel": "来源",
-        "cardOriginSelf": "本地创作",
-        "cardOriginImported": "外部导入",
-        "cardOriginSteam": "Steam 创意工坊",
-        "cardNotCreated": "尚未创建",
-        "editAuthor": "编辑作者",
-        "cardAuthorReadonly": "该来源的角色卡不允许修改作者信息",
-        "cardAuthorUpdated": "作者已更新",
-        "cardAuthorUpdateFailed": "更新作者失败: {{error}}",
-        "saveMasterSuccess": "保存主人设定成功",
-        "editCardFace": "编辑卡面"
+        "generatingCard": "正在生成角色卡..."
     },
     "app": {
         "welcomeBack": "{{name}}回来了！",
@@ -1718,15 +1491,12 @@
         "initializingVoice": "正在初始化语音对话...",
         "initializingMic": "正在初始化麦克风...",
         "startFailed": "启动失败: {{error}}",
-        "sendFailed": "发送失败: {{error}}",
         "sessionEnded": "会话已结束",
         "returning": "{{name}}回来了！正在重新连接...",
         "websocketNotConnected": "WebSocket未连接！",
         "initializingText": "正在初始化文本对话...",
         "textChattingShort": "正在文本聊天中",
         "capturing": "正在截图...",
-        "importImageAdded": "已添加 {{count}} 张图片，发送时会一并带上",
-        "importImageFailed": "导入图片失败",
         "screenshotAdded": "截图已添加，点击发送一起发送",
         "screenshotFailed": "截图失败",
         "screenshotCancelled": "用户取消了截图",
@@ -1737,7 +1507,6 @@
         "switchingCatgirl": "正在切换到 {{name}}...",
         "switchedCatgirl": "已切换到 {{name}}",
         "switchCatgirlFailed": "切换到 {{name}} 失败",
-        "switchCatgirlError": "切换失败: {{error}}",
         "started": "{{name}} 已启动",
         "voiceUpdated": "{{name}} 的语音已更新",
         "audioWorkletFailed": "AudioWorklet加载失败",
@@ -1760,7 +1529,6 @@
         "connectingToServer": "正在连接服务器...",
         "readyToSpeak": "可以说话了！",
         "screenShareRequiresVoice": "屏幕分享仅用于音视频通话",
-        "screenRecordingPermissionDenied": "⚠️ 屏幕录制权限未授权，请在系统设置中允许屏幕录制",
         "repetitionDetected": "检测到高重复度对话。建议您终止对话，让{{name}}休息片刻。",
         "modelSwitched": "模型已切换",
         "screenSource": {
@@ -1769,7 +1537,6 @@
             "noSources": "没有可用的屏幕源",
             "loadFailed": "获取屏幕源失败",
             "screens": "屏幕",
-            "screenLabel": "屏幕 {{index}}",
             "windows": "窗口",
             "selected": "已选择 {{source}}",
             "sourceLost": "屏幕分享无法找到之前选择窗口，已切换为全屏分享"
@@ -1790,255 +1557,6 @@
         "micMute": "静音麦克风",
         "micUnmute": "取消静音"
     },
-    "cloudsave": {
-        "pageTitle": "云存档管理 - Project N.E.K.O.",
-        "headerTitle": "云存档管理",
-        "subtitle": "可按角色逐个生成或恢复本地云快照，不会自动覆盖全局配置。若通过 Steam 启动并正常退出，Steam Cloud 会自动上传该快照目录。",
-        "refresh": "刷新",
-        "backToCharacterManager": "返回",
-        "loadingSummary": "云存档摘要加载中...",
-        "emptyState": "当前没有可展示的角色摘要。",
-        "providerAvailable": "云存档功能可用，可以手动生成或恢复单个角色快照。",
-        "providerUnavailable": "云存档当前不可用，页面只展示本地摘要。",
-        "providerSteamAutoCloudReady": "Steam Cloud 已连接。上传会立即写入本地云快照，等你通过 Steam 退出游戏后，Steam 会自动把该快照上传到云端。",
-        "providerSteamAutoCloudOffline": "本地云快照当前可用，但 Steam Cloud 还没有连接。若希望 Steam 自动上传或下载快照，请确保从 Steam 启动游戏并保持已登录状态。",
-        "providerSteamAutoCloudSourceLaunch": "当前会话是源码启动。如果 Steam 正在运行且已登录，桌面端 RemoteStorage helper 可以辅助完成 cloudsave 下载和上传；但这条链路仍不等同于打包版的 Steam Auto-Cloud 主路径。若要验证生产态路径，请至少通过 Steam 或桌面启动器启动一次。",
-        "providerSnapshotScope": "当前页面展示的是这台设备上已经落地的 cloudsave 暂存快照。",
-        "providerSnapshotSequence": "快照序号：{{sequence}}。",
-        "providerSnapshotExportedAt": "导出时间：{{time}}。",
-        "providerSnapshotManualApply": "这台设备上已经有更新的暂存快照，但运行时数据仍需你手动点击“应用快照”后才会变化。",
-        "currentCharacter": "当前角色：{{name}}",
-        "noCurrentCharacter": "当前角色：未设置",
-        "nameConflictNotice": {
-            "title": "重名提醒",
-            "bodyStorage": "云存档按角色名作为单个角色槽位存储，不会因为“来自创意工坊”或“自创角色”而自动分开。",
-            "bodyImpact": "如果两个不同来源的角色重名，上传或下载都会按同一个云端角色处理，可能互相覆盖角色设置、记忆目录和云端记录。",
-            "bodyAction": "准备同步前，请先确认角色名唯一；若不是同一个角色，请先改名再上传或下载。"
-        },
-        "group": {
-            "count": "{{count}} 项",
-            "workshopTitle": "创意工坊来源角色",
-            "workshopDescription": "这里集中展示本地或云端任一侧已确认来源于 Steam 创意工坊的角色。仅仅把当前模型切换为创意工坊资源，不会把自建角色归入这里。",
-            "otherTitle": "我的角色",
-            "otherDescription": "这里展示自建角色或其他非创意工坊来源的角色。当前模型资源来源会在详情中单独显示。"
-        },
-        "resourceRecoveryTitle": "资源恢复说明",
-        "metaNoValue": "无",
-        "warning": {
-            "local_resource_missing_on_this_device": "本地当前就缺资源：当前设备本地缺少该角色所需模型资源，请按上方资源来源提示恢复。",
-            "cloud_resource_may_be_missing_after_download": "云端下载后可能缺资源：该角色下载到当前设备后，模型资源可能仍需按来源手动恢复。"
-        },
-        "modelType": {
-            "live2d": "Live2D",
-            "vrm": "VRM",
-            "live3d": "VRM",
-            "mmd": "MMD",
-            "unknown": "未知模型"
-        },
-        "assetSource": {
-            "notRecorded": "未记录",
-            "steamWorkshop": "Steam 创意工坊",
-            "localImported": "本地导入模型",
-            "manualExternal": "外部模型引用",
-            "builtin": "内置资源"
-        },
-        "relationState": {
-            "local_only": "仅本地存在",
-            "cloud_only": "仅云端存在",
-            "matched": "本地与云端一致",
-            "diverged": "本地与云端有差异",
-            "unknown": "未知状态"
-        },
-        "assetState": {
-            "notRecorded": "未记录",
-            "ready": "资源可直接使用",
-            "import_required": "需要手动导入资源",
-            "downloadable": "当前缺少资源，请结合创意工坊来源状态判断",
-            "missing": "仅配置已恢复，资源缺失"
-        },
-        "workshopStatus": {
-            "notConfirmed": "未确认",
-            "installed_and_subscribed": "已安装且仍订阅",
-            "installed_but_unsubscribed": "本地仍有缓存，但已取消订阅",
-            "subscribed_not_installed": "已订阅，等待或需要下载",
-            "available_needs_resubscribe": "条目仍可访问，但需要重新订阅",
-            "unavailable": "条目已不可访问",
-            "steam_unavailable": "当前无法连接 Steam，未确认",
-            "unknown": "当前未确认"
-        },
-        "badge": {
-            "local": "本地：{{value}}",
-            "cloud": "云端：{{value}}"
-        },
-        "scopePrefix": {
-            "localReady": "本地资源仍可用",
-            "cloudReady": "当前设备已有对应的创意工坊资源",
-            "localMissing": "本地资源缺失",
-            "cloudAfterDownload": "云端下载后"
-        },
-        "guidance": {
-            "workshopReadyResubscribe": {
-                "title": "{{prefix}}，但当前不在有效订阅状态",
-                "bodyLocal": "当前设备还能直接使用这套本地 Steam 创意工坊资源；但如果以后本地缓存丢失，通常需要重新订阅对应条目后，才能再次恢复。",
-                "bodyCloud": "当前设备已有这套 Steam 创意工坊资源可直接使用；但如果以后本地缓存丢失，通常需要先重新订阅对应条目，才能再次恢复。"
-            },
-            "workshopReadyUnavailable": {
-                "title": "{{prefix}}，但原 Steam 创意工坊条目可能已删除或下架",
-                "body": "当前设备已有资源，所以角色现在还能正常使用；但如果以后本地缓存丢失，通常无法再通过创意工坊自动恢复，只能依赖你自己的备份或手动导入。"
-            },
-            "workshopInstalled": {
-                "title": "{{prefix}}：当前设备仍有有效的创意工坊资源",
-                "bodyLocal": "当前设备仍检测到该 Steam 创意工坊条目已安装且仍订阅，但角色绑定的模型文件未命中。可能是资源目录变化、更新未完成，或需要重新同步模型。",
-                "bodyCloud": "当前设备仍检测到该 Steam 创意工坊条目已安装且仍订阅。下载角色数据后，通常可通过现有恢复链路补齐；如果仍未恢复，可能需要重新同步模型。"
-            },
-            "workshopCacheOnly": {
-                "title": "{{prefix}}：设备可能只剩旧缓存，且已取消订阅",
-                "bodyLocal": "当前设备不在订阅状态，且当前绑定文件未命中。若这份旧缓存也不可用，通常需要重新订阅或手动导入模型，不能再把它当成稳定的自动恢复来源。",
-                "bodyCloud": "当前设备不在订阅状态。下载角色数据后，若本机旧缓存不足以恢复模型，通常需要重新订阅对应的创意工坊条目，或改为手动导入模型。"
-            },
-            "workshopSubscribed": {
-                "title": "{{prefix}}：当前设备仍已订阅对应创意工坊条目",
-                "bodyLocal": "当前设备仍订阅该创意工坊条目，等待 Steam 下载完成后通常可恢复；如果长时间未恢复，可能是条目结构变化或需要重新同步模型。",
-                "bodyCloud": "当前设备仍订阅该创意工坊条目。下载角色数据后，待 Steam 下载完成，通常可以继续恢复模型资源。"
-            },
-            "workshopResubscribe": {
-                "title": "{{prefix}}：需要重新订阅原创意工坊条目",
-                "bodyLocal": "该角色原本来自 Steam 创意工坊，但当前设备已不在订阅状态。若条目仍可访问，需要先重新订阅，再尝试恢复模型资源。",
-                "bodyCloud": "该云端角色原本来自 Steam 创意工坊，但当前设备未订阅该条目。下载角色数据后，需要先重新订阅，才能尝试恢复模型资源。"
-            },
-            "workshopUnavailable": {
-                "title": "{{prefix}}：该创意工坊条目当前已不可访问",
-                "bodyLocal": "该角色原本来自 Steam 创意工坊，但对应条目已删除、下架或当前不可访问。当前设备不能再按创意工坊自动恢复，只能依赖手动备份或重新导入模型资源。",
-                "bodyCloud": "该云端角色原本来自 Steam 创意工坊，但对应条目已删除、下架或当前不可访问。下载角色数据后，通常无法再按创意工坊自动恢复模型。"
-            },
-            "workshopSteamUnavailable": {
-                "title": "{{prefix}}：当前无法确认创意工坊资源是否还能恢复",
-                "body": "Steam 当前不可用、未登录，或 Steamworks 尚未初始化。等 Steam 恢复后，才能确认该条目是仍可重新下载，还是已经不可用。"
-            },
-            "workshopUnknown": {
-                "title": "{{prefix}}：创意工坊恢复状态未确认",
-                "body": "当前还不能确认这个创意工坊条目是否仍可恢复，建议先在创意工坊页核对订阅状态和条目可用性。"
-            },
-            "localManualImport": {
-                "title": "本地资源：需要手动导入本地模型",
-                "body": "当前设备缺少该角色所需的本地导入或外部模型，需要你手动导入或移动模型文件。"
-            },
-            "cloudManualImport": {
-                "title": "云端下载后：需要手动导入本地模型",
-                "body": "该云端角色依赖本地导入或外部模型。下载到当前设备后，需要你手动导入或移动对应模型文件。"
-            },
-            "localManualSource": {
-                "title": "当前角色使用的是本地或手动模型",
-                "body": "云存档只会同步角色数据，不会带上当前这套本地导入或外部模型文件。其他设备若要保持当前外观，仍需要你自己准备并导入模型。"
-            },
-            "localModifiedModel": {
-                "title": "如果你给角色改过模型，需要注意",
-                "body": "如果这是你给原本可由创意工坊恢复的角色换过的模型，现在也按“需要手动导入本地模型”处理。上传后，其他设备下载这个角色时仍需要你自己补回这套模型文件。"
-            },
-            "cloudManualSource": {
-                "title": "云端角色当前记录的是本地或手动模型",
-                "body": "下载这个云端角色时，只会恢复角色数据，不会带上当前记录的本地导入或外部模型文件。当前设备仍需要你自己准备并导入对应模型。"
-            },
-            "localWorkshopOrigin": {
-                "title": "这个角色最初来自 Steam 创意工坊",
-                "body": "当前仍能匹配到对应的创意工坊角色来源，但现在绑定的模型已经是当前设备上的本地或手动模型，而不是创意工坊路径。云存档只会同步角色数据，不会上传当前这套模型文件。如果其他设备也要保留现在这套外观，需要你手动导入模型；如果想恢复为创意工坊自动恢复链路，请切回上方显示的创意工坊条目。"
-            },
-            "cloudWorkshopOrigin": {
-                "title": "这个云端角色最初来自 Steam 创意工坊",
-                "body": "这个云端角色是从创意工坊角色上传来的，但当前记录的模型已经是本地或手动模型，而不是创意工坊路径。下载后只会恢复角色数据；如果其他设备也要保留当前这套模型，需要你手动准备模型文件，并同时检查上方显示的创意工坊来源状态。"
-            },
-            "sourceDiverged": {
-                "title": "本地模型来源已不同于云端",
-                "body": "本地当前用的是手动导入或外部模型，而云端记录仍是 Steam 创意工坊来源。若继续上传，云端也会改为只同步角色数据、不包含模型文件。"
-            }
-        },
-        "hint": {
-            "uploadResubscribe": "\n当前本地角色虽然仍使用创意工坊资源，但当前设备已不在有效订阅状态。其他设备下载这个角色后，可能需要重新订阅对应条目，才能恢复模型。",
-            "uploadUnavailable": "\n当前本地角色虽然仍能使用这套创意工坊资源，但原条目已不可访问。其他设备下载这个角色后，通常无法再通过创意工坊自动恢复模型。",
-            "uploadUnconfirmed": "\n当前本地角色来自 Steam 创意工坊，但现在还不能确认其他设备是否仍可通过创意工坊恢复模型。",
-            "uploadOriginResubscribe": "\n该角色原本来自 Steam 创意工坊，但当前绑定模型已经是本地或手动模型。其他设备若要保留当前外观，仍需要你准备这套模型文件；如果之后还想恢复原始创意工坊来源，通常还需要重新订阅对应条目。",
-            "uploadOriginUnavailable": "\n该角色原本来自 Steam 创意工坊，但原条目已不可访问，当前绑定模型也已经是本地或手动模型。其他设备若要保留当前外观，仍需要你准备这套模型文件，而且通常也无法再通过创意工坊自动恢复原始来源。",
-            "uploadOriginUnconfirmed": "\n该角色原本来自 Steam 创意工坊，但当前绑定模型已经是本地或手动模型。其他设备若要保留当前外观，仍需要你准备这套模型文件，同时当前也还不能确认原始创意工坊条目是否仍可恢复。",
-            "downloadResubscribe": "\n该云端角色原本来自 Steam 创意工坊，但当前设备不在有效订阅状态。下载后通常需要先重新订阅对应条目，才能恢复模型。",
-            "downloadUnavailable": "\n该云端角色原本来自 Steam 创意工坊，但当前条目已不可访问。下载后通常无法再通过创意工坊自动恢复模型。",
-            "downloadUnconfirmed": "\n该云端角色原本来自 Steam 创意工坊，但当前还不能确认该条目是否仍可恢复。",
-            "downloadOriginResubscribe": "\n该云端角色原本来自 Steam 创意工坊，但当前记录的绑定模型已经是本地或手动模型。下载后你仍需要自己准备当前这套模型文件；如果之后还想恢复原始创意工坊来源，通常还需要重新订阅对应条目。",
-            "downloadOriginUnavailable": "\n该云端角色原本来自 Steam 创意工坊，但原条目已不可访问，当前记录的绑定模型也已经是本地或手动模型。下载后你仍需要自己准备当前这套模型文件，而且通常也无法再通过创意工坊自动恢复原始来源。",
-            "downloadOriginUnconfirmed": "\n该云端角色原本来自 Steam 创意工坊，但当前记录的绑定模型已经是本地或手动模型。下载后你仍需要自己准备当前这套模型文件，同时当前也还不能确认原始创意工坊条目是否仍可恢复。"
-        },
-        "confirm": {
-            "uploadOverwrite": "这会覆盖本地云快照中同名角色的记录，不会立刻改动本地角色，也不会包含模型资源本体。",
-            "uploadNew": "这会把本地该角色写入本地云快照缓存，不会包含模型资源本体。",
-            "uploadManualAsset": "\n当前本地角色使用的是手动导入或外部模型。上传后，其他设备下载这个角色时仍需要你自己导入这套模型文件。",
-            "uploadFinal": "\n确定继续生成 Steam Cloud 快照吗？",
-            "downloadOverwrite": "这会使用当前设备上已同步到本地的云快照，覆盖本地同名角色配置和记忆目录，不会自动下载模型资源，并会先创建本地备份。",
-            "downloadNew": "这会把当前设备上已同步到本地的云快照恢复到本地，不会自动下载模型资源，并会先创建本地备份。",
-            "downloadManualAsset": "\n该云端角色依赖手动导入或外部模型。下载后，如当前设备没有这套模型文件，仍需要你手动导入或移动资源。",
-            "downloadFinal": "\n确定继续从 Steam Cloud 快照恢复吗？",
-            "forceTerminateSession": "该角色 \"{{name}}\" 当前有活跃会话。\n终止会话后，当前对话内容将丢失，但云存档下载可以继续。\n\n是否终止会话并继续下载？"
-        },
-        "dialog": {
-            "providerUnavailable": "云存档提供方当前不可用，请稍后再试。",
-            "uploadTitle": "上传云存档",
-            "downloadTitle": "下载云存档",
-            "uploadSuccess": "上传成功。",
-            "downloadSuccess": "下载成功。",
-            "uploadTitleSteamAutoCloud": "生成 Steam Cloud 快照",
-            "downloadTitleSteamAutoCloud": "应用 Steam Cloud 快照",
-            "uploadSuccessSteamAutoCloud": "本地云快照已更新。等你通过 Steam 退出游戏后，Steam 会自动把它上传到云端。",
-            "downloadSuccessSteamAutoCloud": "Steam Cloud 快照已恢复到本地。",
-            "operationFailed": "操作失败：{{message}}",
-            "operationInProgress": "该角色的操作正在进行中，请稍等。",
-            "rollbackApplied": "\n本地数据已自动回滚到操作前状态。",
-            "rollbackFailed": "\n回滚也失败了：{{message}}",
-            "loadFailed": "加载云存档摘要失败：{{message}}",
-            "stateChanged": "云存档状态已变化，页面已刷新，请先确认最新状态后再重试。",
-            "forceTerminateTitle": "终止会话并继续？"
-        },
-        "action": {
-            "expandDetails": "展开详情",
-            "collapseDetails": "收起详情",
-            "uploadDisabledByProvider": "暂不可生成快照",
-            "uploadOverwrite": "生成快照",
-            "uploadNew": "生成快照",
-            "uploadUnavailable": "暂不可生成快照",
-            "downloadDisabledByProvider": "暂不可应用快照",
-            "downloadOverwrite": "应用快照",
-            "downloadNew": "应用快照",
-            "downloadUnavailable": "暂不可应用快照"
-        },
-        "meta": {
-            "groupLocal": "本地状态",
-            "groupCloud": "云端状态",
-            "localAssetState": "本地资源状态",
-            "localAssetSource": "本地资源来源",
-            "localWorkshopStatus": "本地当前状态",
-            "localCharacterOrigin": "本地角色来源",
-            "localOriginWorkshopStatus": "本地角色来源和当前状态",
-            "cloudAssetState": "云端资源状态",
-            "cloudAssetSource": "云端资源来源",
-            "cloudWorkshopStatus": "云端当前状态",
-            "cloudCharacterOrigin": "云端角色来源",
-            "cloudOriginWorkshopStatus": "云端角色来源和当前状态",
-            "localUpdatedAt": "本地更新时间",
-            "cloudUpdatedAt": "云端更新时间"
-        },
-        "error": {
-            "providerUnavailable": "云存档提供方当前不可用。",
-            "activeSessionBlocked": "该角色存在活跃会话，请先停止会话后再下载。",
-            "memoryServerReleaseFailed": "下载覆盖前释放本地记忆句柄失败，请稍后重试。",
-            "localCharacterNotFound": "未找到本地角色。",
-            "cloudCharacterNotFound": "未找到云端角色。",
-            "localCharacterExists": "本地已存在同名角色。",
-            "cloudCharacterExists": "云端已存在同名角色。",
-            "writeFenceActive": "云存档维护态写保护仍在生效，请稍后重试。",
-            "nameAuditFailed": "角色名称未通过云存档校验规则。",
-            "uploadFailed": "上传失败：{{message}}",
-            "downloadFailed": "下载失败：{{message}}",
-            "localReloadFailedRolledBack": "下载已应用，但本地重载失败。",
-            "sessionTerminateFailed": "终止活跃会话失败，请稍后重试。"
-        }
-    },
     "settings": {
         "menu": {
             "live2dSettings": "Live2D设置",
@@ -2047,14 +1565,14 @@
             "characterManage": "角色管理",
             "voiceClone": "声音克隆",
             "memoryBrowser": "记忆浏览",
+            "steamWorkshop": "创意工坊",
             "memoryManage": "记忆管理",
             "characterSettings": "角色设置",
             "live2dManage": "Live2D管理",
             "apiSettings": "API设置",
             "language": "语言",
             "general": "通用设置",
-            "mediaCredentials": "配置媒体凭证",
-            "characterCardManager": "角色卡管理"
+            "mediaCredentials": "配置媒体凭证"
         },
         "language": {
             "title": "选择语言",
@@ -2096,7 +1614,6 @@
             "browserUse": "浏览器控制",
             "focusMode": "允许打断",
             "unavailable": "{{name}}不可用",
-            "toggleFailed": "{{name}}切换失败: {{error}}",
             "checking": "查询中...",
             "serverOffline": "猫爪服务器未启动",
             "masterRequired": "请先开启猫爪总开关",
@@ -2107,7 +1624,6 @@
             "openfang": "专属桌面",
             "userPluginAdapting": "用户插件（开发中）",
             "openclawConnect": "OpenClaw",
-            "openclawGuide": "OpenClaw 接入教程",
             "chatSettings": "对话设置",
             "animationSettings": "动画设置",
             "renderQuality": "画质",
@@ -2122,40 +1638,17 @@
             "mouseTracking": "跟踪鼠标",
             "fullscreenTracking": "全屏跟踪",
             "localTracking": "局部跟踪",
-            "lockedHoverFade": "锁定悬停淡化",
-            "textGuardMaxLength": "回复长度上限",
+            "textGuardMaxLength": "回复字数限制",
             "unlimited": "无限制",
             "characters": "字",
-            "tokens": "词元",
             "textGuardUnlimitedWarning": "可能导致猫娘出现严重问题，非必要不建议无限制",
-            "textGuardHighWarning": "设置过大可能导致猫娘记忆和语言混乱，建议 1000 词元以内",
-            "textGuardNote": "按 tiktoken 统计；仅对文本回复有效，不影响语音对话"
+            "textGuardHighWarning": "设置过大可能导致猫娘记忆和语言混乱，建议500字以内",
+            "textGuardNote": "仅对文本回复有效，不影响语音对话"
         }
-    },
-    "openclawGuide": {
-        "windowTitle": "OpenClaw 接入教程 - N.E.K.O.",
-        "pageTitle": "OpenClaw 接入教程",
-        "pageSubtitle": "把 QwenPaw 安装、模型配置、替换文件与 N.E.K.O 配置串起来，按一条路径接通。",
-        "sourceLabel": "教程来源",
-        "contentLanguageNotice": "语言切换会同时更新页面控件文案和正文内容。",
-        "languageLabel": "语言",
-        "guideUnavailable": "教程内容为空。"
     },
     "subtitle": {
         "title": "实时字幕",
-        "enable": "字幕翻译",
-        "enableAriaLabel": "字幕翻译开关",
-        "markdownPlaceholder": "[格式化内容]",
-        "settings": {
-            "targetLang": "目标语言",
-            "opacity": "不透明度",
-            "dragAnywhere": "整体拖动",
-            "size": "大小",
-            "sizeSmall": "小",
-            "sizeMedium": "中",
-            "sizeLarge": "大",
-            "settingsBtn": "字幕设置"
-        }
+        "enable": "开启字幕翻译"
     },
     "viewer": {
         "title": "Viewer - Project N.E.K.O."
@@ -2173,8 +1666,7 @@
             "freeModelWarning": "由于限额问题，免费模型使用猫爪模式容易阻塞，建议您切换至自费模型。\n\n如果您已经配置好自费API，请尝试重启NEKO。",
             "freeModelWarningTitle": "免费模型提示",
             "connectivityCheck": "猫爪 LLM 连接检查中...",
-            "precheckFailed": "猫爪预检失败：{{reason}}",
-            "toggleFailed": "Agent切换失败: {{error}}"
+            "precheckFailed": "猫爪预检失败：{{reason}}"
         },
         "precheck": {
             "AGENT_PRECHECK_PENDING": "连接检查中...",
@@ -2257,8 +1749,6 @@
         "emotionConfig": "VRM情感配置",
         "idleAnimation": {
             "title": "待机动作",
-            "selectHint": "选择待机动作",
-            "selectedCount": "已选 {{count}} 个",
             "changed": "待机动作已切换: {{name}}",
             "changeFailed": "切换待机动作失败"
         },
@@ -2305,24 +1795,8 @@
         },
         "idleAnimation": {
             "title": "待机动作",
-            "selectHint": "选择待机动作",
-            "selectedCount": "已选 {{count}} 个",
             "changed": "待机动作已切换",
             "changeFailed": "切换待机动作失败"
-        },
-        "managerInitFailed": "MMD 管理器初始化失败",
-        "moduleLoading": "正在加载MMD模块...",
-        "modelLoading": "正在加载 MMD 模型...",
-        "modelLoaded": "MMD 模型加载成功",
-        "modelLoadFailed": "MMD模型加载失败: {{error}}",
-        "loadingOverlay": {
-            "engine": "正在准备 MMD 引擎...",
-            "settings": "正在读取 MMD 设置...",
-            "model": "正在加载模型资源...",
-            "physics": "正在初始化物理...",
-            "idle": "正在加载待机动作...",
-            "done": "MMD 已就绪",
-            "failed": "MMD 加载失败"
         }
     },
     "modelManager": {
@@ -2429,11 +1903,11 @@
         },
         "step1b": {
             "title": "🖱️ 拖拽与缩放",
-            "desc": "你可以拖拽猫娘移动位置，也可以用<strong>鼠标滚轮</strong>放大缩小，试试看吧~"
+            "desc": "你可以拖拽猫娘移动位置，也可以用鼠标滚轮放大缩小，试试看吧~"
         },
         "step1c": {
             "title": "🔒 锁定猫娘",
-            "desc": "点击这个锁可以锁定猫娘位置，防止误触移动。锁定后周围的浮动工具栏也不会再出现。再次点击可以解锁~"
+            "desc": "点击这个锁可以锁定猫娘位置，防止误触移动。再次点击可以解锁~"
         },
         "step2": {
             "title": "💬 对话区域",
@@ -2457,15 +1931,15 @@
         },
         "step7": {
             "title": "🖥️ 屏幕分享",
-            "desc": "开启后会持续地将屏幕分享给猫娘，只能在语音对话期间使用~"
+            "desc": "分享屏幕/窗口/标签页，让猫娘看到你的画面~"
         },
         "step8": {
             "title": "🔨 猫爪",
-            "desc": "打开猫爪面板，使用键鼠控制、浏览器控制和用户插件等功能。让猫娘使用你的电脑、帮你工作、陪你游戏~"
+            "desc": "打开猫爪面板，使用 computer use、browser use 和 plugin 等功能~"
         },
         "step9": {
             "title": "💤 请她离开",
-            "desc": "让猫娘暂时离开并隐藏界面，需要时可点击\"请她回来\"恢复~ <strong>当她出现问题时，让她离开休息一会儿，往往能解决问题。</strong>"
+            "desc": "让猫娘暂时离开并隐藏界面，需要时可点击\"请她回来\"恢复~"
         },
         "step10": {
             "title": "⚙️ 设置",
@@ -2477,7 +1951,7 @@
         },
         "step14": {
             "title": "👀 自主视觉",
-            "desc": "与语音会话中实时传输的屏幕分享不同，开启自主视觉后猫娘会时不时自己看一眼你的屏幕。间隔可在此调整~"
+            "desc": "开启后猫娘会主动读取画面信息，间隔可在此调整~"
         },
         "step15": {
             "title": "👤 角色管理",
@@ -2492,8 +1966,8 @@
             "desc": "查看与管理猫娘的记忆内容~"
         },
         "step18": {
-            "title": "🛠️ 角色卡管理",
-            "desc": "进入角色卡管理页面，管理您的角色卡与相关设置~"
+            "title": "🛠️ 创意工坊",
+            "desc": "进入 Steam 创意工坊页面，管理订阅内容~"
         },
         "systray": {
             "location": {
@@ -2504,10 +1978,10 @@
             },
             "menu": {
                 "title": "📋 托盘菜单",
-                "desc": "右键点击系统托盘（见上一步提示）中的 N.E.K.O 图标即可打开菜单。以下是一些常用功能："
+                "desc": "右下角托盘里会有 N.E.K.O 的图标，右键点击会出现很多选项。下面是两个常用功能："
             },
             "reset": {
-                "title": "🔄 重置角色位置",
+                "title": "🔄 复位模型位置",
                 "desc": "如果猫娘被拖到屏幕外或位置不理想，点击这个选项可以让她回到默认位置~"
             },
             "switchMode": "切换桌面/移动模式",
@@ -2523,15 +1997,11 @@
                 "title": "🎉 引导完成！",
                 "desc": "恭喜你完成了所有引导！现在你已经了解了 N.E.K.O 的主要功能。开始享受和猫娘的互动吧！如需重新查看引导，可以在设置中点击「重置引导」~"
             },
-            "resetPosition": "重置角色位置",
-            "resetPositionDesc": "猫娘跑到屏幕外时，点此恢复默认位置~",
-            "openChat": "打开对话框",
-            "openChatDesc": "打开独立的对话框进行文字对话~",
-            "important": "重要：",
+            "resetPosition": "复位模型位置",
             "compatibility": "兼容模式",
-            "hotkeyDesc": "设置全局快捷键，更高效地控制 N.E.K.O~",
+            "hotkeyDesc": "在这里可以设置全局快捷键，让你更高效地控制 N.E.K.O~",
             "uploadLogs": "上传日志",
-            "exitDesc": "关闭 N.E.K.O。托盘菜单是退出应用的主要方式~"
+            "exitDesc": "想要关闭 N.E.K.O 时，在这里点击退出即可。因为窗口是无边框的，所以托盘菜单是退出应用的主要方式~"
         },
         "completed": "✨ 引导完成！祝你使用愉快~",
         "resetHint": {
@@ -2611,24 +2081,6 @@
                 "step9": {
                     "title": "🎞️ 色调映射",
                     "desc": "选择不同的色调映射算法，决定画面亮部和暗部的呈现风格。"
-                }
-            },
-            "mmd": {
-                "step1": {
-                    "title": "🎭 选择 MMD 模型",
-                    "desc": "在 Live3D（MMD）模式下从这里选择要使用的模型。MMD 与 VRM 共用同一模型列表。"
-                },
-                "step2": {
-                    "title": "💃 VMD 动画",
-                    "desc": "为 MMD 模型选择 VMD 动作。也可使用「导入 VMD 动画」添加自定义动作文件。"
-                },
-                "step3": {
-                    "title": "🌟 MMD 光照",
-                    "desc": "在「MMD 模型设置」中调节环境光、主光源、曝光与色调映射等，控制 3D 画面效果。"
-                },
-                "step4": {
-                    "title": "😄 情感配置",
-                    "desc": "先选好模型后，可由此进入情感配置。Live3D 下 MMD 与 VRM 共用此入口，与 Live2D 的「情感配置」不是同一个按钮。"
                 }
             }
         },
@@ -2822,30 +2274,7 @@
             "desc": "为了获得最佳的引导体验，建议进入全屏模式。\n全屏模式下，引导内容会更清晰，不会被其他元素遮挡。",
             "enterFullscreen": "进入全屏引导"
         },
-        "drag_hint": "按住拖动以移动提示框",
-        "yuiGuide": {
-            "buttons": {
-                "skipChat": "暂时不聊天",
-                "sayHello": "你好"
-            },
-            "lines": {
-                "introBasic": "想要找我的时候，随时在这里打字或者发语音都能召唤本喵哦！",
-                "introCatPaw": "好啦不说废话了喵——你看到那个可爱的‘猫爪’了吗，准备好了吗？让我借用一下你的鼠标吧！",
-                "takeoverCaptureCursor": "嘿咻！可算逮住你的鼠标了喵～",
-                "takeoverPluginPreviewHome": "还没完呢！你快看快看，这里还有超～～多好玩的插件呢！",
-                "takeoverPluginPreviewDashboard": "有了它们，我不光能看 B 站弹幕，还能帮你关灯开空调…… 本喵就是无所不能的超级猫猫神！哼哼～",
-                "takeoverSettingsPeekIntro": "当然啦，如果你想让本喵多和你聊聊天也不是不行啦，给我多准备点小鱼干吧，嘿嘿，好了不逗你啦，设置都在这个齿轮里。",
-                "takeoverSettingsPeekDetail": "你看，这里可以穿我的新衣服、给我换一个好听的声音……换一个猫娘或是修改记忆？等一下！你在干嘛？该不会是想把我换掉吧？啊啊啊不行！快关掉快关掉！",
-                "takeoverReturnControl": "好啦好啦，不霸占你的电脑啦～控制权还给你了喵！可不许趁我不注意乱点奇怪的设置哦！之后的日子也请你多多关照了喵～",
-                "interruptResistLight1": "喂！不要拽我啦，还没轮到你的回合呢！",
-                "interruptResistLight3": "等一下啦！还没结束呢，不要随便打断我啦！",
-                "interruptAngryExit": "人类~~~~！你真的很没礼貌喵！既然你这么想自己操作，那你就自己对着冰冷的屏幕玩去吧！哼！",
-                "introProactive": "可恶，居然敢无视本大小姐嘛！要说你一直没理我，我可是会主动跑出来咬你的哦～（哈！！）",
-                "introGreetingReply": "我是你的专属猫娘，从今天起就由我来陪伴主人咯。无论是想要聊天解闷、一起玩耍，还是需要我帮忙做些什么，我都会乖乖陪在主人身边的喵。以后请多多指教啦，最喜欢主人了~！",
-                "introPractice": "现在你可以试试跟我说说话啦，看看我们是不是超有默契的喵～",
-                "introActivationHint": "点一下这里，我就能开始说话啦～"
-            }
-        }
+        "drag_hint": "按住拖动以移动提示框"
     },
     "console": {
         "oggOpusInitFailed": "[OGG OPUS] 初始化 Promise 失败，将允许重试:",
@@ -3085,7 +2514,6 @@
         "weibo": "🌏 微博",
         "twitter": "🐦 Twitter/X",
         "reddit": "👽 Reddit",
-        "netease": "🎶 网易云音乐",
         "saveConfig": "保存配置",
         "encryptStorage": "安全加密存储至本地文件",
         "localMonitoring": "本地状态监控",
@@ -3111,8 +2539,7 @@
             "kuaishou": "📌 <b>目标：</b> 请前往 <b>kuaishou.com</b> 获取这些 Cookies。",
             "weibo": "📌 <b>目标：</b> 请前往 <b>weibo.com</b> 获取这些 Cookies。",
             "twitter": "📌 <b>目标：</b> 请前往 <b>x.com</b> 获取这些 Cookies。",
-            "reddit": "📌 <b>目标：</b> 请前往 <b>reddit.com</b> 获取这些 Cookies。",
-            "netease": "📌 <b>目标：</b> 请前往 <b>music.163.com</b> 获取这些 Cookies。"
+            "reddit": "📌 <b>目标：</b> 请前往 <b>reddit.com</b> 获取这些 Cookies。"
         },
         "guide": {
             "title": "新手通用获取教程",
@@ -3194,14 +2621,6 @@
             "csrftoken": {
                 "label": "csrftoken",
                 "desc": "CSRF 令牌"
-            },
-            "MUSIC_U": {
-                "label": "MUSIC_U",
-                "desc": "核心身份凭证 (必填)"
-            },
-            "NMTID": {
-                "label": "NMTID",
-                "desc": "设备标识 (选填)"
             }
         },
         "status": {
@@ -3213,7 +2632,6 @@
             "openQR": "📱 打开扫码登录",
             "loading": "正在获取二维码...",
             "scanTitle": "📱 扫码登录 {{platform}}",
-            "qrCodeAlt": "登录二维码",
             "waiting": "等待扫码...",
             "validFor": "二维码有效期: {{seconds}}秒",
             "refreshQR": "刷新二维码",
@@ -3226,14 +2644,7 @@
                 "scanned": "📱 {{message}}",
                 "waiting": "{{message}}..."
             },
-            "statusMessage": {
-                "success": "登录成功",
-                "expired": "二维码已过期",
-                "scanned": "已扫码，请在手机上确认",
-                "waiting": "等待扫码"
-            },
-            "successAlert": "扫码登录成功！Cookie 已自动填入，请点击保存配置",
-            "extractFailed": "⚠️ 扫码成功但未能自动提取到字段，请手动检查。"
+            "successAlert": "扫码登录成功！Cookie 已自动填入，请点击保存配置"
         }
     },
     "music": {
@@ -3252,11 +2663,7 @@
         "playError": "音乐播放加载失败",
         "loadError": "音乐播放器加载失败",
         "autoplayBlocked": "浏览器限制了自动播放，请点击播放按钮",
-        "ended": "已结束",
-        "unknownState": "未知状态",
-        "volume": "音量: ",
-        "unsafeSource": "已拦截不安全音源: {{domain}}",
-        "cookieExpired": "音乐Cookie已失效"
+        "ended": "已结束"
     },
     "Jukebox": {
         "title": "点歌台",
@@ -3267,10 +2674,6 @@
         "playing": "正在播放: {{name}} - {{artist}}",
         "error": "错误: {{message}}",
         "volume": "音量",
-        "mute": "静音",
-        "noSongPlaying": "没有正在播放的歌曲",
-        "noActionBound": "当前歌曲没有绑定动画",
-        "adjustOffsetFailed": "调整偏移失败",
         "stop": "停止",
         "sequence": "序号",
         "song": "歌曲",
@@ -3280,12 +2683,12 @@
         "play": "播放",
         "playError": "音乐播放器未初始化",
         "notFound": "找不到歌曲",
-        "audioEnded": "音频播放结束",
+        "mp3Ended": "mp3播放结束",
         "vmdNotInit": "MMD Manager 未初始化，跳过动画",
         "vmdPlayFailed": "VMD 播放失败",
         "vmdPlayed": "VMD 动画已播放",
-        "useAPlayer": "使用APlayer播放音频文件",
-        "startPlay": "开始播放音频",
+        "useAPlayer": "使用APlayer播放mp3文件",
+        "startPlay": "开始播放mp3音频",
         "nonMp3Error": "试图播放非mp3格式文件",
         "nonMp3Info": "非mp3音频信息",
         "btnNotFound": "点歌台按钮不存在，等待加载...",
@@ -3314,92 +2717,8 @@
         "idleRestoreFailed": "恢复待机动画失败",
         "btnNotFoundGiveUp": "点歌台按钮在重试后仍未找到，放弃绑定",
         "minimizeBtnNotFoundGiveUp": "最小化按钮在重试后仍未找到，放弃监听",
-        "noticeDance": "💃 伴舞服务目前仅在载入 3D 模型（MMD / VRM）时可用，后续会增加更多互动",
-        "noticeMusic": "⚠️ 当前歌曲仅供测试，后续版本将清除版权音乐，请自行导入",
-        "manager": "管理器",
-        "managerTitle": "管理器",
-        "songs": "歌曲",
-        "actions": "动作",
-        "bindings": "绑定",
-        "import": "导入",
-        "export": "导出",
-        "exportAll": "全部导出",
-        "exportAllIgnoreHidden": "全部导出(忽略隐藏)",
-        "exportAllIncludeHidden": "全部导出(含隐藏)",
-        "exportSelected": "导出选中",
-        "dragZipHint": "支持拖拽 ZIP 文件或文件夹到此处导入",
-        "unifiedDropHint": "支持拖拽歌曲、动作、导入包到此处",
-        "clickToAdd": "点击添加",
-        "dragMp3Hint": "拖拽 MP3 文件到此处添加歌曲",
-        "dragVmdHint": "拖拽 VMD 文件到此处添加动画",
-        "showHiddenSongs": "显示隐藏的歌曲",
-        "selectAll": "全选",
-        "noActions": "暂无动画",
-        "show": "显示",
-        "hide": "隐藏",
-        "delete": "删除",
-        "unknown": "未知",
-        "defaultAction": "默认动画",
-        "clickSetDefault": "点击设为默认",
-        "format": "格式",
-        "addSong": "添加歌曲",
-        "addAction": "添加动画",
-        "songList": "歌曲列表 (拖拽到右侧)",
-        "actionList": "动画列表 (拖拽到左侧)",
-        "unbind": "解除绑定",
-        "addBinding": "手动添加绑定",
-        "addSongBinding": "手动添加歌曲绑定",
-        "addActionBinding": "手动添加动画绑定",
-        "cancel": "取消",
-        "confirm": "确认",
-        "confirmDeleteSong": "确定要删除歌曲 \"{{name}}\" 吗？\n此操作不可恢复！",
-        "confirmDeleteAction": "确定要删除动画 \"{{name}}\" 吗？\n此操作不可恢复！",
-        "deleteFailed": "删除失败",
-        "setDefaultFailed": "设置失败",
-        "exportFailed": "导出失败",
-        "selectExportFirst": "请先选择要导出的歌曲或动画",
-        "notExist": "{{type}}不存在",
-        "songNotExist": "歌曲不存在",
-        "actionNotExist": "动画不存在",
-        "inputIndexOrName": "输入序号或名称",
-        "frame": "帧",
-        "offset": "偏移",
-        "selectedSongs": "已选择 {{count}} 首歌曲",
-        "selectedActions": "已选择 {{count}} 个动画",
-        "selectedSeparator": "，",
-        "selectedInfo": "已选择 {{songCount}} 首歌曲，{{actionCount}} 个动画",
-        "bindingsSelected": "绑定页已选 {{bindingSongCount}} 首歌曲、{{bindingActionCount}} 个动画；绑定集合共 {{bundleSongCount}} 首歌曲、{{bundleActionCount}} 个动画",
-        "missing": "缺失",
-        "unknownError": "未知错误",
-        "calibration": "校准动画",
-        "calibrationTitle": "动画校准",
-        "fps": "FPS",
-        "currentFrame": "当前帧",
-        "reset": "重置",
-        "calibrationHint": "使用按钮微调或拖拽进度条校准",
-        "calibrateAnimation": "校准动画",
-        "animationCalibration": "动画校准",
-        "closeCalibration": "关闭校准控制台",
-        "advance1s": "动画提前1秒",
-        "advance10f": "动画提前10帧",
-        "advance1f": "动画提前1帧",
-        "delay1f": "动画推迟1帧",
-        "delay10f": "动画推迟10帧",
-        "delay1s": "动画推迟1秒",
-        "frames": "帧",
-        "operationFailed": "操作失败",
-        "saveFailed": "保存失败",
-        "importSuccess": "导入成功！",
-        "importFailed": "导入失败",
-        "importSongsAdded": "新增 {{count}} 首歌曲",
-        "importSongsMerged": "合并 {{count}} 首歌曲",
-        "importActionsAdded": "新增 {{count}} 个动画",
-        "importActionsMerged": "合并 {{count}} 个动画",
-        "importBindingsAdded": "新增 {{count}} 个绑定",
-        "noChanges": "无变化",
-        "noImportFilesFound": "未找到可导入的文件",
-        "missingConfigJson": "文件夹中缺少 config.json 文件",
-        "folderImportFailed": "文件夹导入失败"
+        "noticeDance": "💃 伴舞服务仅在载入 MMD 形象时可用",
+        "noticeMusic": "⚠️ 当前歌曲仅供测试，后续版本将清除版权音乐，请自行导入"
     },
     "notice": {
         "voiceMigration": {
@@ -3414,86 +2733,6 @@
         "meme": {
             "title": "表情包",
             "loadError": "表情包加载失败"
-        }
-    },
-    "achievement": {
-        "unlocked": "🏆 成就解锁: {{description}}"
-    },
-    "cardExport": {
-        "title": "卡面制作",
-        "loadingModel": "正在加载模型...",
-        "selectCharacter": "选择角色",
-        "selectCharacterHint": "-- 请选择角色 --",
-        "loading": "加载中...",
-        "preview": "卡片预览",
-        "adjustHint": "拖拽调整位置，滚轮缩放",
-        "composition": "构图调整",
-        "offsetX": "水平偏移",
-        "offsetY": "垂直偏移",
-        "scale": "缩放",
-        "resetComposition": "重置构图",
-        "refreshPreview": "刷新预览",
-        "rotation": "旋转",
-        "modelTab": "模型调整",
-        "decorTab": "装饰",
-        "stickerPick": "选择贴纸",
-        "stickerAdjust": "贴纸调整",
-        "stickerWidth": "宽",
-        "stickerHeight": "高",
-        "lockRatio": "锁定比例",
-        "stickerRotation": "旋转",
-        "removeSticker": "删除选中",
-        "clearStickers": "清除全部",
-        "layers": "图层",
-        "modelLayer": "模型",
-        "sticker": "贴纸",
-        "exportFull": "导出角色卡",
-        "exportSettings": "仅导出设定",
-        "exporting": "导出中...",
-        "exportError": "导出失败: ",
-        "back": "返回",
-        "importSticker": "导入自定义贴纸",
-        "removeCustomSticker": "删除贴纸",
-        "stickerSizeTitle": "贴纸图片过大",
-        "stickerSizeWarning": "该图片较大（超过 5MB），压缩后可永久保存。\n选择「临时使用」将作为临时贴纸使用（关闭页面后消失）。",
-        "compressAndSave": "压缩并保存",
-        "useTemporary": "临时使用",
-        "tempBadge": "临时",
-        "popupBlocked": "弹窗被阻止，请允许弹窗后重试",
-        "saveCardFace": "保存卡面",
-        "savingCardFace": "保存中...",
-        "saveCardFaceSuccess": "保存成功！",
-        "saveCardFaceFailed": "保存失败: {{error}}",
-        "saveCardFacePartialSuccess": "PNG 已保存，但元数据写入失败: {{error}}",
-        "renderFailed": "无法渲染卡面图片",
-        "exportTitle": "导出角色卡"
-    },
-    "connectivity": {
-        "testCustom": "测试自定义 API 连通性",
-        "testCore": "测试",
-        "testCoreTooltip": "测试核心 API 连通性",
-        "testAssist": "测试",
-        "testAssistTooltip": "测试辅助 API 连通性",
-        "gsvTestText": "GSV连通性测试",
-        "gsvTestTooltip": "GPT-SoVITS 连通性测试",
-        "error": {
-            "timeout": "请求超时（10秒）",
-            "auth_failed": "API Key 无效或已过期",
-            "connection_refused": "无法连接到目标服务器",
-            "dns_error": "域名解析失败",
-            "ssl_error": "SSL 证书验证失败",
-            "ws_error": "WebSocket 连接失败",
-            "missing_params": "缺少必要参数",
-            "unknown": "未知错误",
-            "backend_unavailable": "后端服务不可用",
-            "invalid_response": "响应格式错误"
-        },
-        "status": {
-            "connected": "已连通",
-            "failed": "连接失败",
-            "untested": "未测试",
-            "not_configured": "未配置",
-            "testing": "测试中..."
         }
     }
 }

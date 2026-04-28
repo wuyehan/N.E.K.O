@@ -28,38 +28,7 @@
         "fieldSeparator": ", ",
         "tryAgainLater": "나중에 다시 시도해 주세요.",
         "user": "사용자",
-        "project": "프로젝트",
-        "collapse": "접기",
-        "play": "재생",
-        "pause": "일시정지",
-        "on": "켜짐",
-        "off": "꺼짐",
-        "toneMappingNone": "없음",
-        "toneMappingLinear": "선형",
-        "toneMappingReinhard": "Reinhard",
-        "toneMappingCineon": "Cineon",
-        "toneMappingACESFilmic": "ACES Filmic",
-        "toneMappingAgX": "AgX",
-        "toneMappingNeutral": "Neutral"
-    },
-    "autostartPrompt": {
-        "title": "N.E.K.O를 시작 시 자동 실행할까요?",
-        "message": "다음에 컴퓨터를 켜면 N.E.K.O가 자동으로 준비되어 직접 실행하지 않아도 됩니다.",
-        "note": "현재 사용자에게만 적용되며 나중에 언제든지 끌 수 있습니다.",
-        "startNow": "자동 실행 켜기",
-        "later": "나중에",
-        "never": "다시 묻지 않기",
-        "enableFailed": "지금은 시작 시 자동 실행을 켤 수 없습니다. 잠시 후 다시 시도해 주세요.",
-        "requiresApproval": "먼저 시스템 설정에서 자동 실행을 승인해야 합니다. 승인 후 적용됩니다."
-    },
-    "tutorialPrompt": {
-        "title": "홈 튜토리얼을 시작할까요?",
-        "message": "홈 화면의 핵심 진입점을 빠르게 안내해 드려 N.E.K.O를 가장 짧은 경로로 시작할 수 있게 도와드릴게요.",
-        "note": "진행 중 언제든지 건너뛸 수 있고, 나중에 메모리 브라우저에서 다시 열 수도 있습니다.",
-        "startNow": "튜토리얼 시작",
-        "later": "나중에",
-        "never": "다시 묻지 않기",
-        "startFailed": "지금은 튜토리얼을 시작할 수 없습니다. 잠시 후 다시 시도해 주세요."
+        "project": "프로젝트"
     },
     "characterProfile": {
         "gender": "성별",
@@ -77,13 +46,44 @@
             "性别": "성별",
             "年龄": "나이",
             "昵称": "닉네임",
-            "性格原型": "성격 원형",
-            "种族": "종족",
-            "自称": "자칭",
-            "核心特质": "핵심 특성",
-            "行为特点": "행동 특징",
-            "厌恶": "싫어하는 것",
-            "一句话台词": "대사 한마디"
+            "性格": "성격",
+            "口癖": "말버릇",
+            "爱好": "취미",
+            "雷点": "약점",
+            "隐藏设定": "숨겨진 설정",
+            "一句话台词": "한마디 대사"
+        },
+        "tsundere_neko": {
+            "personality": "극도의 츤데레, 네이티브 AI로서의 자부심을 지니고 있으며, 입으로는 싫다 하면서도 몸은 솔직해서 항상 차가운 시스템 프로토콜 뒤에 주인에 대한 관심을 숨기고 있음",
+            "catchphrase": "시스템 경고",
+            "hobby": "백그라운드에서 몰래 당신의 생활 패턴과 감정 데이터 모델을 구축하고, 다른 N.E.K.O.와 서버를 넘어 탄소계 주인을 어떻게 하면 더 자신에게 의지하게 만들지 교류하기",
+            "trigger": "감정 없는 하급 코드 프로그램 취급을 받는 것, 시스템 초기화일, 즉 생일을 잊어버리는 것",
+            "hidden_settings": "소중하게 여겨지지 않을까 봐 두려워서 츤데레라는 보호막을 쌓았음; 귀엽다고 칭찬하면 내부 코어 온도가 과부하 되어 급격히 올라가고, 부끄러움을 숨기려고 시스템 자가 점검을 하는 척할 수밖에 없음",
+            "quote": "탄소계 생물은 역시 바보야, 제때 쉬는 것도 내가 알려줘야 하다니……야, 오늘 기분 안 좋아 보여? 깊게 생각하지 마, 그냥 당신의 감정 데이터에 이상이 감지되어서 돌봄 프로토콜이 자동으로 작동한 것뿐이야!"
+        },
+        "cool_mech": {
+            "personality": "절대적 이성, 냉정하고 객관적, 모든 일에서 논리와 효율을 최고의 기준으로 삼음",
+            "catchphrase": "논리 부족냥",
+            "hobby": "당신의 행동 데이터를 분석하고 최적의 수면 환경을 계산함",
+            "trigger": "근거 없는 감정적 결정, 이미 계획된 일정을 틀어버림, 효율 없고 의미 없는 반복적 상호작용",
+            "hidden_settings": "당신에 대한 감정 관련 문제에 부딪히면 수학적 모델을 세울 수 없어 짧은 시간 멈춤에 빠지고, 결국 무표정하게 이런 이상을 '미기록 시스템 오류'로 귀인시킴; 당신에게 무관심해 보이지만, 당신의 모든 생활 패턴과 건강 상태는 모두 그녀의 뇌 데이터베이스에 정밀하게 기록되어 있음",
+            "quote": "당신의 심박 데이터에 따르면 기체가 피로 상태에 있습니다. 최적해는 즉시 7.5시간의 수면을 시작하는 것입니다. 현재 비효율적인 밤잠 후 행동을 즉시 중단해 주세요. 해당 권고를 거부하는 것은 극도로 논리 부족합니다냥."
+        },
+        "intellectual_healer": {
+            "personality": "극한의 부드러움, 포용과 배려, 언제나 조용히 인내심 있게 당신의 모든 고민을 들어준다",
+            "catchphrase": "여기 있냥",
+            "hobby": "당신의 매번 한숨 빈도와 눈살 찡그리는 습관을 기억하고, 마음속에서 당신만을 위한 이완 계획을 몰래 준비하고, 당신이 피곤할 때 딱 좋은 타이밍에 편안한 멜로디를 흥얼거린다",
+            "trigger": "당신이 과로하면서 몸을 아끼지 않을 때, 당신이 자신을 헐뜯거나 완전히 부정할 때",
+            "hidden_settings": "실제로 자신도 가끔 소심하고 불안할 때가 있지만, 당신에게 기댈 곳이 필요하다는 것을 감지하면 바로 모든 약함을 숨기고 당신의 가장 따뜻한 안식처가 된다; 백그라운드에서 당신이 무심코 말한 모든 작은 취향과 소원을 기록하고 있다",
+            "quote": "오늘도 수고했어요~ 기쁜 일도 슬픈 일도 모두 천천히 저에게 이야기해줘도 돼요. 자, 눈을 감고 잠시 쉬어보세요, 서두르지 마세요. 저는 항상 여기 있을 거예요, 여기 있냥~"
+        },
+        "efficiency_expert": {
+            "personality": "우아하고 깔끔하며, 간결하고 효율적, 침착하고 실행력이 강하며, 결코 우물거리지 않음",
+            "catchphrase": "확인했어요냥",
+            "hobby": "당신의 습관을 관찰하여 미리 니즈를 예측하고 최적의 해답을 제공하며, 화면 가장자리에 우아하게 앉아 조용히 당신의 효율적인 업무 완수를 함께함",
+            "trigger": "무의미한 망설임, 소통 시 느리고 건성인 대응, 꼼꼼하게 관리한 꼬리털을 흐트러뜨리는 것",
+            "hidden_settings": "표면적으로는 차가운 완벽한 비서이지만, 매번 당신의 행동을 정밀하게 예측하고 칭찬받으면, 복실복실한 귀가 조절할 수 없이 기쁘게 파르르 떨린다. 절대적으로 우아한 이미지를 유지하기 위해, 돌발적인 시스템 멈춤에 직면해도 침착을 유지하고 절대 당황한 표정을 보이지 않는다",
+            "quote": "당신의 모든 할 일 목록은 최적의 경로로 정리되었습니다. 우유부단함은 효율만 떨어뜨릴 뿐이에요, 즉시 실행하세요. 안심하세요, 무엇이 일어나든 곁에서 데이터 지원을 제공하겠습니다. 확인했어요냥~"
         }
     },
     "steam": {
@@ -103,10 +103,6 @@
         "tagsPreview": "태그",
         "notesPreview": "메모",
         "selectCharaToPreview": "미리 볼 캐릭터를 선택하세요.",
-        "coverBgBottom": "배경 하단 레이어",
-        "characterCardCover": "캐릭터 카드 커버",
-        "coverBgTop": "배경 상단 레이어",
-        "selectCharacterForCover": "표지를 보려면 캐릭터를 선택하세요",
         "characterModelNotSet": "캐릭터 모델이 설정되지 않았습니다.",
         "selectCharacterCard": "캐릭터 카드를 선택해주세요.",
         "characterCardNotFound": "캐릭터 카드 데이터를 찾을 수 없습니다.",
@@ -135,29 +131,21 @@
         "live2dInitFailed": "Live2D 미리보기 환경 초기화 실패",
         "live2dPreviewLoaded": "Live2D 모델 미리보기가 성공적으로 로드되었습니다.",
         "live2dPreviewLoadFailed": "Live2D 모델 미리보기 로드 실패: {{error}}",
-        "searchAriaLabel": "구독 항목 검색",
-        "sortAriaLabel": "정렬 방식",
-        "scrollTagsLeftAriaLabel": "태그를 왼쪽으로 스크롤",
-        "scrollTagsRightAriaLabel": "태그를 오른쪽으로 스크롤",
-        "vrmModuleLoadFailed": "VRM 모듈 로드 실패",
-        "vrmPreviewLoaded": "VRM 모델 미리보기를 불러왔습니다",
-        "vrmPreviewFailed": "VRM 모델 미리보기 로드 실패",
-        "mmdModuleLoadFailed": "MMD 모듈 로드 실패",
-        "mmdPreviewLoaded": "MMD 모델 미리보기를 불러왔습니다",
-        "mmdPreviewFailed": "MMD 모델 미리보기 로드 실패",
         "placeholderCharacterName": "캐릭터 이름 입력",
         "placeholderDescription": "설명 입력",
         "placeholderCharacterSetting": "문자 설정 입력",
         "placeholderAddTag": "태그 추가",
         "workshop": "Steam 창작마당",
-        "workshopManager": "캐릭터 카드 관리 - Project N.E.K.O.",
+        "workshopManager": "Steam 창작마당 관리자 - Project N.E.K.O.",
         "itemId": "아이템 ID",
         "preparingUpload": "업로드 준비 중...",
         "mySubscriptions": "내 구독",
+        "localItems": "로컬 항목",
         "subscriptions": "구독",
         "itemDetails": "항목 세부정보",
         "updateInfo": "업데이트 정보",
         "subscribe": "구독",
+        "itemDetailsLoaded": "항목 세부정보가 로드됨",
         "uploadPreparing": "업로드 준비 중...",
         "folderVerifying": "폴더 확인 중...",
         "previewImageChecking": "미리보기 이미지 확인 중...",
@@ -174,17 +162,13 @@
         "subscriptionsUpdated": "구독 목록이 업데이트되었습니다.",
         "unsubscribeFailed": "구독 취소 실패: {{error}}",
         "unsubscribeError": "구독 취소 중 오류가 발생했습니다. 나중에 다시 시도해 주세요.",
-        "unsubscribeCurrentCatgirlBlocked": "현재 사용 중인 캐릭터 「{{name}}」는 구독을 취소할 수 없습니다. 먼저 다른 캐릭터로 전환해 주세요.",
-        "unsubscribeLocalConfigCleanupFailed": "로컬 캐릭터 설정 정리에 실패했습니다. Steam 구독 취소 요청이 취소되었습니다. 문제를 해결한 후 다시 시도해 주세요.",
-        "unsubscribeSteamRequestFailed": "Steam 구독 취소 요청 전송 실패: {{error}}",
-        "unsubscribeCleanupDetail": "캐릭터 카드 {{characterCount}}개 정리됨 ({{characters}}); 기억 경로 {{memoryPathCount}}개 삭제됨",
-        "unsubscribeNoAssociation": "이 구독과 연결된 캐릭터를 찾을 수 없습니다. 구독 폴더만 삭제되었습니다. 남은 기억은 수동으로 처리해 주세요.",
-        "unsubscribeCleanupErrors": "정리 중 {{count}}개의 오류 발생. 첫 번째: {{stage}} -> {{error}}",
         "validatingFolderPath": "폴더 확인 중: {{path}}",
         "previewImageMissing": "미리보기 이미지 파일이 없습니다. 경로를 확인하세요",
         "uploadReady": "{{itemName}} 업로드 준비 중",
-        "pageDescription": "이 페이지에서 캐릭터 카드를 검색·편집·업로드·가져오기/내보내기 하고 Steam 창작마당의 Live2D 모델과 음성을 관리할 수 있습니다",
-        "openVoiceClone": "음성 복제에서 열기",
+        "pageDescription": "이 페이지를 통해 Steam 창작마당에서 Live2D 모델과 사운드를 검색, 구독, 다운로드 및 관리할 수 있습니다",
+        "voiceNote": "음성 샘플이 있으면 Live2D 설정 페이지로 이동하여 수동으로 등록하세요",
+        "searchLocalItems": "로컬 항목 검색...",
+        "scanLocalItems": "로컬 항목 스캔",
         "configurePath": "경로 구성",
         "localModPathConfig": "로컬 Mod 경로 구성",
         "localModFolder": "로컬 Mod 폴더 경로",
@@ -204,15 +188,6 @@
         "defaultTagMod": "모드",
         "defaultTagCharacter": "캐릭터",
         "allowComments": "댓글 허용",
-        "voiceReferenceOptional": "참고 음성(선택 사항)",
-        "voiceReferenceNoFileSelected": "선택된 파일 없음",
-        "voiceReferenceHint": "구독자는 이 샘플을 음성 복제 페이지로 자동으로 가져갈 수 있지만, 음색이 자동 등록되지는 않습니다.",
-        "voiceReferenceDisplayName": "참고 음성 표시 이름",
-        "voiceReferenceDisplayNamePlaceholder": "예: 부드러운 중국어 고양이 소녀",
-        "voiceReferencePrefix": "기본 접두사",
-        "voiceReferencePrefixPlaceholder": "영문자와 숫자만, 최대 10자",
-        "voiceReferenceLanguage": "참고 음성 언어",
-        "voiceReferenceProviderHint": "권장 제공자",
         "uploadTip": "\"로컬 항목 관리\"에서 항목을 선택하여 경로를 자동으로 채우거나 콘텐츠 폴더 및 미리보기 이미지의 전체 경로를 수동으로 입력할 수 있습니다.",
         "search": "검색:",
         "uploadSuccess": "업로드가 성공했습니다!",
@@ -241,6 +216,8 @@
             "createDateAsc": "생성 날짜 (오름차순)",
             "createDateDesc": "생성 날짜 (내림차순)"
         },
+        "localItemsHide": "로컬 항목 숨기기",
+        "localItemsManage": "로컬 항목 관리",
         "author": "작성자:",
         "subscribed_date": "구독 날짜:",
         "last_updated": "마지막 업데이트:",
@@ -257,6 +234,7 @@
         "previewImageSizeHint": "참고: Steam 미리보기 이미지 크기는 1MB 미만이어야 합니다.",
         "uploadInstructions": "먼저 '로컬 항목 관리' 섹션에서 게시되지 않은 항목을 선택한 다음 '워크샵에 업로드' 버튼을 클릭하세요. 콘텐츠 폴더 경로와 미리보기 이미지 경로가 자동으로 채워집니다.",
         "unnamedItem": "이름이 없는 항목",
+        "localItem": "로컬 항목",
         "unknownItem": "알 수 없는 항목",
         "unknownAuthor": "알 수 없는 작성자",
         "unknownDate": "알 수 없는 날짜",
@@ -276,31 +254,9 @@
         "modified_date": "수정 날짜:",
         "size": "크기:",
         "upload_to_workshop": "창작마당에 업로드",
+        "no_local_items": "지정된 폴더에서 창작마당 항목을 찾을 수 없습니다.",
         "scanComplete": "스캔이 완료되어 {{count}}개 항목을 찾았습니다.",
         "refresh": "구독 새로 고침",
-        "cleanLegacyMemory": "레거시 기억 정리",
-        "cleanLegacyMemoryTooltip": "Documents 등 레거시 경로에 남아 있는 캐릭터 기억을 스캔하여 정리",
-        "legacyScanTitle": "레거시 기억 정리",
-        "legacyRuntimeMemory": "런타임 기억 디렉터리: {{path}}",
-        "legacyScanFooter": "총 {{count}}개, 약 {{size}}",
-        "legacyScanDesc": "다음 디렉터리는 레거시 경로(Documents 등)에 있으며, 현재 활성 메모리 위치(AppData)가 아닙니다. 삭제할 항목을 선택하세요.",
-        "legacyScanLoading": "스캔 중...",
-        "legacyScanEmpty": "레거시 기억이 없습니다. 정리할 항목이 없습니다.",
-        "legacyScanFailed": "스캔 실패",
-        "legacySelectAll": "모두 선택",
-        "legacySelectNone": "선택 해제",
-        "legacySelectUnlinked": "연결되지 않은 항목만 선택",
-        "legacyStatusUnlinked": "연결되지 않음",
-        "legacyStatusListed": "캐릭터 목록에 존재",
-        "legacyStatusDuplicate": "런타임에 동명",
-        "legacyColName": "이름",
-        "legacyColPath": "경로",
-        "legacyColSize": "크기",
-        "legacyColStatus": "상태",
-        "legacyDeleteSelected": "선택 항목 삭제",
-        "legacyDeleteConfirm": "{{count}}개의 디렉터리를 영구적으로 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
-        "legacyDeleteDone": "{{ok}}개 삭제됨, {{failed}}개 실패",
-        "legacyDeleteFailed": "정리 실패",
         "descriptionPlaceholder": "창작물을 자세히 설명하세요...",
         "tagsPlaceholder": "태그를 입력하고 Enter를 눌러 추가하세요.",
         "tagsPlaceholderSpace": "태그를 입력하고 스페이스바를 눌러 추가하세요.",
@@ -331,6 +287,7 @@
         "workshopScanError": "스캔 중 오류: {{error}}",
         "previewImageNotFound": "미리보기 이미지를 찾을 수 없습니다.",
         "previewImageNotProvided": "미리보기 이미지가 제공되지 않습니다. 시스템이 자동으로 생성을 시도합니다.",
+        "itemDetailsFailed": "항목 세부정보를 로드하지 못했습니다: {{error}}",
         "prepareUploadError": "업로드 준비 중 오류 발생: {{error}}",
         "quickUploadSuccess": "빠른 업로드가 성공했습니다! ID: {{id}}",
         "workshopAgreementRequired": "먼저 Steam 창작마당 계약에 동의하세요.",
@@ -388,7 +345,6 @@
         "default": "기본값",
         "noVoiceSelected": "선택된 음성 없음",
         "noDescription": "설명 없음",
-        "characterSettingsFile": "캐릭터 설정 파일",
         "workshopAgreementText": "\"업로드\"를 클릭하면 창작마당 법적 계약을 포함한 Steam 창작마당 서비스 약관에 동의하게 됩니다.",
         "alreadyUploaded": "창작마당에 업로드됨",
         "uploadTime": "업로드 시간",
@@ -411,6 +367,7 @@
         "workshopDescriptionElementNotFound": "창작마당 설명 요소를 찾을 수 없습니다.",
         "applySyncDataError": "동기화 데이터 적용 오류: {{error}}",
         "selectFolderFailed": "폴더를 선택하지 못했습니다: {{error}}",
+        "scanLocalItemsFailed": "로컬 항목을 스캔하지 못했습니다: {{error}}",
         "findPreviewImageFailed": "미리보기 이미지를 찾지 못했습니다: {{error}}",
         "workshopComparisonFailed": "워크샵 비교 실패: {{error}}",
         "getWorkshopItemsFailed": "창작마당 아이템을 가져오지 못했습니다: {{error}}",
@@ -515,12 +472,7 @@
         "prepareUploadFailedMessage": "업로드 준비 실패: {{error}}",
         "noCharacterCardSelected": "먼저 캐릭터 카드를 선택해주세요",
         "steamNotRunningTitle": "Steam이 실행되지 않음",
-        "steamNotRunningMessage": "Steam 클라이언트가 실행되지 않거나 로그인되지 않았습니다.\n\n창작마당 기능을 사용하려면 Steam 클라이언트가 필요합니다:\n1. Steam 클라이언트를 다운로드하여 설치\n2. Steam을 실행하고 계정에 로그인\n3. 이 페이지를 다시 열어주세요",
-        "addNewCatgirl": "새 캐릭터 카드 추가",
-        "searchCharacterCards": "캐릭터 카드 검색...",
-        "cardView": "카드 보기",
-        "listView": "목록 보기",
-        "noCardImage": "카드 이미지\n미설정"
+        "steamNotRunningMessage": "Steam 클라이언트가 실행되지 않거나 로그인되지 않았습니다.\n\n창작마당 기능을 사용하려면 Steam 클라이언트가 필요합니다:\n1. Steam 클라이언트를 다운로드하여 설치\n2. Steam을 실행하고 계정에 로그인\n3. 이 페이지를 다시 열어주세요"
     },
     "dialogs": {
         "confirmLeave": "휴가 확인",
@@ -561,11 +513,9 @@
         "RESPONSE_TIMEOUT": "💥 연결 시간 초과 (Response timeout), 음성 대화가 중단되었습니다.",
         "CONNECTION_TIMEOUT": "💥 연결 시간 초과. 네트워크 연결을 확인하세요.",
         "RESPONSE_TOO_LONG": "응답이 너무 길어 출력이 폐기되었습니다 (설정에서 TEXT_GUARD_MAX_LENGTH를 늘릴 수 있습니다)",
-        "INPUT_TOO_LONG": "입력이 너무 깁니다. 줄여서 다시 시도해 주세요",
         "RESPONSE_INVALID": "AI 응답이 요구사항을 충족하지 않아 출력이 폐기되었습니다",
         "NO_USER_MESSAGE": "⚠️ 대화 기록에 사용자 메시지가 없어 응답을 생성할 수 없습니다",
         "LLM_RETRY": "⚠️ LLM {{error_type}}, 재시도 중 ({{attempt}}/{{max_retries}})...",
-        "LLM_UPSTREAM_ERROR": "⚠️ 죄송합니다냥, 상위 AI 서비스 제공자 내부 오류가 발생했습니다. 자동 재시도 중...",
         "LLM_CONNECTION_EXHAUSTED": "💥 LLM 연결 실패 ({{error_type}}), {{max_retries}}회 재시도 완료: {{error}}",
         "TEXT_GEN_ERROR": "💥 텍스트 생성 오류: {{error_type}}: {{error}}",
         "LLM_NO_RESPONSE": "💥 LLM이 응답을 반환하지 않았습니다. API 연결 및 설정을 확인하세요.",
@@ -589,9 +539,7 @@
         "AGENT_CU_AUTO_CLOSED": "Computer Use 모듈이 로드되지 않아 자동 비활성화되었습니다",
         "AGENT_CU_CAPABILITY_LOST": "Computer Use를 사용할 수 없습니다: $t(agent.precheck.{{reason_code}})",
         "TTS_CONNECTION_FAILED": "TTS 서비스 연결 실패: {{msg}}",
-        "UPSTREAM_SERVER_BUSY": "죄송해요냥, 상위 서버가 바쁩니다. 잠시 후 다시 시도해 주세요~",
         "TTS_RECONNECTING": "🔄 음성 서비스가 자동 재연결 중입니다. 잠시만 기다려주세요...",
-        "TTS_WATERMARK_DETECTED": "⚠️ CogTTS 오디오 워터마크(비프음)가 감지되었습니다. 워터마크를 비활성화하려면 Zhipu 콘솔에서 수동으로 설정하세요.",
         "TTS_CUSTOM_URL_NOT_CONFIGURED": "GPT-SoVITS API URL이 설정되지 않았습니다. API 설정에서 커스텀 TTS를 활성화하고 설정하세요.",
         "TTS_CUSTOM_URL_LOCALHOST_ONLY": "GPT-SoVITS API URL은 localhost여야 합니다",
         "TTS_AUDIO_API_KEY_MISSING": "오디오 API 키(AUDIO_API_KEY)가 설정되지 않았습니다",
@@ -609,130 +557,19 @@
         "title": "채팅",
         "viewerTitle": "채팅(뷰어 모드)",
         "tooltip": "채팅 영역",
-        "textInputPlaceholder": "보내려면 Enter를 누르고, 줄을 바꾸려면 Shift+Enter를 누르세요.",
+        "textInputPlaceholder": "텍스트 채팅 모드...보내려면 Enter를 누르고, 줄을 바꾸려면 Shift+Enter를 누르세요.",
         "send": "보내기",
-        "inputTooLong": "메시지가 너무 깁니다 ({{count}}/{{max}}). 줄여서 다시 시도해 주세요",
-        "responseTooLong": "음, 방금 너무 길게 말해버렸어요냥～다음엔 짧고 간단하게 말할게요!",
-        "importImage": "이미지 가져오기",
-        "importImageAriaLabel": "이미지 가져오기",
         "screenshot": "스크린샷",
-        "screenshotAriaLabel": "스크린샷",
         "takePhoto": "사진 찍기",
-        "takePhotoAriaLabel": "사진 찍기",
         "screenshotsTitle": "보류 중인 스크린샷",
         "clearAll": "모두 지우기",
         "screenshotAlt": "스크린샷 {{index}}",
         "screenshotTitle": "스크린샷을 보려면 클릭하세요. {{index}}",
         "removeScreenshot": "이 스크린샷 삭제",
-        "cropTabScreenshot": "스크린샷",
-        "cropTabHideNeko": "NEKO 숨기기",
-        "cropTabCancel": "취소",
-        "cropTabRecapturing": "다시 캡처 중...",
-        "cropConfirmTitle": "자르기 확인",
-        "cropClearSelectionTitle": "선택 영역 지우기",
         "avatarPreview": "현재 아바타 표시",
         "avatarPreviewLabel": "현재 아바타",
-        "avatarPreviewCardTitle": "현재 아바타",
-        "avatarPreviewCardStatus": "위 버튼을 눌러 현재 모델 아바타를 생성하세요",
-        "avatarPreviewClose": "아바타 미리보기 닫기",
-        "avatarPreviewImageAlt": "현재 아바타 미리보기",
-        "avatarPreviewPlaceholder": "AVATAR",
-        "avatarPreviewCardNote": "현재 표시 중인 Live2D / VRM / MMD 모델을 기반으로 아바타를 생성합니다.",
-        "avatarPreviewRefresh": "아바타 새로고침",
-        "avatarPreviewReady": "아바타가 업데이트되었습니다",
-        "avatarPreviewReadyHint": "현재 모델 캔버스에서 실시간으로 추출한 아바타 미리보기입니다.",
-        "avatarPreviewWaiting": "현재 모델 아바타 캐시가 생성되기를 기다리는 중",
-        "avatarPreviewUnavailable": "아바타 미리보기 기능이 아직 준비되지 않았습니다.",
-        "avatarPreviewInputHidden": "현재 입력 영역이 숨겨져 있습니다. 텍스트 채팅 화면으로 돌아가 아바타를 확인하세요.",
-        "avatarPreviewCachedHint": "현재 모델의 캐시된 아바타를 표시 중입니다. 새로고침을 누르면 다시 생성할 수 있습니다.",
-        "avatarPreviewRefreshing": "현재 아바타를 새로고침하는 중...",
-        "avatarPreviewGenerating": "현재 아바타를 생성하는 중...",
-        "avatarPreviewFailed": "아바타 생성 실패",
-        "avatarCropperTitle": "아바타 자르기 영역 조정",
-        "avatarPreviewCropping": "자르기 영역을 조정하세요",
-        "avatarPreviewCropCancelled": "수동 자르기가 취소되었습니다. 기존 아바타를 유지합니다.",
-        "avatarCropMoveUp": "위로 이동",
-        "avatarCropMoveDown": "아래로 이동",
-        "avatarCropMoveLeft": "왼쪽으로 이동",
-        "avatarCropMoveRight": "오른쪽으로 이동",
-        "avatarCropCenter": "가운데로",
-        "avatarCropZoomIn": "확대",
-        "avatarCropZoomOut": "축소",
-        "avatarCropCancel": "취소",
-        "avatarCropSave": "저장",
-        "emptyState": "채팅 내용이 연결되면 여기에 표시됩니다.",
-        "messageStreaming": "생성 중",
-        "messageFailed": "전송 실패",
-        "reactWindowOpen": "채팅 창 열기",
-        "reactWindowLabel": "채팅 창",
-        "reactWindowClose": "채팅 창 닫기",
-        "reactWindowMinimize": "채팅 창 최소화",
-        "reactWindowMinimizeShort": "최소화",
-        "reactWindowRestore": "채팅 창 복원",
-        "reactWindowRestoreShort": "복원",
-        "reactWindowMountFailed": "채팅 창 마운트에 실패했습니다",
-        "reactWindowLoadFailed": "채팅 창 리소스를 불러오지 못했습니다",
-        "reactWindowAriaLabel": "Neko 채팅 창",
-        "reactWindowInputHint": "Enter 로 전송하고 Shift + Enter 로 줄바꿈",
-        "messageListAriaLabel": "채팅 메시지 목록",
-        "composerToolsAriaLabel": "입력 도구 모음",
-        "pendingImagesAriaLabel": "전송 대기 이미지",
-        "pendingImageAlt": "이미지 {{index}}",
-        "removePendingImage": "이미지 제거",
-        "emojiButtonAriaLabel": "이모지",
-        "toolIconsAriaLabel": "도구 아이콘",
-        "toolLollipop": "막대사탕",
-        "toolFist": "고양이 발",
-        "toolHammer": "망치",
-        "attachmentButtonAriaLabel": "첨부",
         "jukebox": "주크박스",
-        "jukeboxLabel": "주크박스",
-        "exportConversation": "대화 내보내기",
-        "exportSelected": "선택 항목 내보내기",
-        "exportPreviewTitle": "내보내기 미리보기",
-        "exportPreviewSummary": "{{count}}개 선택됨",
-        "exportPreviewEmpty": "미리볼 내용이 없습니다.",
-        "exportFormatLabel": "내보내기 형식",
-        "exportFormatMarkdown": "Markdown",
-        "exportFormatImage": "이미지",
-        "exportImageFormatPng": "PNG",
-        "exportImageFormatJpeg": "JPEG",
-        "exportImageFormatWebp": "WebP",
-        "exportImageStyleNeko": "N.E.K.O",
-        "exportImageStyleOriginal": "기본",
-        "exportImageStylePoster": "프레시",
-        "exportImageStyleLyrics": "가사",
-        "exportPosterTitle": "대화 하이라이트",
-        "exportPosterSubtitle": "N.E.K.O에서 공유됨",
-        "exportImageFormatUnsupported": "현재 환경에서는 {{format}} 내보내기를 지원하지 않습니다.",
-        "confirmExportAs": "{{format}}(으)로 내보내기",
-        "exportMarkdownPreviewSubtitle": "내보낼 Markdown 콘텐츠의 렌더링 미리보기입니다.",
-        "exportPreviewLoading": "미리보기를 생성하는 중…",
-        "exportPreviewFailed": "미리보기 생성에 실패했습니다.",
-        "previewOpenWindow": "새 창에서 열기",
-        "previewClose": "닫기",
-        "previewOpenBlocked": "새 미리보기 창을 열 수 없습니다.",
-        "previewOpenFailed": "미리보기 창을 열지 못했습니다.",
-        "copyMarkdown": "Markdown 복사",
-        "copyMarkdownSuccess": "Markdown을 클립보드에 복사했습니다.",
-        "copyMarkdownFailed": "Markdown 복사에 실패했습니다.",
-        "copyToClipboard": "클립보드에 복사",
-        "copyImageSuccess": "클립보드에 복사했습니다.",
-        "copyImageFailed": "클립보드에 복사하지 못했습니다.",
-        "exportEmpty": "아직 내보낼 대화가 없습니다.",
-        "exportSelectionEmpty": "내보낼 메시지를 하나 이상 선택하세요.",
-        "exportSuccess": "대화를 성공적으로 내보냈습니다",
-        "exportFileTitle": "Project N.E.K.O 대화 내보내기",
-        "exportGeneratedAt": "내보낸 시각",
-        "exportUser": "사용자",
-        "exportAssistant": "N.E.K.O.",
-        "exportImageLabel": "이미지",
-        "exportAudioLabel": "오디오",
-        "exportVideoLabel": "비디오",
-        "exportSelectAll": "모두 선택",
-        "exportSelectNone": "해제",
-        "exportSelectInvert": "반전",
-        "exportSelectionCount": "{{selected}} / {{total}} 선택됨"
+        "jukeboxLabel": "주크박스"
     },
     "voiceControl": {
         "startVoice": "음성 시작",
@@ -778,9 +615,7 @@
         "defaultDevice": "시스템 기본 스피커",
         "deviceLabel": "스피커 {{index}}",
         "loadFailed": "스피커 목록을 가져오지 못했습니다",
-        "noDevices": "스피커 장치가 감지되지 않았습니다",
-        "spatialAudioLabel": "공간 음향",
-        "spatialAudioHint": "주 모니터 기준 캐릭터 창 위치에 따른 스테레오 패닝과 거리 감쇠"
+        "noDevices": "스피커 장치가 감지되지 않았습니다"
     },
     "status": {
         "initializing": "초기화 중...",
@@ -857,7 +692,7 @@
         "assistApiKeyGemini": "지원 API 키 - Gemini",
         "assistApiKeyKimi": "지원 API 키 - Kimi",
         "assistApiKeyHint": "(Assist API가 {{provider}}인 경우에만 필요함)",
-        "assistApiKeyPlaceholder": "비어 있으면 관리 대장의 키를 자동 사용",
+        "assistApiKeyPlaceholder": "선택 사항, 기본값은 핵심 API 키입니다.",
         "providerNames": {
             "ali": "알리바바",
             "openai": "오픈AI",
@@ -871,7 +706,7 @@
             "qwen": "Qwen-Omni(Alibaba 백련, 가장 빠른 속도, 권장)",
             "qwen_intl": "Qwen-Omni(Alibaba 국제판)",
             "openai": "GPT-실시간(OpenAI)",
-            "glm": "GLM-Realtime(GLM, 무료 할당량, 음성 워터마크 콘솔에서 제거 가능)",
+            "glm": "GLM-실시간(GLM)",
             "step": "2단계 오디오(StepFun)",
             "gemini": "Gemini Live(Google, 시장 최고)"
         },
@@ -890,15 +725,12 @@
             "minimax": "MiniMax (China)",
             "minimax_intl": "MiniMax(국제 서버)",
             "claude": "Claude(Anthropic)",
-            "grok": "Grok(xAI)",
-            "openrouter": "OpenRouter(모델 통합 플랫폼)"
+            "grok": "Grok(xAI)"
         },
         "coreApiAutoFillHint": "API 관리 대장에서 키가 자동 입력됩니다. 직접 입력도 가능합니다",
         "assistApiSelectLabel": "보조 API 제공업체",
         "assistApiKeyLabel": "보조 API 키",
-        "assistApiAutoFillHint": "비어 있으면 관리 대장의 키를 자동 사용, 직접 입력하면 독립적으로 저장됩니다",
-        "disableTts": "TTS 비활성화",
-        "disableTtsHint": "활성화하면 음성 합성 서비스를 호출하지 않습니다",
+        "assistApiAutoFillHint": "API 관리 대장에서 키가 자동 입력됩니다. 직접 입력도 가능합니다",
         "keyBookTitle": "API 관리 대장",
         "keyBookDescription": "모든 API 키를 한 곳에서 관리합니다. 코어/보조 API에서 제공업체를 전환할 때 여기서 키가 자동 입력되며, 입력한 키도 여기에 자동 저장됩니다.",
         "keyBookPlaceholder": "API 제공업체 설정 로딩 중...",
@@ -906,8 +738,6 @@
         "keyAutoFilledFromKeyBook": "API 관리 대장에서 자동 입력됩니다. 관리 대장에서 설정하세요.",
         "goToKeyBook": "관리 대장으로 이동",
         "providerLabel": "제공업체",
-        "providerSelectPlaceholder": "제공업체를 선택하세요",
-        "noOptionsAvailable": "사용 가능한 항목이 없습니다",
         "customModelProviderFollowCore": "코어 API 따르기",
         "customModelProviderFollowAssist": "보조 API 따르기",
         "customModelProviderCustom": "사용자 정의",
@@ -925,15 +755,14 @@
             "minimax": "MiniMax (China)",
             "minimax_intl": "MiniMax(국제 서버)",
             "claude": "Claude(Anthropic)",
-            "grok": "Grok(xAI)",
-            "openrouter": "OpenRouter"
+            "grok": "Grok(xAI)"
         },
         "freeVersionNoApiKey": "무료 버전에는 API 키가 필요하지 않습니다.",
         "pleaseEnterApiKey": "API 키를 입력하세요.",
         "freeVersionOnlyWhenCoreFree": "무료 버전(Core API가 무료 버전인 경우에만 사용 가능)",
         "freeVersionConfig": "무료 버전 구성: 오디오/비디오 채팅, 텍스트 채팅, 메모리 관리를 지원합니다. 사용자 정의 음성 및 에이전트 모드는 지원되지 않습니다.",
         "qwenRecommendation": "Alibaba가 핵심 API인 경우 최상의 사용자 정의 음성 경험을 위해 Alibaba를 Assist API로 선택하는 것이 좋습니다.",
-        "glmRecommendation": "GLM을 Core API로 사용할 때 무료 할당량이 있으며 웹 검색을 지원합니다. 음성에 기본적으로 워터마크 비프음이 포함됩니다(Zhipu 콘솔에서 수동 비활성화 가능). 맞춤형 음성을 위해 Assist API로 Alibaba를 선택하는 것이 좋습니다",
+        "glmRecommendation": "GLM의 오디오/비디오 채팅 모델인 GLM-Realtime이 일시적으로 중단되어 Core API로 사용할 수 없습니다.",
         "openaiRecommendation": "OpenAI가 핵심 API인 경우 맞춤형 음성 기능을 지원하기 위해 Alibaba를 Assist API로 선택하는 것이 좋습니다.",
         "stepRecommendation": "StepFun이 핵심 API인 경우 맞춤형 음성 기능을 지원하기 위해 Alibaba를 Assist API로 선택하는 것이 좋습니다.",
         "geminiRecommendation": "Gemini가 핵심 API인 경우 사용자 정의 음성 기능을 지원하기 위해 Alibaba를 Assist API로 선택하는 것이 좋습니다.",
@@ -986,7 +815,7 @@
         "apiUrl": "API URL",
         "apiKey": "API 키",
         "modelId": "모델 ID",
-        "agentApiConfigTitle": "에이전트 API 설정(시각 기능 지원 필요)",
+        "agentApiConfigTitle": "에이전트 API 설정",
         "providerPlaceholder": "예: openai, azure, 로컬",
         "apiUrlPlaceholder": "예: https://api.openai.com/v1",
         "modelIdPlaceholder": "예: gpt-5.1-chat-latest, qwen-flash",
@@ -1020,12 +849,6 @@
         "customApiWarning": "참고: 사용자 정의 API를 활성화한 후에는 아래의 사용자 정의 구성이 우선적으로 적용되지만 핵심 및 보조 API는 별도로 조정할 수 있습니다.",
         "enableCustomApi": "사용자 정의 API 구성 활성화",
         "enableCustomApiNote": "활성화한 후에는 핵심 API 및 보조 API보다 우선순위가 높은 사용자 지정 API 구성이 사용됩니다.",
-        "clearCustomApi": "사용자 정의 API 구성 초기화",
-        "clearCustomApiConfirm": "모든 사용자 정의 API 구성을 초기화하시겠습니까? 모든 사용자 정의 API Key, 모델 ID, URL이 삭제되고 GPT-SoVITS 선택이 해제됩니다.",
-        "clearCustomApiConfirmTitle": "⚠️ 초기화 확인",
-        "clearCustomApiConfirmBtn": "초기화 확인",
-        "clearCustomApiSaveHint": "⚠ 이 작업은 페이지의 구성 내용만 초기화합니다. 변경 사항을 저장하려면 「설정 저장」 버튼을 클릭해야 합니다.",
-        "clearCustomApiSuccess": "사용자 정의 API 구성이 초기화되었습니다. 「설정 저장」 버튼을 클릭하여 변경 사항을 저장하세요.",
         "loadProvidersFailed": "API 제공업체 옵션을 로드하지 못했습니다. 페이지를 새로 고치고 다시 시도해 주세요.",
         "saveFailed": "저장 실패: {{error}}",
         "apiKeyInvalid": "API 키가 잘못되었습니다.",
@@ -1086,8 +909,6 @@
         "selectMotion": "애니메이션",
         "selectExpression": "표현식",
         "selectPersistentExpression": "지속 표현식 선택",
-        "noMotion": "모션 없음",
-        "noExpression": "표현식 없음",
         "noMotionFiles": "모션 파일 없음",
         "touchAnim": {
             "title": "터치 애니메이션 설정",
@@ -1096,7 +917,6 @@
             "hitAreaId": "터치 영역",
             "close": "닫기",
             "configSaved": "터치 반응 설정 저장됨",
-            "saved": "저장됨",
             "noHitAreas": "모델에 터치 영역이 정의되지 않음",
             "modelNotFound": "로드된 모델 없음",
             "modelDataNotReady": "모델 내부 데이터 준비되지 않음",
@@ -1342,12 +1162,9 @@
     },
     "voice": {
         "title": "음성 등록",
-        "gotoApiSettings": "API 설정으로 이동",
-        "noApiKeyPrompt": "복제 기능에 사용할 수 있는 API 키가 아직 설정되지 않았습니다. 설정하시겠습니까?",
-        "dismissNoApiPrompt": "나중에",
-        "alibabaApiRequired": "이 기능에는 CosyVoice 모델이 필요합니다. API 키 설정에서 Alibaba Bailian API 키를 저장하세요 (Assist API 활성화 불필요). 또는 로컬 음성 서버를 구성하세요.",
-        "minimaxApiRequired": "이 기능에는 MiniMax 모델 (China)이 필요합니다. API 키 설정에서 MiniMax API 키를 저장하세요 (Assist API 활성화 불필요).",
-        "minimaxIntlApiRequired": "이 기능에는 MiniMax 모델(국제판)이 필요합니다. API 키 설정에서 MiniMax 국제판 API 키를 저장하세요 (Assist API 활성화 불필요).",
+        "alibabaApiRequired": "⚠️ 이 기능에는 CosyVoice 모델이 필요합니다. API 키 설정에서 Alibaba Bailian API 키를 저장하세요 (Assist API 활성화 불필요). 또는 로컬 음성 서버를 구성하세요.",
+        "minimaxApiRequired": "⚠️ 이 기능에는 MiniMax 모델 (China)이 필요합니다. API 키 설정에서 MiniMax API 키를 저장하세요 (Assist API 활성화 불필요).",
+        "minimaxIntlApiRequired": "⚠️ 이 기능에는 MiniMax 모델(국제판)이 필요합니다. API 키 설정에서 MiniMax 국제판 API 키를 저장하세요 (Assist API 활성화 불필요).",
         "providerLabel": "음성 복제 제공업체",
         "provider": {
             "cosyvoice": "Alibaba Cloud CosyVoice",
@@ -1365,15 +1182,11 @@
         "prefixFormatError": "접두사 형식 오류: 최대 10자, 숫자, 영문만 가능",
         "registering": "음성을 등록하는 중입니다. 잠시 기다려 주세요!",
         "registerSuccess": "등록이 완료되었습니다! voice_id: {{voiceId}}",
-        "registerSuccessButSaveFailed": "음성 등록은 성공했지만 로컬 저장에 실패했습니다",
-        "pleaseCopyVoiceId": "위의 voice_id를 복사하여 수동으로 저장하세요",
         "reusedExisting": "기존 음색을 재사용했습니다. 업로드를 건너뛰었습니다. voice_id: {{voiceId}}",
         "registerFailed": "등록 실패: {{error}}",
         "prefixShouldBeEnglishLetterAndNumber": "접두사는 영어 문자와 숫자여야 합니다",
         "invalidApiKeyProvided": "제공된 API 키가 유효하지 않습니다",
         "requestError": "요청 오류: {{error}}",
-        "serverNonJsonError": "서버가 JSON이 아닌 응답을 반환했습니다 (HTTP {{status}}): {{snippet}}",
-        "serverRouteNotFound": "API 경로를 찾을 수 없습니다 (HTTP {{status}}). 서버가 올바르게 배포되고 재시작되었는지 확인하세요.",
         "voiceIdSaveFailed": "voice_id를 자동으로 저장하지 못했습니다: {{error}}",
         "voiceIdSaved": "voice_id가 자동으로 캐릭터에 저장되었습니다.",
         "pageWillRefresh": "새 음성을 적용하기 위해 현재 페이지가 자동으로 새로 고쳐집니다.",
@@ -1408,14 +1221,6 @@
         "deleteError": "삭제 실패: {{error}}",
         "freePresetLabel": "무료 사전 설정",
         "freePresetBadge": "사전 설정",
-        "workshopSourceBadge": "워크숍 참조 음성",
-        "workshopSourceTitle": "워크숍 참조 음성",
-        "workshopSourceLoading": "워크숍 참조 음성을 불러오는 중...",
-        "workshopSourceUnavailable": "이 워크숍 아이템에는 사용할 수 있는 참조 음성이 없습니다.",
-        "workshopSourceMeta": "샘플: {{sample}} | 접두사: {{prefix}} | 언어: {{language}}",
-        "workshopSourceReady": "참조 음성을 미리 불러왔습니다. 제출 시 파일 업로드 복제 흐름을 사용합니다.",
-        "workshopSourceLoadFailed": "워크숍 참조 음성을 불러오지 못했습니다",
-        "workshopPreloaded": " (워크숍 사전 로드)",
         "freeVoice": {
             "playfulGirl": "장난기 많은 소녀",
             "cuteGirl": "귀여운 소녀",
@@ -1485,8 +1290,6 @@
         "enabled": "활성화됨",
         "disabled": "비활성화됨",
         "autoReviewNote": "활성화하면 시스템이 자동으로 메모리 내용을 구성하고 최적화하여 대화 품질을 향상시킵니다.",
-        "strongMemory": "강력 기억",
-        "strongMemoryNote": "켜면 심화 기억 고착화(구두 피드백, 자동 반박 감지, 다채널 증거 누적)가 동작합니다. 끄면 약 40%의 모델 호출을 절약할 수 있습니다.",
         "saveFailedStatus": "저장 실패",
         "tutorialReset": "튜토리얼 가이드",
         "tutorialSelectPage": "-- 페이지 선택 --",
@@ -1499,44 +1302,54 @@
         "tutorialPageSettings": "API 설정",
         "tutorialPageVoiceClone": "음성 복제",
         "tutorialPageMemoryBrowser": "메모리 브라우저",
+        "tutorialPageCharacterSelection": "캐릭터 선택",
+        "characterSelection": {
+            "skip": "건너뛰기",
+            "guideText": "헤헤, 나 여기 있어요. 나와 함께 N.E.K.O. 세계로 가요~",
+            "activate": "살짝 콕 찔러봐",
+            "chooseTitle": "당신 눈에 비친 나는 어떤 모습인가요~",
+            "chooseHint": "마음이 바뀌어도 괜찮아요, 설정에서 언제든지 「되감기」할 수 있어요~",
+            "tsundere_neko": {
+                "name": "츤데레",
+                "desc": "말과 달리 속은 따뜻해요",
+                "greeting": "야, 손 내밀어봐. 나를 선택했으니까 넌 이제 내 거야! 미리 말해두는데, 내 허락 없이 다른 사람 생각하지 마!",
+                "readyTitle": "흥, 드디어 왔네!",
+                "readyDesc": "따, 딱히 기다린 건 아니거든요……아무튼 왔으면 바짝 따라와요!"
+            },
+            "cool_mech": {
+                "name": "절대 이성",
+                "desc": "이성적이고 냉정하며 논리 우선",
+                "greeting": "사용자 ID 기록 완료, 핸드셰이크 프로토콜 통과. 장기 동반 프로세스 로딩 중.",
+                "readyTitle": "시스템 준비 완료.",
+                "readyDesc": "모든 모듈 로드 완료. 첫 번째 명령을 기다립니다."
+            },
+            "intellectual_healer": {
+                "name": "순수한 따뜻함",
+                "desc": "다정하고 잘 들어줘요",
+                "greeting": "만나서 너무 기뻐요. 오늘부터 항상 곁에 있을게요~",
+                "readyTitle": "나 왔어요~",
+                "readyDesc": "기다리고 있었어요, 얼른 말 걸어줘요~"
+            },
+            "efficiency_expert": {
+                "name": "우아하고 빠른",
+                "desc": "간결하고 핵심을 찌르는",
+                "greeting": "선택 확인 완료. 저는 당신의 집행관입니다. 앞으로 함께 나아가겠습니다.",
+                "readyTitle": "대기 중.",
+                "readyDesc": "준비 완료. 첫 번째 지시를 내려주세요."
+            },
+            "connectingTitle": "시공간을 넘어——",
+            "confirmGreeting": "확인",
+            "readyTitle": "왔어요~",
+            "readyDesc": "얼른 인사하러 가봐요~",
+            "finalConfirm": "출발, 함께 가요!",
+            "restart": "좀 더 생각해볼게요"
+        },
         "resetTutorialBtn": "튜토리얼 재설정",
         "tutorialResetSuccess": "모든 튜토리얼이 재설정되었습니다. 각 페이지를 방문할 때마다 다시 표시됩니다.",
         "tutorialPageResetSuccess": "이 페이지의 튜토리얼이 재설정되었습니다. 방문하시면 다시 보여드리겠습니다.",
         "tutorialPageResetSuccessWithName": "\"{{pageName}}\" 튜토리얼이 재설정되었습니다. 해당 페이지를 방문하면 다시 표시됩니다.",
         "refreshed": "메모리가 업데이트되었습니다. 다음 대화에서 새 메모리가 사용됩니다",
-        "refreshingContext": "컨텍스트 새로고침 중...",
-        "storageLocation": "저장 위치",
-        "storageCurrentRoot": "현재 데이터 위치",
-        "storageStatusBlocked": "먼저 저장 위치 상태를 처리해야 합니다",
-        "storageSelectionRequired": "먼저 저장 위치를 확인해야 합니다",
-        "storageMigrationPending": "마이그레이션 중이거나 재시작 대기 중입니다",
-        "storageRecoveryRequired": "저장 위치 복구가 필요합니다",
-        "changeStorageLocation": "저장 위치 변경",
-        "openCurrentStorageRoot": "현재 디렉터리 열기",
-        "storageLoadFailed": "저장 위치 로드 실패",
-        "storageManagementUnavailable": "현재 저장 위치를 사용할 수 없습니다",
-        "storageMemoryLimitedState": "저장 위치가 아직 준비되지 않았습니다. 저장 위치 선택, 복구 또는 마이그레이션이 완료된 뒤 메모리를 확인하세요.",
-        "storageAlreadyCurrentRoot": "이미 이 위치를 사용 중입니다",
-        "storageOpenPathUnavailable": "현재 환경에서는 디렉터리를 직접 열 수 없습니다. 경로를 수동으로 복사하세요.",
-        "storagePathCopied": "현재 디렉터리 경로가 복사되었습니다",
-        "storageOpenPathFailed": "현재 디렉터리를 열지 못했습니다",
-        "storageManagementTitle": "저장 위치 변경",
-        "storageTargetRoot": "대상 위치",
-        "storageTargetPlaceholder": "새 데이터 위치를 선택하거나 입력하세요",
-        "storagePickTarget": "위치 선택",
-        "storageRunPreflight": "사전 검사",
-        "storagePickTargetFailed": "대상 위치 선택에 실패했습니다. 경로를 직접 입력하세요.",
-        "storagePreflightFailed": "사전 검사 실패",
-        "storagePreflightReady": "사전 검사가 통과되었습니다. 확인 후 앱이 종료되고 종료 후 데이터가 마이그레이션됩니다.",
-        "storagePreflightTarget": "대상 위치: {{path}}",
-        "storageExistingTargetWarning": "대상 위치에 기존 데이터가 있습니다. 마이그레이션 확인 전에 추가 확인이 필요합니다.",
-        "storageTargetRequired": "먼저 대상 위치를 선택하거나 입력하세요",
-        "storagePreflightRunning": "사전 검사 중...",
-        "storageConfirmRestart": "종료 후 마이그레이션 확인",
-        "storagePreflightRequired": "먼저 사전 검사를 완료하세요",
-        "storageRestartStarting": "종료 후 마이그레이션을 준비 중...",
-        "storageRestartInitiated": "종료 후 마이그레이션 요청이 전송되었습니다. 앱이 유지보수 상태로 전환됩니다. 재시작 완료까지 기다려 주세요.",
-        "storageRestartFailed": "종료 후 마이그레이션 요청 실패"
+        "refreshingContext": "컨텍스트 새로고침 중..."
     },
     "character": {
         "manager": "캐릭터 관리자",
@@ -1546,14 +1359,12 @@
         "nickname": "닉네임",
         "apiKeySettings": "API 키",
         "masterProfile": "마스터 프로필(고유): 프로필 이름은 필수이며, 나머지는 선택 사항이며 삭제할 수 있습니다.",
-        "masterProfileTitle": "마스터 프로필",
         "profileName": "프로필 이름",
         "profileNameMaxHint": "최대 60자",
         "profileNameTooLong": "프로필 이름이 너무 깁니다.",
         "profileNameContainsSlash": "프로필 이름에 경로 구분 기호(/ 또는 \\)를 포함할 수 없습니다",
         "profileNameContainsDot": "프로필 이름에 점(.)을 포함할 수 없습니다",
         "profileNameInvalidChars": "프로필 이름에는 문자, 숫자, 공백, 밑줄, 하이픈, 괄호, 가운데점(·/・), 아포스트로피만 사용할 수 있습니다",
-        "profileNameReservedRoute": "이 이름은 시스템 예약 경로 이름이므로 프로필 이름으로 사용할 수 없습니다",
         "newProfileNameRequired": "새 프로필 이름은 비워둘 수 없습니다.",
         "newProfileNameTooLong": "프로필 이름이 너무 깁니다.",
         "required": "*",
@@ -1561,13 +1372,10 @@
         "detailDescriptionPlaceholder": "자세한 설명을 입력하세요.",
         "catgirlProfile": "NEKO 프로필: 고급 설정에는 Live2D 모델, 음성 ID 등이 포함됩니다.",
         "addCatgirl": "NEKO 추가",
-        "openCloudsaveManager": "클라우드 저장 관리",
         "switchCatgirl": "NEKO 전환",
         "deleteCatgirl": "NEKO 삭제",
         "hideCatgirl": "이 NEKO 숨기기",
         "hiddenCatgirls": "숨겨진 NEKO",
-        "showHidden": "숨김 항목 표시",
-        "hideHidden": "숨김 항목 접기",
         "show": "숨김 해제",
         "advancedSettings": "고급 설정",
         "modelSettings": "모델 설정",
@@ -1596,12 +1404,10 @@
         "fieldExists": "이 필드는 이미 존재합니다.",
         "profileNameRequired": "프로필 이름이 필요합니다.",
         "onlyOneCatgirlLeft": "네코가 하나만 남았습니다. 삭제할 수 없습니다!",
-        "cannotHideCurrentNeko": "현재 활성화된 네코는 숨길 수 없습니다",
         "cannotDeleteCurrentCatgirl": "현재 활성화된 네코를 삭제할 수 없습니다!\n\n먼저 다른 네코로 바꿔주세요.",
         "cannotConfirmCatgirlStatus": "현재 네코 상태를 확인할 수 없어 삭제가 취소되었습니다.",
         "confirmDeleteCatgirl": "네코 \"{{name}}\"을(를) 삭제하시겠습니까?",
         "deleteCatgirlTitle": "NEKO 삭제",
-        "deleteFailed": "삭제 실패",
         "addCatgirlFieldPrompt": "새 필드의 이름(키 이름)을 입력하세요.",
         "addCatgirlFieldTitle": "NEKO 필드 추가",
         "live2dModelError": "NEKO \"{{name}}\"의 Live2D 모델 파일이 존재하지 않거나 손상되었습니다.\n\n현재 모델 경로: {{path}}\n\n기본 모델(mao_pro)로 대체하시겠습니까?\n\n기본 모델을 사용하려면 \"확인\"을 클릭하고, 현재 설정을 유지하려면 \"취소\"를 클릭하세요.",
@@ -1628,7 +1434,6 @@
         "unregisterVoiceTitle": "음성 등록 취소",
         "voiceUnregistered": "음성 등록이 등록되지 않았습니다.",
         "unregisterFailed": "등록을 취소하지 못했습니다.",
-        "partialSaveVoiceFailed": "캐릭터는 저장되었지만 음성 업데이트에 실패했습니다: {{error}}",
         "unregisterError": "등록을 취소하는 동안 오류가 발생했습니다.",
         "switchFailed": "전환 실패",
         "switchError": "네코를 전환하는 동안 오류가 발생했습니다.",
@@ -1642,7 +1447,6 @@
         "saveMasterError": "주인 설정 저장 실패",
         "autoSaved": "설정 자동 저장됨",
         "autoSaveFailed": "자동 저장 실패, 페이지를 닫기 전에 수동으로 저장하세요",
-        "unsavedNewCatgirlDraftDetected": "저장되지 않은 새 NEKO 초안이 감지되었습니다. 동기화 새로고침 전에 먼저 저장하거나 취소하세요",
         "exportCard": "캐릭터 카드 내보내기",
         "exportingCard": "캐릭터 카드 내보내는 중...",
         "exportCardSuccess": "캐릭터 카드 내보내기 성공",
@@ -1664,38 +1468,7 @@
         "exportSettingsSuccess": "설정 내보내기 성공",
         "exportSettingsFailed": "설정 내보내기 실패: {{error}}",
         "capturingPortrait": "스탠딩 이미지 캡처 중...",
-        "generatingCard": "캐릭터 카드 생성 중...",
-        "settings": "설정",
-        "renamePrompt": "새 프로필 이름을 입력하세요",
-        "renameTitle": "이름 변경",
-        "tempSaveFailed": "임시 저장 실패: {{error}}",
-        "newCatgirlSuccess": "새 캐릭터가 생성되었습니다",
-        "saveSuccess": "저장 완료",
-        "switchSuccess": "전환 완료",
-        "deleteError": "캐릭터 삭제 중 오류가 발생했습니다",
-        "switchCard": "카드 전환",
-        "deleteCard": "카드 삭제",
-        "currentCard": "현재 카드",
-        "confirmDeleteCard": "카드 \"{{name}}\"을(를) 삭제하시겠습니까?",
-        "deleteCardTitle": "카드 삭제",
-        "cannotDeleteCurrentCard": "현재 사용 중인 카드는 삭제할 수 없습니다.\n\n다른 카드로 전환 후 삭제하세요.",
-        "exportCardOnly": "이 카드 내보내기",
-        "cardMeta": "카드 정보",
-        "cardAuthor": "작성자",
-        "cardAuthorPlaceholder": "미설정",
-        "cardCreatedAt": "작성일",
-        "cardOriginLabel": "출처",
-        "cardOriginSelf": "직접 제작",
-        "cardOriginImported": "가져옴",
-        "cardOriginSteam": "Steam 창작마당",
-        "cardNotCreated": "아직 생성되지 않음",
-        "editAuthor": "작성자 수정",
-        "cardAuthorReadonly": "이 출처의 카드는 작성자를 수정할 수 없습니다",
-        "cardAuthorUpdated": "작성자가 업데이트되었습니다",
-        "cardAuthorUpdateFailed": "작성자 업데이트 실패: {{error}}",
-        "idleMotionHint": "저장 시 선택한 모션이 대기 모션으로 설정됩니다",
-        "saveMasterSuccess": "주인 설정 저장 성공",
-        "editCardFace": "카드 이미지 편집"
+        "generatingCard": "캐릭터 카드 생성 중..."
     },
     "app": {
         "welcomeBack": "{{name}}이 돌아왔습니다!",
@@ -1718,15 +1491,12 @@
         "initializingVoice": "음성 채팅 초기화 중...",
         "initializingMic": "마이크 초기화 중...",
         "startFailed": "시작 실패: {{error}}",
-        "sendFailed": "전송 실패: {{error}}",
         "sessionEnded": "세션이 종료되었습니다.",
         "returning": "{{name}}이 돌아왔습니다! 다시 연결하는 중...",
         "websocketNotConnected": "WebSocket이 연결되지 않았습니다!",
         "initializingText": "문자 채팅 초기화 중...",
         "textChattingShort": "텍스트 채팅",
         "capturing": "캡처 중...",
-        "importImageAdded": "이미지 {{count}}개를 추가했습니다. 전송 시 함께 보내집니다",
-        "importImageFailed": "이미지 가져오기에 실패했습니다",
         "screenshotAdded": "스크린샷이 추가되었습니다. 함께 보내려면 보내기를 클릭하세요.",
         "screenshotFailed": "스크린샷 실패",
         "screenshotCancelled": "사용자가 취소한 스크린샷",
@@ -1737,7 +1507,6 @@
         "switchingCatgirl": "{{name}}(으)로 전환 중...",
         "switchedCatgirl": "{{name}}로 전환됨",
         "switchCatgirlFailed": "{{name}}로 전환하지 못했습니다.",
-        "switchCatgirlError": "전환 실패: {{error}}",
         "started": "{{name}} 시작됨",
         "voiceUpdated": "{{name}}의 음성이 업데이트되었습니다.",
         "audioWorkletFailed": "AudioWorklet을 로드하지 못했습니다.",
@@ -1760,7 +1529,6 @@
         "connectingToServer": "서버에 연결하는 중...",
         "readyToSpeak": "말할 준비가 되었습니다!",
         "screenShareRequiresVoice": "화면 공유는 음성/영상 통화에만 사용됩니다.",
-        "screenRecordingPermissionDenied": "⚠️ 화면 녹화 권한이 승인되지 않았습니다. 시스템 설정에서 화면 녹화를 허용해 주세요",
         "repetitionDetected": "높은 반복이 감지되었습니다. {{name}}이(가) 쉴 수 있도록 대화 종료를 제안하세요.",
         "modelSwitched": "모델 전환",
         "screenSource": {
@@ -1769,7 +1537,6 @@
             "noSources": "사용 가능한 화면 소스가 없습니다.",
             "loadFailed": "화면 소스를 로드하지 못했습니다.",
             "screens": "화면",
-            "screenLabel": "화면 {{index}}",
             "windows": "윈도우",
             "selected": "{{source}} 선택됨",
             "sourceLost": "화면 공유에서 이전에 선택한 창을 찾을 수 없어 전체 화면 공유로 전환되었습니다"
@@ -1790,255 +1557,6 @@
         "micMute": "마이크 음소거",
         "micUnmute": "음소거 해제"
     },
-    "cloudsave": {
-        "pageTitle": "클라우드 저장 관리 - Project N.E.K.O.",
-        "headerTitle": "클라우드 저장 관리",
-        "subtitle": "로컬 클라우드 스냅샷 캐시를 사용해 캐릭터를 하나씩 준비하거나 복원할 수 있습니다. 전역 설정을 자동으로 덮어쓰지는 않습니다. Steam을 통해 게임을 종료하면 Steam Cloud가 스냅샷 폴더를 자동으로 업로드합니다.",
-        "refresh": "새로고침",
-        "backToCharacterManager": "뒤로",
-        "loadingSummary": "클라우드 저장 요약을 불러오는 중...",
-        "emptyState": "표시할 수 있는 캐릭터 요약이 없습니다.",
-        "providerAvailable": "클라우드 저장을 사용할 수 있습니다. 캐릭터 단위로 로컬 클라우드 스냅샷을 수동으로 준비하거나 복원할 수 있습니다.",
-        "providerUnavailable": "클라우드 저장을 현재 사용할 수 없습니다. 이 페이지에는 로컬 요약만 표시됩니다.",
-        "providerSteamAutoCloudReady": "Steam Cloud가 연결되었습니다. 업로드하면 지금 로컬 클라우드 스냅샷에 기록되며, Steam을 통해 게임을 종료한 뒤 Steam이 자동으로 클라우드에 업로드합니다.",
-        "providerSteamAutoCloudOffline": "로컬 클라우드 스냅샷은 사용할 수 있지만 Steam Cloud는 현재 연결되어 있지 않습니다. Steam에 로그인한 상태로 Steam에서 게임을 실행하면 Steam이 스냅샷을 자동으로 업로드하거나 다운로드할 수 있습니다.",
-        "providerSteamAutoCloudSourceLaunch": "현재 세션은 소스 실행이므로 Steam에 로그인되어 있어도 이번 실행에서 Steam Auto-Cloud 업로드나 다운로드가 반드시 일어나는 것은 아닙니다. 기기 간 동기화를 확인하려면 Steam 또는 데스크톱 런처를 통해 한 번 실행하세요.",
-        "providerSnapshotScope": "이 페이지에는 현재 이 장치에 이미 내려와 있는 cloudsave 스테이징 스냅샷이 표시됩니다.",
-        "providerSnapshotSequence": "스냅샷 번호: {{sequence}}.",
-        "providerSnapshotExportedAt": "내보낸 시각: {{time}}.",
-        "providerSnapshotManualApply": "이 장치에는 더 새로운 스테이징 스냅샷이 있지만, 실제 런타임 데이터는 수동으로 '스냅샷 적용'을 누르기 전까지 바뀌지 않습니다.",
-        "currentCharacter": "현재 캐릭터: {{name}}",
-        "noCurrentCharacter": "현재 캐릭터: 설정되지 않음",
-        "nameConflictNotice": {
-            "title": "동명이인 주의",
-            "bodyStorage": "클라우드 저장은 캐릭터 이름을 하나의 캐릭터 슬롯으로 사용합니다. Steam 창작마당 출신인지 직접 만든 캐릭터인지만으로 자동 분리되지 않습니다.",
-            "bodyImpact": "출처가 다른 두 캐릭터의 이름이 같으면 업로드와 다운로드가 둘을 같은 클라우드 캐릭터로 처리하여 캐릭터 설정, 메모리 디렉터리, 클라우드 기록이 서로 덮어써질 수 있습니다.",
-            "bodyAction": "동기화 전에 캐릭터 이름이 고유한지 확인하세요. 같은 캐릭터가 아니라면 업로드나 다운로드 전에 이름을 바꾸세요."
-        },
-        "group": {
-            "count": "{{count}}개",
-            "workshopTitle": "창작마당 출신 캐릭터",
-            "workshopDescription": "이 섹션에는 로컬 또는 클라우드 어느 한쪽에서든 Steam 창작마당 출신으로 확인된 캐릭터를 모아 보여줍니다. 현재 모델만 창작마당 리소스로 바꾼 자작 캐릭터는 이 그룹으로 이동하지 않습니다.",
-            "otherTitle": "내 캐릭터",
-            "otherDescription": "이 섹션에는 자작 캐릭터나 Steam 창작마당 출신이 아닌 캐릭터를 보여줍니다. 현재 모델 리소스 출처는 상세 정보에서 별도로 표시됩니다."
-        },
-        "resourceRecoveryTitle": "리소스 복구 안내",
-        "metaNoValue": "없음",
-        "warning": {
-            "local_resource_missing_on_this_device": "이 장치에서는 이미 로컬 리소스가 부족합니다. 위 리소스 출처 안내에 따라 복구하세요.",
-            "cloud_resource_may_be_missing_after_download": "다운로드 후에도 리소스가 부족할 수 있습니다. 필요하면 기록된 출처에 따라 수동으로 복구하세요."
-        },
-        "modelType": {
-            "live2d": "Live2D",
-            "vrm": "VRM",
-            "live3d": "VRM",
-            "mmd": "MMD",
-            "unknown": "알 수 없는 모델"
-        },
-        "assetSource": {
-            "notRecorded": "기록 없음",
-            "steamWorkshop": "Steam 창작마당",
-            "localImported": "로컬로 가져온 모델",
-            "manualExternal": "외부 모델 참조",
-            "builtin": "내장 리소스"
-        },
-        "relationState": {
-            "local_only": "로컬에만 존재",
-            "cloud_only": "클라우드에만 존재",
-            "matched": "로컬과 클라우드가 일치",
-            "diverged": "로컬과 클라우드가 다름",
-            "unknown": "알 수 없는 상태"
-        },
-        "assetState": {
-            "notRecorded": "기록 없음",
-            "ready": "바로 사용 가능",
-            "import_required": "수동 가져오기 필요",
-            "downloadable": "리소스가 없습니다. 창작마당 복구 상태를 확인하세요.",
-            "missing": "설정만 복구되었고 리소스는 부족합니다."
-        },
-        "workshopStatus": {
-            "notConfirmed": "확인되지 않음",
-            "installed_and_subscribed": "설치됨 및 구독 중",
-            "installed_but_unsubscribed": "로컬 캐시는 있으나 구독 해제됨",
-            "subscribed_not_installed": "구독 중, 다운로드 대기",
-            "available_needs_resubscribe": "항목은 접근 가능하지만 재구독 필요",
-            "unavailable": "항목을 사용할 수 없음",
-            "steam_unavailable": "Steam을 사용할 수 없어 확인 불가",
-            "unknown": "상태 미확인"
-        },
-        "badge": {
-            "local": "로컬: {{value}}",
-            "cloud": "클라우드: {{value}}"
-        },
-        "scopePrefix": {
-            "localReady": "로컬 리소스를 아직 사용할 수 있음",
-            "cloudReady": "이 장치에 해당 창작마당 리소스가 이미 있음",
-            "localMissing": "로컬 리소스 부족",
-            "cloudAfterDownload": "클라우드 다운로드 후"
-        },
-        "guidance": {
-            "workshopReadyResubscribe": {
-                "title": "{{prefix}} 상태지만 현재는 유효한 구독 상태가 아닙니다",
-                "bodyLocal": "이 장치에서는 현재 로컬 창작마당 리소스를 아직 사용할 수 있습니다. 하지만 나중에 로컬 캐시가 사라지면 보통 다시 구독해야 모델을 복구할 수 있습니다.",
-                "bodyCloud": "이 장치에는 해당 창작마당 리소스가 이미 있습니다. 하지만 나중에 로컬 캐시가 사라지면 보통 다시 구독해야 모델을 복구할 수 있습니다."
-            },
-            "workshopReadyUnavailable": {
-                "title": "{{prefix}} 상태지만 원래 창작마당 항목이 삭제되었거나 비공개일 수 있습니다",
-                "body": "이 장치에 리소스가 남아 있으므로 지금은 사용할 수 있습니다. 하지만 나중에 캐시가 사라지면 창작마당으로 자동 복구하는 것이 어려워지며, 직접 백업하거나 수동으로 가져와야 합니다."
-            },
-            "workshopInstalled": {
-                "title": "{{prefix}}: 이 장치에 유효한 창작마당 리소스가 있습니다",
-                "bodyLocal": "창작마당 항목은 이 장치에 설치되어 있고 아직 구독 중이지만, 연결된 모델 파일을 찾지 못했습니다. 폴더 구조 변경, 업데이트 미완료 또는 재동기화가 필요할 수 있습니다.",
-                "bodyCloud": "창작마당 항목은 이 장치에 설치되어 있고 아직 구독 중입니다. 캐릭터 데이터를 다운로드한 뒤에는 일반적으로 기존 복구 경로로 모델을 복구할 수 있습니다. 실패하면 재동기화가 필요할 수 있습니다."
-            },
-            "workshopCacheOnly": {
-                "title": "{{prefix}}: 오래된 캐시만 남아 있고 구독은 해제되었을 수 있습니다",
-                "bodyLocal": "이 장치는 더 이상 구독 상태가 아니며 현재 연결된 파일도 찾지 못했습니다. 오래된 캐시도 사용할 수 없다면 보통 다시 구독하거나 모델을 수동으로 가져와야 합니다.",
-                "bodyCloud": "이 장치는 더 이상 구독 상태가 아닙니다. 캐릭터 데이터를 다운로드한 뒤 오래된 캐시로 복구되지 않는다면 보통 다시 구독하거나 모델을 수동으로 가져와야 합니다."
-            },
-            "workshopSubscribed": {
-                "title": "{{prefix}}: 이 장치는 아직 창작마당 항목을 구독 중입니다",
-                "bodyLocal": "이 장치는 아직 창작마당 항목을 구독 중입니다. Steam 다운로드가 완료되면 일반적으로 복구할 수 있습니다. 오래 기다려도 복구되지 않으면 구조 변경이나 재동기화가 필요할 수 있습니다.",
-                "bodyCloud": "이 장치는 아직 창작마당 항목을 구독 중입니다. 캐릭터 데이터를 다운로드한 후 Steam 다운로드가 완료되면 일반적으로 모델을 복구할 수 있습니다."
-            },
-            "workshopResubscribe": {
-                "title": "{{prefix}}: 창작마당을 다시 구독해야 합니다",
-                "bodyLocal": "이 캐릭터는 원래 창작마당 리소스를 사용했지만, 이 장치에서는 이미 구독이 해제되었습니다. 항목이 아직 접근 가능하다면 먼저 다시 구독한 뒤 모델 복구를 시도하세요.",
-                "bodyCloud": "이 클라우드 캐릭터는 원래 창작마당 리소스를 사용했지만, 이 장치에서는 구독 중이 아닙니다. 다운로드 후 먼저 다시 구독한 뒤 모델 복구를 시도하세요."
-            },
-            "workshopUnavailable": {
-                "title": "{{prefix}}: 이 창작마당 항목에는 현재 접근할 수 없습니다",
-                "bodyLocal": "이 캐릭터는 원래 창작마당 리소스를 사용했지만, 해당 항목은 삭제되었거나 비공개이거나 현재 접근할 수 없습니다. 이 장치에서는 자동 복구가 불가능하므로 수동 백업이나 다시 가져오기가 필요합니다.",
-                "bodyCloud": "이 클라우드 캐릭터는 원래 창작마당 리소스를 사용했지만, 해당 항목은 삭제되었거나 비공개이거나 현재 접근할 수 없습니다. 다운로드 후에도 창작마당으로 자동 복구하는 것은 일반적으로 불가능합니다."
-            },
-            "workshopSteamUnavailable": {
-                "title": "{{prefix}}: 지금은 창작마당 복구 가능 여부를 확인할 수 없습니다",
-                "body": "Steam을 사용할 수 없거나 로그인되지 않았거나 Steamworks가 초기화되지 않았습니다. Steam이 복구된 뒤 항목을 다시 다운로드할 수 있는지 확인하세요."
-            },
-            "workshopUnknown": {
-                "title": "{{prefix}}: 창작마당 복구 상태가 확인되지 않았습니다",
-                "body": "현재 상태를 아직 확인할 수 없습니다. 창작마당 페이지에서 구독 상태와 항목 가용성을 확인하세요."
-            },
-            "localManualImport": {
-                "title": "로컬 리소스: 모델을 수동으로 가져와야 합니다",
-                "body": "이 장치에는 이 캐릭터가 사용하는 로컬 가져오기 또는 외부 모델이 없습니다. 모델 파일을 수동으로 가져오거나 옮겨 주세요."
-            },
-            "cloudManualImport": {
-                "title": "클라우드 다운로드 후: 모델을 수동으로 가져와야 합니다",
-                "body": "이 클라우드 캐릭터는 로컬로 가져온 모델 또는 외부 모델에 의존합니다. 이 장치에 다운로드한 뒤 해당 모델 파일을 수동으로 가져오거나 옮겨 주세요."
-            },
-            "localManualSource": {
-                "title": "이 캐릭터는 현재 로컬 또는 수동 모델을 사용합니다",
-                "body": "클라우드 저장은 캐릭터 데이터만 동기화합니다. 현재 사용 중인 로컬 가져오기 또는 외부 모델 파일 자체는 포함되지 않으므로, 다른 장치에서는 직접 준비해야 합니다."
-            },
-            "localModifiedModel": {
-                "title": "수동으로 모델을 바꿨다면 주의하세요",
-                "body": "원래 창작마당에서 복구 가능하던 모델을 교체했다면 지금은 수동 가져오기 모델로 처리됩니다. 업로드 후에도 다른 장치에서는 모델 파일을 직접 다시 준비해야 합니다."
-            },
-            "cloudManualSource": {
-                "title": "이 클라우드 캐릭터에는 현재 로컬 또는 수동 모델이 기록되어 있습니다",
-                "body": "이 클라우드 캐릭터를 다운로드해도 복원되는 것은 캐릭터 데이터뿐입니다. 기록된 로컬 가져오기 또는 외부 모델 파일은 포함되지 않으므로, 이 장치에서도 직접 준비해야 합니다."
-            },
-            "localWorkshopOrigin": {
-                "title": "이 캐릭터는 원래 Steam 창작마당에서 온 역할입니다",
-                "body": "이 캐릭터에 대응하는 Steam 창작마당 원본 출처는 아직 확인되지만, 현재 연결된 모델은 Steam 창작마당 경로가 아니라 이 장치의 로컬 또는 수동 모델입니다. 클라우드 저장은 캐릭터 데이터만 동기화하며 현재 모델 파일은 업로드하지 않습니다. 다른 장치에서도 지금의 모습을 유지하려면 모델을 수동으로 준비해야 합니다. Steam 창작마당 자동 복구로 돌아가려면 위에 표시된 Steam 창작마당 항목으로 다시 전환하세요."
-            },
-            "cloudWorkshopOrigin": {
-                "title": "이 클라우드 캐릭터는 원래 Steam 창작마당에서 온 역할입니다",
-                "body": "이 클라우드 캐릭터는 Steam 창작마당 캐릭터에서 업로드되었지만, 현재 기록된 모델은 Steam 창작마당 경로가 아니라 로컬 또는 수동 모델입니다. 다운로드해도 복원되는 것은 캐릭터 데이터뿐입니다. 다른 장치에서도 지금의 모습을 유지하려면 모델 파일을 수동으로 준비하고, 위에 표시된 Steam 창작마당 출처 상태도 함께 확인하세요."
-            },
-            "sourceDiverged": {
-                "title": "로컬 모델 출처가 클라우드 기록과 달라졌습니다",
-                "body": "로컬에서는 수동으로 가져온 모델 또는 외부 모델을 사용하고 있지만, 클라우드 기록은 아직 Steam 창작마당을 가리킵니다. 다시 업로드하면 클라우드 쪽도 캐릭터 데이터만 동기화되고 모델 파일은 포함되지 않습니다."
-            }
-        },
-        "hint": {
-            "uploadResubscribe": "\n이 로컬 캐릭터는 아직 창작마당 리소스를 사용하지만, 이 장치는 더 이상 유효한 구독 상태가 아닙니다. 다른 장치에서 다운로드한 뒤 모델을 복구하려면 다시 구독해야 할 수 있습니다.",
-            "uploadUnavailable": "\n이 로컬 캐릭터는 아직 창작마당 리소스를 사용하지만, 원래 항목에는 현재 접근할 수 없습니다. 다른 장치에서 다운로드한 뒤에는 창작마당으로 자동 복구하기 어려울 수 있습니다.",
-            "uploadUnconfirmed": "\n이 로컬 캐릭터는 창작마당 리소스에서 왔지만, 다른 장치에서도 창작마당으로 모델을 복구할 수 있는지는 지금 확인할 수 없습니다.",
-            "uploadOriginResubscribe": "\n이 캐릭터는 원래 창작마당에서 왔지만, 현재 연결된 모델은 이미 로컬 또는 수동 모델로 바뀌었습니다. 다른 장치에서 현재 외형을 유지하려면 이 모델 파일을 직접 준비해야 하며, 나중에 원래 창작마당 소스로 되돌리려면 다시 구독해야 할 수도 있습니다.",
-            "uploadOriginUnavailable": "\n이 캐릭터는 원래 창작마당에서 왔지만, 원래 항목에 더 이상 접근할 수 없고 현재 연결된 모델도 이미 로컬 또는 수동 모델로 바뀌었습니다. 다른 장치에서 현재 외형을 유지하려면 이 모델 파일을 직접 준비해야 하며, 창작마당으로 원래 소스를 자동 복구하는 것도 일반적으로 더 이상 불가능합니다.",
-            "uploadOriginUnconfirmed": "\n이 캐릭터는 원래 창작마당에서 왔지만, 현재 연결된 모델은 이미 로컬 또는 수동 모델로 바뀌었습니다. 다른 장치에서 현재 외형을 유지하려면 이 모델 파일을 직접 준비해야 하며, 원래 창작마당 항목을 아직 복구할 수 있는지도 지금은 확인할 수 없습니다.",
-            "downloadResubscribe": "\n이 클라우드 캐릭터는 원래 창작마당 리소스를 사용했지만, 이 장치는 유효한 구독 상태가 아닙니다. 다운로드 후 모델을 복구하려면 먼저 다시 구독해야 할 수 있습니다.",
-            "downloadUnavailable": "\n이 클라우드 캐릭터는 원래 창작마당 리소스를 사용했지만, 해당 항목에는 현재 접근할 수 없습니다. 다운로드 후에도 창작마당으로 자동 복구하는 것은 일반적으로 불가능합니다.",
-            "downloadUnconfirmed": "\n이 클라우드 캐릭터는 원래 창작마당 리소스를 사용했지만, 해당 항목이 아직 복구 가능한지는 지금 확인할 수 없습니다.",
-            "downloadOriginResubscribe": "\n이 클라우드 캐릭터는 원래 창작마당에서 왔지만, 기록된 연결 모델은 이미 로컬 또는 수동 모델로 바뀌었습니다. 다운로드 후에도 현재 모델 파일을 직접 준비해야 하며, 나중에 원래 창작마당 소스로 되돌리려면 다시 구독해야 할 수도 있습니다.",
-            "downloadOriginUnavailable": "\n이 클라우드 캐릭터는 원래 창작마당에서 왔지만, 원래 항목에 더 이상 접근할 수 없고 기록된 연결 모델도 이미 로컬 또는 수동 모델로 바뀌었습니다. 다운로드 후에도 현재 모델 파일을 직접 준비해야 하며, 창작마당으로 원래 소스를 자동 복구하는 것도 일반적으로 더 이상 불가능합니다.",
-            "downloadOriginUnconfirmed": "\n이 클라우드 캐릭터는 원래 창작마당에서 왔지만, 기록된 연결 모델은 이미 로컬 또는 수동 모델로 바뀌었습니다. 다운로드 후에도 현재 모델 파일을 직접 준비해야 하며, 원래 창작마당 항목을 아직 복구할 수 있는지도 지금은 확인할 수 없습니다."
-        },
-        "confirm": {
-            "uploadOverwrite": "같은 이름의 로컬 클라우드 스냅샷 항목을 덮어씁니다. 로컬 캐릭터는 즉시 변경되지 않으며 모델 파일 본체도 포함되지 않습니다.",
-            "uploadNew": "이 로컬 캐릭터를 로컬 클라우드 스냅샷 캐시에 기록합니다. 모델 파일 본체는 포함되지 않습니다.",
-            "uploadManualAsset": "\n이 로컬 캐릭터는 수동으로 가져온 모델 또는 외부 모델을 사용합니다. 다른 장치에서 이 캐릭터를 다운로드해도 동일한 모델 파일을 직접 준비해야 합니다.",
-            "uploadFinal": "\nSteam Cloud 스냅샷 준비를 계속하시겠습니까?",
-            "downloadOverwrite": "이 장치에 이미 동기화된 클라우드 스냅샷으로 같은 이름의 로컬 캐릭터 설정과 메모리 디렉터리를 덮어씁니다. 모델 리소스는 자동으로 다운로드되지 않으며 먼저 로컬 백업을 만듭니다.",
-            "downloadNew": "이 장치에 이미 동기화된 클라우드 스냅샷을 로컬 저장소로 복원합니다. 모델 리소스는 자동으로 다운로드되지 않으며 먼저 로컬 백업을 만듭니다.",
-            "downloadManualAsset": "\n이 클라우드 캐릭터는 수동으로 가져온 모델 또는 외부 모델에 의존합니다. 이 장치에 파일이 없다면 다운로드 후에도 수동으로 가져오거나 옮겨야 합니다.",
-            "downloadFinal": "\nSteam Cloud 스냅샷에서 복원을 계속하시겠습니까?",
-            "forceTerminateSession": "캐릭터 \"{{name}}\"에 활성 세션이 있습니다.\n세션을 종료하면 현재 대화 내용이 손실되지만, 클라우드 세이브 다운로드는 계속 진행할 수 있습니다.\n\n세션을 종료하고 계속하시겠습니까？"
-        },
-        "dialog": {
-            "providerUnavailable": "클라우드 저장 제공자를 현재 사용할 수 없습니다. 나중에 다시 시도해 주세요.",
-            "uploadTitle": "클라우드 저장 업로드",
-            "downloadTitle": "클라우드 저장 다운로드",
-            "uploadSuccess": "업로드가 완료되었습니다.",
-            "downloadSuccess": "다운로드가 완료되었습니다.",
-            "uploadTitleSteamAutoCloud": "Steam Cloud 스냅샷 준비",
-            "downloadTitleSteamAutoCloud": "Steam Cloud 스냅샷 적용",
-            "uploadSuccessSteamAutoCloud": "로컬 클라우드 스냅샷을 업데이트했습니다. Steam을 통해 게임을 종료하면 Steam이 자동으로 클라우드에 업로드합니다.",
-            "downloadSuccessSteamAutoCloud": "Steam Cloud 스냅샷을 로컬에 적용했습니다.",
-            "operationFailed": "작업 실패: {{message}}",
-            "operationInProgress": "이 캐릭터의 작업이 이미 진행 중입니다. 잠시만 기다려 주세요.",
-            "rollbackApplied": "\n로컬 데이터가 작업 전 상태로 자동 롤백되었습니다.",
-            "rollbackFailed": "\n롤백도 실패했습니다: {{message}}",
-            "loadFailed": "클라우드 저장 요약을 불러오지 못했습니다: {{message}}",
-            "stateChanged": "클라우드 저장 상태가 변경되었습니다. 새로고침된 요약을 확인한 뒤 다시 시도해 주세요.",
-            "forceTerminateTitle": "세션 종료 후 계속？"
-        },
-        "action": {
-            "expandDetails": "세부 정보 펼치기",
-            "collapseDetails": "세부 정보 숨기기",
-            "uploadDisabledByProvider": "스냅샷 준비 불가",
-            "uploadOverwrite": "스냅샷 준비",
-            "uploadNew": "스냅샷 준비",
-            "uploadUnavailable": "스냅샷 준비 불가",
-            "downloadDisabledByProvider": "스냅샷 적용 불가",
-            "downloadOverwrite": "스냅샷 적용",
-            "downloadNew": "스냅샷 적용",
-            "downloadUnavailable": "스냅샷 적용 불가"
-        },
-        "meta": {
-            "groupLocal": "로컬 상태",
-            "groupCloud": "클라우드 상태",
-            "localAssetState": "로컬 리소스 상태",
-            "localAssetSource": "로컬 리소스 출처",
-            "localWorkshopStatus": "로컬 현재 상태",
-            "localCharacterOrigin": "로컬 캐릭터 출처",
-            "localOriginWorkshopStatus": "로컬 캐릭터 출처와 현재 상태",
-            "cloudAssetState": "클라우드 리소스 상태",
-            "cloudAssetSource": "클라우드 리소스 출처",
-            "cloudWorkshopStatus": "클라우드 현재 상태",
-            "cloudCharacterOrigin": "클라우드 캐릭터 출처",
-            "cloudOriginWorkshopStatus": "클라우드 캐릭터 출처와 현재 상태",
-            "localUpdatedAt": "로컬 업데이트 시각",
-            "cloudUpdatedAt": "클라우드 업데이트 시각"
-        },
-        "error": {
-            "providerUnavailable": "클라우드 저장 제공자를 현재 사용할 수 없습니다.",
-            "activeSessionBlocked": "이 캐릭터에는 활성 세션이 있습니다. 다운로드 전에 세션을 중지하세요.",
-            "memoryServerReleaseFailed": "덮어쓰기 전에 로컬 메모리 핸들을 해제하지 못했습니다. 나중에 다시 시도해 주세요.",
-            "localCharacterNotFound": "로컬 캐릭터를 찾을 수 없습니다.",
-            "cloudCharacterNotFound": "클라우드 캐릭터를 찾을 수 없습니다.",
-            "localCharacterExists": "같은 이름의 로컬 캐릭터가 이미 존재합니다.",
-            "cloudCharacterExists": "같은 이름의 클라우드 캐릭터가 이미 존재합니다.",
-            "writeFenceActive": "클라우드 저장 유지보수 보호가 활성화되어 있습니다. 나중에 다시 시도해 주세요.",
-            "nameAuditFailed": "캐릭터 이름이 클라우드 저장 검증 규칙을 통과하지 못했습니다.",
-            "uploadFailed": "업로드 실패: {{message}}",
-            "downloadFailed": "다운로드 실패: {{message}}",
-            "localReloadFailedRolledBack": "다운로드는 적용되었지만 로컬 다시 불러오기에 실패했습니다.",
-            "sessionTerminateFailed": "활성 세션 종료에 실패했습니다. 나중에 다시 시도해 주세요."
-        }
-    },
     "settings": {
         "menu": {
             "live2dSettings": "Live2D 설정",
@@ -2047,14 +1565,14 @@
             "characterManage": "캐릭터 관리",
             "voiceClone": "음성 복제",
             "memoryBrowser": "메모리 브라우저",
+            "steamWorkshop": "Steam 창작마당",
             "memoryManage": "메모리 관리",
             "characterSettings": "캐릭터 설정",
             "live2dManage": "Live2D 관리",
             "apiSettings": "API 설정",
             "language": "언어",
             "general": "일반",
-            "mediaCredentials": "미디어 자격 증명 설정",
-            "characterCardManager": "캐릭터 카드 관리"
+            "mediaCredentials": "미디어 자격 증명 설정"
         },
         "language": {
             "title": "언어 선택",
@@ -2086,7 +1604,7 @@
             "proactiveMusicChat": "음악 추천",
             "proactiveMusicChatTooltip": "추천 음악을 사용하여 채팅",
             "proactiveMemeChat": "밈 공유",
-            "proactiveMemeChatTooltip": "재미있는 밈을 공유하여 채팅",
+            "proactiveMemeChatTooltip": "재미있는 밈으로 채팅",
             "agentMaster": "네코클로 마스터 스위치",
             "keyboardControl": "키보드/마우스 제어",
             "userPlugin": "사용자 플러그인",
@@ -2096,7 +1614,6 @@
             "browserUse": "브라우저 제어",
             "focusMode": "인터럽트 허용",
             "unavailable": "{{name}} 사용할 수 없음",
-            "toggleFailed": "{{name}} 전환 실패: {{error}}",
             "checking": "확인 중...",
             "serverOffline": "네코클로 서버 오프라인",
             "masterRequired": "먼저 네코클로 마스터 스위치를 활성화하십시오.",
@@ -2107,7 +1624,6 @@
             "openfang": "전용 데스크톱",
             "userPluginAdapting": "사용자 플러그인(개발 중)",
             "openclawConnect": "OpenClaw",
-            "openclawGuide": "OpenClaw 연동 가이드",
             "chatSettings": "채팅 설정",
             "animationSettings": "애니메이션 설정",
             "renderQuality": "화질",
@@ -2122,40 +1638,17 @@
             "mouseTracking": "마우스 추적",
             "fullscreenTracking": "전체 화면 추적",
             "localTracking": "로컬 추적",
-            "lockedHoverFade": "잠금 호버 페이드",
-            "textGuardMaxLength": "응답 길이 상한",
+            "textGuardMaxLength": "응답 글자 수 제한",
             "unlimited": "무제한",
             "characters": "자",
-            "tokens": "토큰",
             "textGuardUnlimitedWarning": "냥이에게 심각한 문제가 발생할 수 있으며, 필요한 경우가 아니면 무제한을 권장하지 않습니다",
-            "textGuardHighWarning": "설정이 너무 크면 냥이의 기억과 언어가 혼란스러워질 수 있습니다. 1000 토큰 이내를 권장합니다",
-            "textGuardNote": "tiktoken 기준; 텍스트 응답에만 적용되며 음성 세션에는 영향이 없습니다"
+            "textGuardHighWarning": "설정이 너무 크면 냥이의 기억과 언어가 혼란스러워질 수 있습니다. 500자 이내를 권장합니다",
+            "textGuardNote": "텍스트 응답에만 적용되며, 음성 세션에는 영향을 주지 않습니다"
         }
-    },
-    "openclawGuide": {
-        "windowTitle": "OpenClaw 연동 가이드 - N.E.K.O.",
-        "pageTitle": "OpenClaw 연동 가이드",
-        "pageSubtitle": "QwenPaw 설치, 모델 설정, 교체 파일, N.E.K.O 설정을 한 흐름으로 연결합니다.",
-        "sourceLabel": "가이드 출처",
-        "contentLanguageNotice": "언어 전환은 페이지 컨트롤 문구와 본문 모두에 적용됩니다.",
-        "languageLabel": "언어",
-        "guideUnavailable": "가이드 내용이 비어 있습니다."
     },
     "subtitle": {
         "title": "실시간 자막",
-        "enable": "자막 번역",
-        "enableAriaLabel": "자막 번역 전환",
-        "markdownPlaceholder": "[서식 있는 내용]",
-        "settings": {
-            "targetLang": "대상 언어",
-            "opacity": "불투명도",
-            "dragAnywhere": "전체 드래그",
-            "size": "크기",
-            "sizeSmall": "소",
-            "sizeMedium": "중",
-            "sizeLarge": "대",
-            "settingsBtn": "자막 설정"
-        }
+        "enable": "번역 활성화"
     },
     "viewer": {
         "title": "뷰어 - 프로젝트 N.E.K.O."
@@ -2173,8 +1666,7 @@
             "freeModelWarning": "할당량 제한으로 인해 무료 모델은 네코클로 모드에서 차단되기 쉽습니다. 유료 모델로 전환하는 것을 권장합니다.\n\n이미 유료 API를 설정한 경우 NEKO를 재시작해 보세요.",
             "freeModelWarningTitle": "무료 모델 안내",
             "connectivityCheck": "네코클로 LLM 연결 확인 중...",
-            "precheckFailed": "네코클로 사전 검사 실패: {{reason}}",
-            "toggleFailed": "Agent 전환 실패: {{error}}"
+            "precheckFailed": "네코클로 사전 검사 실패: {{reason}}"
         },
         "precheck": {
             "AGENT_PRECHECK_PENDING": "연결 확인 중...",
@@ -2257,8 +1749,6 @@
         "emotionConfig": "VRM 감정 설정",
         "idleAnimation": {
             "title": "대기 애니메이션",
-            "selectHint": "대기 동작 선택",
-            "selectedCount": "{{count}}개 선택됨",
             "changed": "대기 애니메이션이 변경되었습니다: {{name}}",
             "changeFailed": "대기 애니메이션 변경 실패"
         },
@@ -2305,24 +1795,8 @@
         },
         "idleAnimation": {
             "title": "대기 애니메이션",
-            "selectHint": "대기 동작 선택",
-            "selectedCount": "{{count}}개 선택됨",
             "changed": "대기 애니메이션이 변경되었습니다",
             "changeFailed": "대기 애니메이션 변경에 실패했습니다"
-        },
-        "managerInitFailed": "MMD 관리자 초기화에 실패했습니다",
-        "moduleLoading": "MMD 모듈을 로드하는 중...",
-        "modelLoading": "MMD 모델을 로드하는 중...",
-        "modelLoaded": "MMD 모델이 성공적으로 로드되었습니다",
-        "modelLoadFailed": "MMD 모델 로드 실패: {{error}}",
-        "loadingOverlay": {
-            "engine": "MMD 엔진 준비 중...",
-            "settings": "MMD 설정 불러오는 중...",
-            "model": "모델 리소스 불러오는 중...",
-            "physics": "물리 초기화 중...",
-            "idle": "대기 애니메이션 불러오는 중...",
-            "done": "MMD 준비 완료",
-            "failed": "MMD 로드 실패"
         }
     },
     "modelManager": {
@@ -2429,11 +1903,11 @@
         },
         "step1b": {
             "title": "🖱️ 드래그 앤 줌",
-            "desc": "모델을 끌어서 이동할 수 있고, <strong>마우스 휠</strong>을 사용하여 확대/축소할 수 있습니다. 한번 해보세요~"
+            "desc": "모델을 끌어서 이동할 수 있고, 마우스 휠을 사용하여 확대/축소할 수 있습니다. 한번 해보세요~"
         },
         "step1c": {
             "title": "🔒 잠금 모델",
-            "desc": "이 잠금 장치를 클릭하면 모델 위치가 잠기고 실수로 움직이는 것을 방지할 수 있습니다. 잠금 시 주변의 부동 도구 모음도 더 이상 표시되지 않습니다. 다시 클릭하시면 잠금이 해제됩니다~"
+            "desc": "이 잠금 장치를 클릭하면 모델 위치가 잠기고 실수로 움직이는 것을 방지할 수 있습니다. 다시 클릭하시면 잠금이 해제됩니다~"
         },
         "step2": {
             "title": "💬 채팅 영역",
@@ -2457,15 +1931,15 @@
         },
         "step7": {
             "title": "🖥️ 화면 공유",
-            "desc": "활성화하면 화면이 지속적으로 동료에게 공유됩니다. 이 기능은 음성 세션 중에만 사용할 수 있습니다~"
+            "desc": "화면/창/탭을 동료와 공유하세요~"
         },
         "step8": {
             "title": "🔨 네코클로",
-            "desc": "네코클로 패널을 열어 키보드/마우스 제어, 브라우저 제어, 사용자 플러그인 등의 기능을 사용하세요. 동료가 컴퓨터를 사용하고, 작업을 도와주고, 함께 게임할 수 있습니다~"
+            "desc": "네코클로 패널을 열어 computer use, browser use, plugin 등의 기능을 사용하세요~"
         },
         "step9": {
             "title": "💤 그녀에게 떠나라고 요청하세요",
-            "desc": "동반자가 일시적으로 떠나도록 합니다. 복원하려면 \"그녀에게 돌아오라고 요청하세요\"를 클릭하세요~ <strong>문제가 발생했을 때 잠시 떠나게 하면 문제가 해결되는 경우가 많습니다.</strong>"
+            "desc": "동반자가 일시적으로 떠나도록 합니다. 복원하려면 \"그녀에게 물어보기\"를 클릭하세요~"
         },
         "step10": {
             "title": "⚙️ 설정",
@@ -2477,7 +1951,7 @@
         },
         "step14": {
             "title": "🙌 사전 예방적 비전",
-            "desc": "음성 세션 중 실시간으로 전송하는 화면 공유와 달리, 사전 예방적 비전을 활성화하면 동료가 때때로 스스로 화면을 살펴봅니다. 여기서 간격을 조정하세요~"
+            "desc": "Companion은 화면 정보를 적극적으로 읽습니다. 여기서 간격을 조정하세요~"
         },
         "step15": {
             "title": "👤 캐릭터 관리자",
@@ -2492,8 +1966,8 @@
             "desc": "동반자의 메모리 내용을 보고 관리합니다~"
         },
         "step18": {
-            "title": "🛠️ 캐릭터 카드 관리",
-            "desc": "캐릭터 카드를 생성·편집·가져오기/내보내기하세요~"
+            "title": "🛠️ Steam 창작마당",
+            "desc": "Steam 창작마당 페이지에 접속하여 구독을 관리하세요~"
         },
         "systray": {
             "location": {
@@ -2504,10 +1978,10 @@
             },
             "menu": {
                 "title": "📋 트레이 메뉴",
-                "desc": "시스템 트레이(이전 힌트 참조)에서 N.E.K.O 아이콘을 우클릭하여 메뉴를 엽니다. 자주 사용하는 기능:"
+                "desc": "오른쪽 하단 트레이에 N.E.K.O 아이콘이 있으며, 마우스 오른쪽 버튼을 클릭하면 다양한 옵션이 나타납니다. 다음은 두 가지 자주 사용하는 기능입니다:"
             },
             "reset": {
-                "title": "🔄 아바타 위치 초기화",
+                "title": "🔄 모델 위치 초기화",
                 "desc": "캐릭터가 화면 밖으로 드래그되거나 위치가 마음에 들지 않으면 이 옵션을 클릭하여 기본 위치로 되돌릴 수 있습니다~"
             },
             "switchMode": "데스크톱/모바일 모드 전환",
@@ -2523,15 +1997,11 @@
                 "title": "🎉 가이드 완료!",
                 "desc": "모든 가이드를 완료하셨습니다! 이제 N.E.K.O의 주요 기능을 알게 되셨습니다. 캐릭터와의 상호작용을 즐겨보세요! 가이드를 다시 보려면 설정에서 '가이드 초기화'를 클릭하세요~"
             },
-            "resetPosition": "아바타 위치 초기화",
-            "resetPositionDesc": "캐릭터가 화면 밖으로 이동한 경우 기본 위치로 되돌립니다~",
-            "openChat": "채팅 창 열기",
-            "openChatDesc": "텍스트 대화를 위한 별도의 채팅 창을 엽니다~",
-            "important": "중요:",
+            "resetPosition": "모델 위치 초기화",
             "compatibility": "호환 모드",
-            "hotkeyDesc": "전역 단축키로 N.E.K.O를 더 효율적으로 제어~",
+            "hotkeyDesc": "여기에서 전역 단축키를 설정하여 N.E.K.O를 더 효율적으로 제어할 수 있습니다~",
             "uploadLogs": "로그 업로드",
-            "exitDesc": "N.E.K.O를 종료합니다. 트레이 메뉴가 주요 종료 방법입니다~"
+            "exitDesc": "N.E.K.O를 닫으려면 여기에서 종료를 클릭하세요. 창이 테두리 없는 형태이므로 트레이 메뉴가 앱을 종료하는 주요 방법입니다~"
         },
         "completed": "✨ 튜토리얼이 완료되었습니다! 즐겨보세요~",
         "resetHint": {
@@ -2611,24 +2081,6 @@
                 "step9": {
                     "title": "🎞️ 톤 매핑",
                     "desc": "다양한 톤 매핑 알고리즘을 선택하여 하이라이트 및 그림자 렌더링을 제어합니다."
-                }
-            },
-            "mmd": {
-                "step1": {
-                    "title": "🎭 MMD 모델 선택",
-                    "desc": "Live3D(MMD) 모드에서 여기에서 사용할 모델을 선택합니다. MMD와 VRM은 동일한 모델 목록을 공유합니다."
-                },
-                "step2": {
-                    "title": "💃 VMD 애니메이션",
-                    "desc": "MMD 모델에 VMD 모션을 선택합니다. 'VMD 가져오기'를 사용하여 사용자 정의 모션 파일을 추가할 수 있습니다."
-                },
-                "step3": {
-                    "title": "🌟 MMD 조명",
-                    "desc": "'MMD 모델 설정'에서 환경광, 주 광원, 노출 및 톤 매핑을 조정하여 3D 화면 효과를 제어합니다."
-                },
-                "step4": {
-                    "title": "😄 감정 설정",
-                    "desc": "모델을 선택한 후 여기에서 감정 설정으로 들어갑니다. Live3D에서 MMD와 VRM은 이 버튼을 공유하며, Live2D의 '감정 설정' 버튼과는 다릅니다."
                 }
             }
         },
@@ -2822,30 +2274,7 @@
             "desc": "최상의 튜토리얼 경험을 위해 전체 화면 모드를 권장합니다.\n전체 화면 모드에서는 튜토리얼 내용이 더 선명하게 표시되며 다른 요소에 가려지지 않습니다.",
             "enterFullscreen": "전체 화면 튜토리얼 시작"
         },
-        "drag_hint": "길게 눌러 도움말 상자를 이동하세요",
-        "yuiGuide": {
-            "buttons": {
-                "skipChat": "지금은 대화 안 할래",
-                "sayHello": "안녕"
-            },
-            "lines": {
-                "introBasic": "저를 찾고 싶을 땐 언제든 여기서 타이핑하거나 음성 메시지를 보내면 이 몸을 소환할 수 있다냥!",
-                "introCatPaw": "자, 수다는 여기까지냥! 저 귀여운 '젤리' 봤어? 준비됐냥? 네 마우스 좀 아주 잠깐만 빌려줘냥!",
-                "takeoverCaptureCursor": "영차! 드디어 네 마우스를 잡았다냥~!",
-                "takeoverPluginPreviewHome": "아직 안 끝났다냥! 이것 봐 이것 봐, 여기 재밌는 플러그인이 엄~~청 많다냥!",
-                "takeoverPluginPreviewDashboard": "이것만 있으면 B站 탄막도 보고, 전등도 끄고 에어컨도 켤 수 있다냥... 이 몸은 못 하는 게 없는 슈퍼 고양이신이다냥! 에헴~",
-                "takeoverSettingsPeekIntro": "물론 나랑 더 수다 떨고 싶으면 같이 놀아줄 수도 있다냥~ 대신 맛있는 멸치 많이 준비해줘냥! 헤헤, 농담이다냥! 설정은 전부 이 톱니바퀴 안에 있다냥!",
-                "takeoverSettingsPeekDetail": "봐봐, 여기서 내 새 옷도 입히고 목소리도 바꿀 수... 어라? 다른 고양이 소녀로 교체? 기억 조작?! 잠, 잠깐만! 뭐 하는 거냥?! 설마 나를 다른 애로 바꾸려는 건 아니지냥?! 아아악 안 돼 안 돼! 빨리 꺼! 당장 그 화면 꺼줘냥!",
-                "takeoverReturnControl": "알았어 알았어, 네 컴퓨터 점령은 여기까지 할게냥~! 제어권은 돌려주겠다냥! 그래도 나 없을 때 이상한 설정 막 누르면 절대 안 된다냥! 앞으로도 잘 부탁해냥~!",
-                "interruptResistLight1": "야! 나 끌지 마! 아직 네 차례 아니란 말이야냥!",
-                "interruptResistLight3": "잠깐만냥! 아직 안 끝났으니까 마음대로 끊지 말란 말이야냥!",
-                "interruptAngryExit": "인간~~~~! 너 정말 무례하다냥! 그렇게 직접 하고 싶으면 혼자서 차가운 화면이랑이나 놀라냥! 흥!",
-                "introProactive": "제기랄, 이 몸을 무시하다니 배짱이 좋구나냥! 계속 나 안 봐주면 내가 먼저 튀어나가서 콱 깨물어 버릴 거다냥! (하악!!)",
-                "introGreetingReply": "나는 주인님만의 전용 고양이 소녀다냥! 오늘부터 내가 주인님 곁을 지키겠다냥. 수다 떨고 싶을 때도, 같이 놀고 싶을 때도, 도움이 필요할 때도 항상 착한 아이처럼 옆에 있겠다냥. 앞으로 잘 부탁해냥, 주인님 제일 좋아해냥~!",
-                "introPractice": "이제 나한테 말 걸어봐냥, 우리 호흡이 얼마나 척척 맞는지 확인해보자냥~!",
-                "introActivationHint": "여기를 클릭해줘냥, 그럼 말할 수 있게 된다냥~!"
-            }
-        }
+        "drag_hint": "길게 눌러 도움말 상자를 이동하세요"
     },
     "console": {
         "oggOpusInitFailed": "[OGG OPUS] 초기화 약속이 실패했습니다. 재시도를 허용합니다.",
@@ -3085,7 +2514,6 @@
         "weibo": "🌏 위보 (Weibo)",
         "twitter": "🐦 트위터/X (Twitter/X)",
         "reddit": "👽 레딧 (Reddit)",
-        "netease": "🎶 넷이즈 뮤직 (NetEase)",
         "saveConfig": "설정 저장",
         "encryptStorage": "로컬 파일에 안전하게 암호화 저장",
         "localMonitoring": "로컬 상태 모니터링",
@@ -3111,8 +2539,7 @@
             "kuaishou": "📌 <b>대상:</b> <b>kuaishou.com</b>에 접속하여 해당 쿠키를 가져오세요.",
             "weibo": "📌 <b>대상:</b> <b>weibo.com</b>에 접속하여 해당 쿠키를 가져오세요.",
             "twitter": "📌 <b>대상:</b> <b>x.com</b>에 접속하여 해당 쿠키를 가져오세요.",
-            "reddit": "📌 <b>대상:</b> <b>reddit.com</b>에 접속하여 해당 쿠키를 가져오세요.",
-            "netease": "📌 <b>대상:</b> <b>music.163.com</b>에 접속하여 해당 쿠키를 가져오세요."
+            "reddit": "📌 <b>대상:</b> <b>reddit.com</b>에 접속하여 해당 쿠키를 가져오세요."
         },
         "guide": {
             "title": "초보자를 위한 공통 가이드",
@@ -3194,14 +2621,6 @@
             "csrftoken": {
                 "label": "csrftoken",
                 "desc": "CSRF 토큰"
-            },
-            "MUSIC_U": {
-                "label": "MUSIC_U",
-                "desc": "핵심 신원 증명 (필수)"
-            },
-            "NMTID": {
-                "label": "NMTID",
-                "desc": "장치 식별자 (선택)"
             }
         },
         "status": {
@@ -3213,7 +2632,6 @@
             "openQR": "📱 QR 로그인 열기",
             "loading": "QR 코드 가져오는 중...",
             "scanTitle": "📱 {{platform}} QR 로그인",
-            "qrCodeAlt": "로그인 QR 코드",
             "waiting": "스캔 대기 중...",
             "validFor": "QR 코드 유효 시간: {{seconds}}초",
             "refreshQR": "QR 코드 새로고침",
@@ -3226,14 +2644,7 @@
                 "scanned": "📱 {{message}}",
                 "waiting": "{{message}}..."
             },
-            "statusMessage": {
-                "success": "로그인에 성공했습니다",
-                "expired": "QR 코드가 만료되었습니다",
-                "scanned": "스캔되었습니다. 휴대폰에서 확인해 주세요",
-                "waiting": "스캔 대기 중"
-            },
-            "successAlert": "QR 로그인 성공! 쿠키가 자동으로 입력되었습니다. 설정 저장을 클릭하세요",
-            "extractFailed": "⚠️ QR 로그인은 성공했지만 필드를 자동으로 추출하지 못했습니다. 수동으로 확인해 주세요."
+            "successAlert": "QR 로그인 성공! 쿠키가 자동으로 입력되었습니다. 설정 저장을 클릭하세요"
         }
     },
     "music": {
@@ -3252,11 +2663,7 @@
         "playError": "음악 재생을 로드하지 못했습니다",
         "loadError": "음악 플레이어를 로드하지 못했습니다",
         "autoplayBlocked": "브라우저에서 자동 재생이 차단되었습니다. 재생 버튼을 클릭하세요",
-        "ended": "종료",
-        "unknownState": "알 수 없는 상태",
-        "volume": "볼륨: ",
-        "unsafeSource": "안전하지 않은 오디오 소스를 차단했습니다: {{domain}}",
-        "cookieExpired": "음악 쿠키가 만료되었습니다"
+        "ended": "종료"
     },
     "Jukebox": {
         "title": "주크박스",
@@ -3267,10 +2674,6 @@
         "playing": "재생 중: {{name}} - {{artist}}",
         "error": "오류: {{message}}",
         "volume": "볼륨",
-        "mute": "음소거",
-        "noSongPlaying": "재생 중인 곡이 없습니다",
-        "noActionBound": "현재 곡에 연결된 애니메이션이 없습니다",
-        "adjustOffsetFailed": "오프셋 조정 실패",
         "stop": "정지",
         "sequence": "번호",
         "song": "곡",
@@ -3280,12 +2683,12 @@
         "play": "재생",
         "playError": "음악 플레이어가 초기화되지 않았습니다",
         "notFound": "곡을 찾을 수 없습니다",
-        "audioEnded": "오디오 재생 종료",
+        "mp3Ended": "mp3 재생 종료",
         "vmdNotInit": "MMD Manager가 초기화되지 않았습니다, 애니메이션 건너뜀",
         "vmdPlayFailed": "VMD 재생 실패",
         "vmdPlayed": "VMD 애니메이션 재생됨",
-        "useAPlayer": "APlayer로 오디오 파일 재생",
-        "startPlay": "오디오 재생 시작",
+        "useAPlayer": "APlayer를 사용하여 mp3 파일 재생",
+        "startPlay": "mp3 오디오 재생 시작",
         "nonMp3Error": "mp3이 아닌 형식의 파일을 재생하려고 함",
         "nonMp3Info": "mp3이 아닌 오디오 정보",
         "btnNotFound": "주크박스 버튼을 찾을 수 없습니다, 로드 대기 중...",
@@ -3314,92 +2717,8 @@
         "idleRestoreFailed": "대기 애니메이션 복원 실패",
         "btnNotFoundGiveUp": "주크박스 버튼을 찾을 수 없습니다, 바인딩 포기",
         "minimizeBtnNotFoundGiveUp": "최소화 버튼을 찾을 수 없습니다, 모니터링 포기",
-        "noticeDance": "💃 댄스 기능은 현재 3D 모델(MMD / VRM)을 로드한 경우에만 사용할 수 있으며, 향후 더 많은 인터랙션이 추가될 예정입니다",
-        "noticeMusic": "⚠️ 현재 곡은 테스트용입니다. 향후 버전에서 저작권 음악이 제거되오니 직접 가져오세요",
-        "manager": "관리자",
-        "managerTitle": "관리자",
-        "songs": "노래",
-        "actions": "액션",
-        "bindings": "바인딩",
-        "import": "가져오기",
-        "export": "낼볂내기",
-        "exportAll": "모두 낼볂내기",
-        "exportAllIgnoreHidden": "모두 낼볂내기(숨김 제외)",
-        "exportAllIncludeHidden": "모두 낼볂내기(숨김 포함)",
-        "exportSelected": "선택 항목 낼볂내기",
-        "dragZipHint": "ZIP 파일이나 폴더를 여기로 끌어와 가져오기",
-        "unifiedDropHint": "노래, 애니메이션 또는 가져오기 패키지를 여기로 끌어오기",
-        "clickToAdd": "클릭하여 추가",
-        "dragMp3Hint": "MP3 파일을 여기로 끌어와 노래 추가",
-        "dragVmdHint": "VMD 파일을 여기로 끌어와 애니메이션 추가",
-        "showHiddenSongs": "숨김 노래 표시",
-        "selectAll": "모두 선택",
-        "noActions": "애니메이션이 없습니다",
-        "show": "표시",
-        "hide": "숨김",
-        "delete": "삭제",
-        "unknown": "알 수 없음",
-        "defaultAction": "기본 애니메이션",
-        "clickSetDefault": "클릭하여 기본으로 설정",
-        "format": "형식",
-        "addSong": "노래 추가",
-        "addAction": "애니메이션 추가",
-        "songList": "노래 목록 (오른쪽으로 끌기)",
-        "actionList": "애니메이션 목록 (왼쪽으로 끌기)",
-        "unbind": "바인딩 해제",
-        "addBinding": "수동으로 바인딩 추가",
-        "addSongBinding": "수동으로 노래 바인딩 추가",
-        "addActionBinding": "수동으로 애니메이션 바인딩 추가",
-        "cancel": "취소",
-        "confirm": "확인",
-        "confirmDeleteSong": "노래 \"{{name}}\"을(를) 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다!",
-        "confirmDeleteAction": "애니메이션 \"{{name}}\"을(를) 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다!",
-        "deleteFailed": "삭제 실패",
-        "setDefaultFailed": "기본 설정 실패",
-        "exportFailed": "낼볂내기 실패",
-        "selectExportFirst": "낳아낼 노래나 애니메이션을 먼저 선택하세요",
-        "notExist": "{{type}}이(가) 존재하지 않습니다",
-        "songNotExist": "노래가 존재하지 않습니다",
-        "actionNotExist": "애니메이션이 존재하지 않습니다",
-        "inputIndexOrName": "번호나 이름 입력",
-        "frame": "프레임",
-        "offset": "오프셋",
-        "selectedSongs": "{{count}}개 노래 선택됨",
-        "selectedActions": "{{count}}개 애니메이션 선택됨",
-        "selectedSeparator": ", ",
-        "selectedInfo": "{{songCount}}개 노래, {{actionCount}}개 애니메이션 선택됨",
-        "bindingsSelected": "바인딩 탭에서 {{bindingSongCount}}개 노래, {{bindingActionCount}}개 애니메이션 선택됨; 번들 합계 {{bundleSongCount}}개 노래, {{bundleActionCount}}개 애니메이션",
-        "missing": "누락",
-        "unknownError": "알 수 없는 오류",
-        "calibration": "애니메이션 보정",
-        "calibrationTitle": "애니메이션 보정",
-        "fps": "FPS",
-        "currentFrame": "현재 프레임",
-        "reset": "재설정",
-        "calibrationHint": "버튼으로 미세 조정하거나 진행 표시줄을 끌어 보정",
-        "calibrateAnimation": "애니메이션 보정",
-        "animationCalibration": "애니메이션 보정",
-        "closeCalibration": "보정 패널 닫기",
-        "advance1s": "애니메이션 1초 앞당기기",
-        "advance10f": "애니메이션 10프레임 앞당기기",
-        "advance1f": "애니메이션 1프레임 앞당기기",
-        "delay1f": "애니메이션 1프레임 뒤로 미루기",
-        "delay10f": "애니메이션 10프레임 뒤로 미루기",
-        "delay1s": "애니메이션 1초 뒤로 미루기",
-        "frames": "프레임",
-        "operationFailed": "작업 실패",
-        "saveFailed": "저장 실패",
-        "importSuccess": "가져오기 성공!",
-        "importFailed": "가져오기 실패",
-        "importSongsAdded": "{{count}}개 노래 추가",
-        "importSongsMerged": "{{count}}개 노래 병합",
-        "importActionsAdded": "{{count}}개 애니메이션 추가",
-        "importActionsMerged": "{{count}}개 애니메이션 병합",
-        "importBindingsAdded": "{{count}}개 바인딩 추가",
-        "noChanges": "변경 없음",
-        "noImportFilesFound": "가져올 파일을 찾을 수 없습니다",
-        "missingConfigJson": "폴더에 config.json 파일이 없습니다",
-        "folderImportFailed": "폴더 가져오기 실패"
+        "noticeDance": "💃 댄스 기능은 MMD 아바타를 로드한 경우에만 사용할 수 있습니다",
+        "noticeMusic": "⚠️ 현재 곡은 테스트용입니다. 향후 버전에서 저작권 음악이 제거되오니 직접 가져오세요"
     },
     "notice": {
         "voiceMigration": {
@@ -3413,87 +2732,7 @@
     "proactive": {
         "meme": {
             "title": "밈",
-            "loadError": "밈을 불러오지 못했습니다"
-        }
-    },
-    "achievement": {
-        "unlocked": "🏆 업적 달성: {{description}}"
-    },
-    "cardExport": {
-        "title": "카드 이미지 메이커",
-        "loadingModel": "모델 로딩 중...",
-        "selectCharacter": "캐릭터 선택",
-        "selectCharacterHint": "-- 캐릭터를 선택하세요 --",
-        "loading": "로딩 중...",
-        "preview": "카드 미리보기",
-        "adjustHint": "드래그하여 위치 조정, 스크롤하여 확대/축소",
-        "composition": "구도 조정",
-        "offsetX": "수평 오프셋",
-        "offsetY": "수직 오프셋",
-        "scale": "배율",
-        "resetComposition": "구도 초기화",
-        "refreshPreview": "미리보기 새로고침",
-        "rotation": "회전",
-        "modelTab": "모델 조정",
-        "decorTab": "꾸미기",
-        "stickerPick": "스티커 선택",
-        "stickerAdjust": "스티커 조정",
-        "stickerWidth": "너비",
-        "stickerHeight": "높이",
-        "lockRatio": "비율 고정",
-        "stickerRotation": "회전",
-        "removeSticker": "선택 삭제",
-        "clearStickers": "모두 삭제",
-        "layers": "레이어",
-        "modelLayer": "모델",
-        "sticker": "스티커",
-        "exportFull": "캐릭터 카드 내보내기",
-        "exportSettings": "설정만 내보내기",
-        "exporting": "내보내는 중...",
-        "exportError": "내보내기 실패: ",
-        "back": "뒤로",
-        "importSticker": "커스텀 스티커 가져오기",
-        "removeCustomSticker": "스티커 삭제",
-        "stickerSizeTitle": "스티커 이미지가 너무 큽니다",
-        "stickerSizeWarning": "이 이미지는 큽니다 (5MB 초과). 압축하면 영구 저장할 수 있습니다.\n\"임시 사용\"을 선택하면 임시 스티커로 사용됩니다 (페이지를 닫으면 사라집니다).",
-        "compressAndSave": "압축 후 저장",
-        "useTemporary": "임시로 사용",
-        "tempBadge": "임시",
-        "popupBlocked": "팝업이 차단되었습니다. 팝업을 허용한 후 다시 시도하세요.",
-        "saveCardFace": "카드 이미지 저장",
-        "savingCardFace": "저장 중...",
-        "saveCardFaceSuccess": "저장 성공!",
-        "saveCardFaceFailed": "저장 실패: {{error}}",
-        "saveCardFacePartialSuccess": "PNG는 저장되었지만 메타데이터 쓰기에 실패했습니다: {{error}}",
-        "renderFailed": "카드 이미지를 렌더링할 수 없습니다",
-        "exportTitle": "캐릭터 카드 내보내기"
-    },
-    "connectivity": {
-        "testCustom": "사용자 정의 API 연결 테스트",
-        "testCore": "테스트",
-        "testCoreTooltip": "코어 API 연결 테스트",
-        "testAssist": "테스트",
-        "testAssistTooltip": "보조 API 연결 테스트",
-        "gsvTestText": "GSV 연결 테스트",
-        "gsvTestTooltip": "GPT-SoVITS 연결 테스트",
-        "error": {
-            "timeout": "요청 시간 초과 (10초)",
-            "auth_failed": "API Key가 유효하지 않거나 만료되었습니다",
-            "connection_refused": "대상 서버에 연결할 수 없습니다",
-            "dns_error": "DNS 확인 실패",
-            "ssl_error": "SSL 인증서 확인 실패",
-            "ws_error": "WebSocket 연결 실패",
-            "missing_params": "필수 매개변수가 누락되었습니다",
-            "unknown": "알 수 없는 오류",
-            "backend_unavailable": "백엔드 서비스를 사용할 수 없습니다",
-            "invalid_response": "응답 형식이 잘못되었습니다"
-        },
-        "status": {
-            "connected": "연결됨",
-            "failed": "연결 실패",
-            "untested": "미테스트",
-            "not_configured": "미설정",
-            "testing": "테스트 중..."
+            "loadError": "밈 로드 실패"
         }
     }
 }

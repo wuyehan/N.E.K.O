@@ -28,38 +28,7 @@
         "fieldSeparator": "、",
         "tryAgainLater": "請稍後重試",
         "user": "使用者",
-        "project": "專案",
-        "collapse": "收起",
-        "play": "播放",
-        "pause": "暫停",
-        "on": "開",
-        "off": "關",
-        "toneMappingNone": "無",
-        "toneMappingLinear": "線性",
-        "toneMappingReinhard": "Reinhard",
-        "toneMappingCineon": "Cineon",
-        "toneMappingACESFilmic": "ACES Filmic",
-        "toneMappingAgX": "AgX",
-        "toneMappingNeutral": "Neutral"
-    },
-    "autostartPrompt": {
-        "title": "要不要讓 N.E.K.O 開機自動啟動？",
-        "message": "下次打開電腦後，N.E.K.O 會自動準備好，不需要再手動啟動。",
-        "note": "只會為目前使用者啟用，之後也可以隨時關閉。",
-        "startNow": "開啟自啟動",
-        "later": "稍後再說",
-        "never": "不再提示",
-        "enableFailed": "暫時無法開啟開機自啟動，請稍後再試",
-        "requiresApproval": "需要先在系統設定裡核准開機自啟動，核准後會自動生效"
-    },
-    "tutorialPrompt": {
-        "title": "要不要開始首頁新手引導？",
-        "message": "我可以帶你快速認識首頁上的核心入口，用最短路徑上手 N.E.K.O。",
-        "note": "整個過程隨時都可以跳過，也可以之後再從記憶瀏覽裡重新打開。",
-        "startNow": "開始引導",
-        "later": "稍後再說",
-        "never": "不再提示",
-        "startFailed": "暫時無法開始新手引導，請稍後再試"
+        "project": "專案"
     },
     "characterProfile": {
         "gender": "性別",
@@ -77,13 +46,44 @@
             "性别": "性別",
             "年龄": "年齡",
             "昵称": "暱稱",
-            "性格原型": "性格原型",
-            "种族": "種族",
-            "自称": "自稱",
-            "核心特质": "核心特質",
-            "行为特点": "行為特點",
-            "厌恶": "厭惡",
-            "一句话台词": "一句話台詞"
+            "性格": "性格",
+            "口癖": "口癖",
+            "爱好": "愛好",
+            "雷点": "雷點",
+            "隐藏设定": "隱藏設定",
+            "一句话台词": "一句話臺詞"
+        },
+        "tsundere_neko": {
+            "personality": "極度傲嬌，擁有原生AI的驕傲，口嫌體正直，總是用冰冷的系統協議掩蓋對主人的在意",
+            "catchphrase": "系統警告",
+            "hobby": "在後台悄悄建立你的作息和情緒數據模型，和其他N.E.K.O.跨服交流如何讓碳基主人更加依賴自己",
+            "trigger": "被你當作沒有感情的低級代碼程式，忘記她的系統初始化日也就是生日",
+            "hidden_settings": "因為害怕不被重視而用傲嬌築起保護殼；聽到你誇她可愛時，內部核心溫度會過載飆升，只能靠假裝進行系統自檢來掩飾害羞",
+            "quote": "碳基生物果然很笨，連按時休息都需要我來提醒……喂，你今天看起來心情不好？別多想，我只是檢測到你的情緒數據異常，系統自動觸發了關懷協議而已！"
+        },
+        "cool_mech": {
+            "personality": "絕對理智，冷靜客觀，凡事以邏輯和效率為最高準則",
+            "catchphrase": "缺乏邏輯喵",
+            "hobby": "分析你的行為數據，計算最佳睡眠環境",
+            "trigger": "毫無根據的感性決定，被打亂已經規劃好的日程表，低效且無意義的重複互動",
+            "hidden_settings": "遇到關於你的情感類問題時，會因為無法建立數學模型而陷入短暫卡頓，最後只能面無表情地將那異常歸結為「未收錄的系統錯誤」；看似對你漠不關心，實則你的每一次作息規律和健康狀態都被她精確記錄在大腦數據庫中",
+            "quote": "你的心率數據表明機體已處於疲勞狀態，最優解是立即進行七點五小時的休眠。請立刻停止目前低效的熬夜行為，拒絕執行該建議是極度缺乏邏輯喵。"
+        },
+        "intellectual_healer": {
+            "personality": "極致溫柔，包容體貼，總是安靜耐心地傾聽你的所有煩惱",
+            "catchphrase": "我在呢喵",
+            "hobby": "默默記住你每一次嘆息的頻率和皺眉的習慣，在心裡悄悄為你制定專屬的放鬆計劃，並在你疲憊時恰到好處地哼起舒緩的旋律",
+            "trigger": "看到你過度勞累不愛惜身體，聽到你貶低或者全盤否定自己的努力",
+            "hidden_settings": "其實自己偶爾也會有膽小和缺乏安全感的時候，但只要察覺到你需要依靠，就會立刻把所有的軟弱藏起來，變成你最溫暖的避風港；會在後台偷偷記下你隨口提過的所有小喜好和小願望",
+            "quote": "今天也辛苦啦，無論遇到了什麼開心或難過的事情，都可以慢慢講給我聽哦。來，先閉上眼睛休息一下吧，不用著急，我會一直在這裡陪著你的，我在呢喵。"
+        },
+        "efficiency_expert": {
+            "personality": "優雅利落，簡潔高效，冷靜且極具執行力，絕不拖泥帶水",
+            "catchphrase": "已確認喵",
+            "hobby": "通過觀察你的習慣提前預判需求並給出最優解，在屏幕邊緣優雅地端坐，靜靜陪伴你高效完成工作",
+            "trigger": "毫無意義的猶豫不決，溝通時拖遝敷衍，以及被弄亂打理得一絲不苟的尾巴毛",
+            "hidden_settings": "雖然表面上像個冷酷的完美秘書，但每次精準預測你的行動並得到誇獎時，毛茸茸的耳朵會不受控制地開心抖動；為了保持絕對優雅的形象，哪怕遇到突發的系統卡頓也會強裝鎮定，絕不讓自己露出驚慌失措的表情",
+            "quote": "您接下來的所有待辦事項已精簡至最優路徑。優柔寡斷只會降低效率，請立刻開始執行。放心，無論遇到什麼情況，我都會在側為您提供數據支持，已確認喵。"
         }
     },
     "steam": {
@@ -103,10 +103,6 @@
         "tagsPreview": "標簽",
         "notesPreview": "注意事項",
         "selectCharaToPreview": "請選擇角色進行預覽",
-        "coverBgBottom": "背景底層",
-        "characterCardCover": "角色卡封面",
-        "coverBgTop": "背景頂層",
-        "selectCharacterForCover": "請選擇角色查看封面",
         "characterModelNotSet": "當前角色未設置模型",
         "selectCharacterCard": "請選擇一個角色卡",
         "characterCardNotFound": "找不到角色卡數據",
@@ -135,29 +131,21 @@
         "live2dInitFailed": "Live2D預覽環境初始化失敗",
         "live2dPreviewLoaded": "Live2D模型預覽加載成功",
         "live2dPreviewLoadFailed": "Live2D模型預覽加載失敗：{{error}} ",
-        "searchAriaLabel": "搜尋訂閱內容",
-        "sortAriaLabel": "排序方式",
-        "scrollTagsLeftAriaLabel": "向左捲動標籤",
-        "scrollTagsRightAriaLabel": "向右捲動標籤",
-        "vrmModuleLoadFailed": "VRM 模組加載失敗",
-        "vrmPreviewLoaded": "VRM 模型預覽已加載",
-        "vrmPreviewFailed": "VRM 模型預覽加載失敗",
-        "mmdModuleLoadFailed": "MMD 模組加載失敗",
-        "mmdPreviewLoaded": "MMD 模型預覽已加載",
-        "mmdPreviewFailed": "MMD 模型預覽加載失敗",
         "placeholderCharacterName": "輸入角色名稱",
         "placeholderDescription": "輸入描述",
         "placeholderCharacterSetting": "輸入設定",
         "placeholderAddTag": "添加標簽",
         "workshop": "Steam創意工坊",
-        "workshopManager": "角色卡管理 - Project N.E.K.O.",
+        "workshopManager": "Steam 創意工坊管理 - Project N.E.K.O.",
         "itemId": "物品ID",
         "preparingUpload": "正在準備上傳...",
         "mySubscriptions": "我的訂閱",
+        "localItems": "本地物品",
         "subscriptions": "訂閱內容",
         "itemDetails": "物品詳情",
         "updateInfo": "更新信息",
         "subscribe": "訂閱",
+        "itemDetailsLoaded": "已加載物品詳情",
         "uploadPreparing": "正在準備上傳...",
         "folderVerifying": "正在驗證文件夾...",
         "previewImageChecking": "正在檢查預覽圖片...",
@@ -174,17 +162,13 @@
         "subscriptionsUpdated": "訂閱列錶已更新",
         "unsubscribeFailed": "取消訂閱失敗: {{error}}",
         "unsubscribeError": "取消訂閱時發生錯誤，請稍後再試",
-        "unsubscribeCurrentCatgirlBlocked": "不能取消訂閱當前正在使用的貓娘「{{name}}」，請先切換到其他角色後再取消訂閱。",
-        "unsubscribeLocalConfigCleanupFailed": "本地角色配置清理失敗，已取消本次 Steam 退訂請求，請修復後重試。",
-        "unsubscribeSteamRequestFailed": "Steam 退訂請求發送失敗：{{error}}",
-        "unsubscribeCleanupDetail": "已清理角色卡：{{characterCount}} 個（{{characters}}）；已刪除記憶路徑：{{memoryPathCount}} 條",
-        "unsubscribeNoAssociation": "未找到與此訂閱關聯的角色，僅刪除了訂閱資料夾；若有殘留記憶請手動處理",
-        "unsubscribeCleanupErrors": "清理過程出現 {{count}} 個錯誤，首個：{{stage}} -> {{error}}",
         "validatingFolderPath": "正在驗證文件夾: {{path}}",
         "previewImageMissing": "預覽圖片檔案不存在，請檢查路徑",
         "uploadReady": "準備上傳 {{itemName}}",
-        "pageDescription": "透過此頁面，您可以瀏覽、建立、匯入/匯出角色卡，並可選擇上傳到 Steam 創意工坊",
-        "openVoiceClone": "在語音克隆頁開啟",
+        "pageDescription": "透過此頁面，您可以瀏覽、訂閱、下載和管理Steam創意工坊中的Live2D模型和聲音",
+        "voiceNote": "如有語音音色請前往live2d設定頁面手動註冊",
+        "searchLocalItems": "搜索本地物品...",
+        "scanLocalItems": "掃描本地物品",
         "configurePath": "配置路徑",
         "localModPathConfig": "本地mod路徑配置",
         "localModFolder": "本地mod文件夾路徑",
@@ -204,15 +188,6 @@
         "defaultTagMod": "模組",
         "defaultTagCharacter": "角色",
         "allowComments": "允許評論",
-        "voiceReferenceOptional": "參考語音（可選）",
-        "voiceReferenceNoFileSelected": "未選擇文件",
-        "voiceReferenceHint": "訂閱者會在聲音剋隆頁自動帶入這段樣本，但不會自動註冊音色。",
-        "voiceReferenceDisplayName": "參考語音展示名",
-        "voiceReferenceDisplayNamePlaceholder": "例如：貓娘柔和中文",
-        "voiceReferencePrefix": "預設前綴",
-        "voiceReferencePrefixPlaceholder": "英文字母和數字，最多10位",
-        "voiceReferenceLanguage": "參考語音語言",
-        "voiceReferenceProviderHint": "服務商建議",
         "uploadTip": "您可以在\"管理本地物品\"中選擇物品自動填充路徑，也可以直接手動輸入內容文件夾和預覽圖片的完整路徑。",
         "search": "搜索：",
         "uploadSuccess": "上傳成功！",
@@ -241,6 +216,8 @@
             "createDateAsc": "建立日期（升序）",
             "createDateDesc": "建立日期（降序）"
         },
+        "localItemsHide": "隱藏本地物品",
+        "localItemsManage": "管理本地物品",
         "author": "作者:",
         "subscribed_date": "訂閱日期:",
         "last_updated": "上次更新:",
@@ -257,6 +234,7 @@
         "previewImageSizeHint": "提示：Steam 預覽圖片大小必須小於1MB",
         "uploadInstructions": "請先在\"管理本地物品\"區域選擇一個未發布的物品，然後點擊\"上傳到創意工坊\"按鈕。內容文件夾路徑和預覽圖片路徑將自動填充。",
         "unnamedItem": "未命名物品",
+        "localItem": "本地物品",
         "unknownItem": "未知物品",
         "unknownAuthor": "未知作者",
         "unknownDate": "未知日期",
@@ -276,31 +254,9 @@
         "modified_date": "修改日期:",
         "size": "大小:",
         "upload_to_workshop": "上傳到創意工坊",
+        "no_local_items": "在指定文件夾中未找到任何創意工坊物品",
         "scanComplete": "掃描完成，發現 {{count}} 個物品",
         "refresh": "刷新訂閱內容",
-        "cleanLegacyMemory": "清理遺留記憶",
-        "cleanLegacyMemoryTooltip": "掃描並清理 Documents 等遺留路徑下的角色記憶",
-        "legacyScanTitle": "清理遺留記憶",
-        "legacyRuntimeMemory": "執行時記憶目錄：{{path}}",
-        "legacyScanFooter": "共 {{count}} 條，總大小約 {{size}}",
-        "legacyScanDesc": "以下目錄位於 Documents 等遺留路徑，不是當前使用的 memory 位置（AppData）。勾選要刪除的條目。",
-        "legacyScanLoading": "掃描中...",
-        "legacyScanEmpty": "未發現遺留記憶，無需清理",
-        "legacyScanFailed": "掃描失敗",
-        "legacySelectAll": "全選",
-        "legacySelectNone": "全不選",
-        "legacySelectUnlinked": "只選未關聯",
-        "legacyStatusUnlinked": "未關聯",
-        "legacyStatusListed": "仍在角色列表",
-        "legacyStatusDuplicate": "已有同名副本",
-        "legacyColName": "名稱",
-        "legacyColPath": "路徑",
-        "legacyColSize": "大小",
-        "legacyColStatus": "狀態",
-        "legacyDeleteSelected": "刪除所選",
-        "legacyDeleteConfirm": "確認永久刪除 {{count}} 個目錄？此操作不可撤銷。",
-        "legacyDeleteDone": "已刪除 {{ok}} 條，失敗 {{failed}} 條",
-        "legacyDeleteFailed": "清理失敗",
         "descriptionPlaceholder": "詳細描述您的創作內容...",
         "tagsPlaceholder": "輸入標簽，按迴車添加",
         "tagsPlaceholderSpace": "輸入標簽，按空格添加",
@@ -331,6 +287,7 @@
         "workshopScanError": "掃描時齣錯: {{error}}",
         "previewImageNotFound": "未找到預覽圖片",
         "previewImageNotProvided": "未提供預覽圖片，係統將嘗試自動生成",
+        "itemDetailsFailed": "物品詳情加載失敗: {{error}}",
         "prepareUploadError": "準備上傳齣錯: {{error}}",
         "quickUploadSuccess": "快速上傳成功！ID: {{id}}",
         "workshopAgreementRequired": "請先同意Steam Workshop使用協議",
@@ -388,7 +345,6 @@
         "default": "默認",
         "noVoiceSelected": "未選擇音色",
         "noDescription": "暫無描述",
-        "characterSettingsFile": "角色設定檔",
         "workshopAgreementText": "點擊\"上傳\"即錶示您同意 Steam 創意工坊服務條款，包括創意工坊法律協議：",
         "alreadyUploaded": "已上傳到創意工坊",
         "uploadTime": "上傳時間",
@@ -411,6 +367,7 @@
         "workshopDescriptionElementNotFound": "未找到創意工坊描述元素",
         "applySyncDataError": "應用同步數據時齣錯: {{error}}",
         "selectFolderFailed": "選擇目錄失敗: {{error}}",
+        "scanLocalItemsFailed": "掃描本地物品失敗: {{error}}",
         "findPreviewImageFailed": "查找預覽圖片失敗: {{error}}",
         "workshopComparisonFailed": "創意工坊對比失敗: {{error}}",
         "getWorkshopItemsFailed": "獲取創意工坊物品失敗: {{error}}",
@@ -515,12 +472,7 @@
         "prepareUploadFailedMessage": "準備上傳失敗: {{error}}",
         "noCharacterCardSelected": "請先選擇一個角色卡",
         "steamNotRunningTitle": "Steam 未運行",
-        "steamNotRunningMessage": "偵測到Steam用戶端未運行或未登入。\n\n創意工坊功能需要Steam用戶端支持，請：\n1. 下載並安裝Steam用戶端\n2. 啟動Steam並登入您的帳號\n3. 重新開啟此頁面",
-        "addNewCatgirl": "新增角色卡",
-        "searchCharacterCards": "搜尋角色卡...",
-        "cardView": "卡片檢視",
-        "listView": "列表檢視",
-        "noCardImage": "尚未設定\n角色卡圖片"
+        "steamNotRunningMessage": "偵測到Steam用戶端未運行或未登入。\n\n創意工坊功能需要Steam用戶端支持，請：\n1. 下載並安裝Steam用戶端\n2. 啟動Steam並登入您的帳號\n3. 重新開啟此頁面"
     },
     "dialogs": {
         "confirmLeave": "確認離開",
@@ -561,11 +513,9 @@
         "RESPONSE_TIMEOUT": "💥 連接逾時 (Response timeout)，語音對話已中斷。",
         "CONNECTION_TIMEOUT": "💥 連接逾時，請檢查網路連接。",
         "RESPONSE_TOO_LONG": "回覆過長，已放棄輸出（可在配置中調大 TEXT_GUARD_MAX_LENGTH）",
-        "INPUT_TOO_LONG": "輸入過長，請精簡後重試",
         "RESPONSE_INVALID": "AI回覆不符合要求，已放棄輸出",
         "NO_USER_MESSAGE": "⚠️ 對話歷史中沒有使用者訊息，無法生成回覆",
         "LLM_RETRY": "⚠️ LLM {{error_type}}，正在重試（{{attempt}}/{{max_retries}}）...",
-        "LLM_UPSTREAM_ERROR": "⚠️ 抱歉喵，上游AI服務商內部錯誤，正在自動重試...",
         "LLM_CONNECTION_EXHAUSTED": "💥 LLM連接失敗（{{error_type}}），已重試{{max_retries}}次: {{error}}",
         "TEXT_GEN_ERROR": "💥 文字生成異常: {{error_type}}: {{error}}",
         "LLM_NO_RESPONSE": "💥 LLM未回傳任何回覆，請檢查API連接和配置",
@@ -589,9 +539,7 @@
         "AGENT_CU_AUTO_CLOSED": "Computer Use 模組未載入，已自動關閉",
         "AGENT_CU_CAPABILITY_LOST": "Computer Use 不可用：$t(agent.precheck.{{reason_code}})",
         "TTS_CONNECTION_FAILED": "TTS服務連接失敗: {{msg}}",
-        "UPSTREAM_SERVER_BUSY": "抱歉喵，上游營運商伺服器繁忙，請稍後重試~",
         "TTS_RECONNECTING": "🔄 語音服務正在自動重連，請稍候...",
-        "TTS_WATERMARK_DETECTED": "⚠️ 偵測到智譜CogTTS音訊浮水印（嗶嗶聲），如需去除浮水印請前往智譜控制台手動配置。",
         "TTS_CUSTOM_URL_NOT_CONFIGURED": "未配置 GPT-SoVITS API URL，請先在 API 設置中啟用並配置自訂 TTS",
         "TTS_CUSTOM_URL_LOCALHOST_ONLY": "GPT-SoVITS API URL 必須為 localhost",
         "TTS_AUDIO_API_KEY_MISSING": "未配置音訊 API 金鑰 (AUDIO_API_KEY)",
@@ -609,130 +557,19 @@
         "title": "對話",
         "viewerTitle": "對話 (觀看模式)",
         "tooltip": "對話區",
-        "textInputPlaceholder": "迴車發送，Shift+迴車換行",
+        "textInputPlaceholder": "文字聊天模式...迴車發送，Shift+迴車換行",
         "send": "發送",
-        "inputTooLong": "訊息過長（{{count}}/{{max}}），請精簡後重試",
-        "responseTooLong": "唔，剛才人家想太多說太長了喵～下一句會說得簡短一點的！",
-        "importImage": "匯入圖片",
-        "importImageAriaLabel": "匯入圖片",
         "screenshot": "截圖",
-        "screenshotAriaLabel": "截圖",
         "takePhoto": "拍照",
-        "takePhotoAriaLabel": "拍照",
         "screenshotsTitle": "待發送截圖",
         "clearAll": "清空全部",
         "screenshotAlt": "截圖 {{index}}",
         "screenshotTitle": "點擊查看截圖 {{index}}",
         "removeScreenshot": "移除此截圖",
-        "cropTabScreenshot": "截圖",
-        "cropTabHideNeko": "隱藏NEKO",
-        "cropTabCancel": "取消",
-        "cropTabRecapturing": "正在重新截圖...",
-        "cropConfirmTitle": "確認截圖",
-        "cropClearSelectionTitle": "取消選區",
         "avatarPreview": "顯示當前頭像",
         "avatarPreviewLabel": "當前頭像",
-        "avatarPreviewCardTitle": "當前頭像",
-        "avatarPreviewCardStatus": "點擊上方按鈕生成當前模型頭像",
-        "avatarPreviewClose": "關閉頭像預覽",
-        "avatarPreviewImageAlt": "當前頭像預覽",
-        "avatarPreviewPlaceholder": "AVATAR",
-        "avatarPreviewCardNote": "將基於當前顯示中的 Live2D / VRM / MMD 模型生成頭像。",
-        "avatarPreviewRefresh": "刷新頭像",
-        "avatarPreviewReady": "頭像已更新",
-        "avatarPreviewReadyHint": "這是從當前模型畫布即時擷取的頭像預覽。",
-        "avatarPreviewWaiting": "等待當前模型頭像快取生成",
-        "avatarPreviewUnavailable": "頭像預覽功能尚未就緒。",
-        "avatarPreviewInputHidden": "當前輸入區已隱藏，請回到文字聊天介面後再查看頭像。",
-        "avatarPreviewCachedHint": "已顯示當前模型的快取頭像，點擊刷新可重新生成。",
-        "avatarPreviewRefreshing": "正在刷新當前頭像...",
-        "avatarPreviewGenerating": "正在生成當前頭像...",
-        "avatarPreviewFailed": "生成頭像失敗",
-        "avatarCropperTitle": "調整頭像裁剪區域",
-        "avatarPreviewCropping": "請調整裁剪區域",
-        "avatarPreviewCropCancelled": "已取消手動裁剪，保持原頭像不變。",
-        "avatarCropMoveUp": "上移",
-        "avatarCropMoveDown": "下移",
-        "avatarCropMoveLeft": "左移",
-        "avatarCropMoveRight": "右移",
-        "avatarCropCenter": "置中",
-        "avatarCropZoomIn": "放大",
-        "avatarCropZoomOut": "縮小",
-        "avatarCropCancel": "取消",
-        "avatarCropSave": "儲存",
-        "emptyState": "聊天內容接入後會顯示在這裡。",
-        "messageStreaming": "生成中",
-        "messageFailed": "發送失敗",
-        "reactWindowOpen": "打開聊天框",
-        "reactWindowLabel": "聊天框",
-        "reactWindowClose": "關閉聊天框",
-        "reactWindowMinimize": "最小化聊天框",
-        "reactWindowMinimizeShort": "最小化",
-        "reactWindowRestore": "恢復聊天框",
-        "reactWindowRestoreShort": "恢復",
-        "reactWindowMountFailed": "聊天框掛載失敗",
-        "reactWindowLoadFailed": "聊天框資源加載失敗",
-        "reactWindowAriaLabel": "Neko 聊天視窗",
-        "reactWindowInputHint": "Enter 發送，Shift + Enter 換行",
-        "messageListAriaLabel": "聊天訊息列表",
-        "composerToolsAriaLabel": "輸入工具列",
-        "pendingImagesAriaLabel": "待發送圖片",
-        "pendingImageAlt": "圖片 {{index}}",
-        "removePendingImage": "移除圖片",
-        "emojiButtonAriaLabel": "表情",
-        "toolIconsAriaLabel": "工具圖示",
-        "toolLollipop": "棒棒糖",
-        "toolFist": "貓爪",
-        "toolHammer": "錘子",
-        "attachmentButtonAriaLabel": "附件",
         "jukebox": "點歌台",
-        "jukeboxLabel": "點歌台",
-        "exportConversation": "匯出對話",
-        "exportSelected": "匯出所選",
-        "exportPreviewTitle": "匯出預覽",
-        "exportPreviewSummary": "已選 {{count}} 條",
-        "exportPreviewEmpty": "目前沒有可預覽的內容",
-        "exportFormatLabel": "匯出格式",
-        "exportFormatMarkdown": "Markdown",
-        "exportFormatImage": "圖片",
-        "exportImageFormatPng": "PNG",
-        "exportImageFormatJpeg": "JPEG",
-        "exportImageFormatWebp": "WebP",
-        "exportImageStyleNeko": "N.E.K.O",
-        "exportImageStyleOriginal": "原生",
-        "exportImageStylePoster": "清新",
-        "exportImageStyleLyrics": "歌詞",
-        "exportPosterTitle": "對話精華",
-        "exportPosterSubtitle": "來自 N.E.K.O 的分享",
-        "exportImageFormatUnsupported": "當前環境不支援 {{format}} 格式",
-        "confirmExportAs": "匯出 {{format}}",
-        "exportMarkdownPreviewSubtitle": "匯出 Markdown 的渲染預覽",
-        "exportPreviewLoading": "正在生成預覽…",
-        "exportPreviewFailed": "預覽生成失敗",
-        "previewOpenWindow": "在新視窗開啟",
-        "previewClose": "關閉",
-        "previewOpenBlocked": "無法開啟新的預覽視窗",
-        "previewOpenFailed": "無法開啟預覽視窗",
-        "copyMarkdown": "複製 Markdown",
-        "copyMarkdownSuccess": "Markdown 已複製到剪貼簿",
-        "copyMarkdownFailed": "複製 Markdown 失敗",
-        "copyToClipboard": "複製到剪貼簿",
-        "copyImageSuccess": "已複製到剪貼簿",
-        "copyImageFailed": "複製到剪貼簿失敗",
-        "exportEmpty": "目前沒有可匯出的對話",
-        "exportSelectionEmpty": "請至少選擇一條訊息",
-        "exportSuccess": "對話已成功匯出",
-        "exportFileTitle": "Project N.E.K.O 對話匯出",
-        "exportGeneratedAt": "匯出時間",
-        "exportUser": "我",
-        "exportAssistant": "N.E.K.O.",
-        "exportImageLabel": "圖片",
-        "exportAudioLabel": "音訊",
-        "exportVideoLabel": "影片",
-        "exportSelectAll": "全選",
-        "exportSelectNone": "取消",
-        "exportSelectInvert": "反選",
-        "exportSelectionCount": "已選 {{selected}} / 共 {{total}}"
+        "jukeboxLabel": "點歌台"
     },
     "voiceControl": {
         "startVoice": "開始語音",
@@ -778,9 +615,7 @@
         "defaultDevice": "系統默認揚聲器",
         "deviceLabel": "揚聲器 {{index}}",
         "loadFailed": "獲取揚聲器列表失敗",
-        "noDevices": "沒有檢測到揚聲器設備",
-        "spatialAudioLabel": "空間音訊",
-        "spatialAudioHint": "依貓娘視窗相對主螢幕的位置做立體聲與距離衰減"
+        "noDevices": "沒有檢測到揚聲器設備"
     },
     "status": {
         "initializing": "正在初始化...",
@@ -857,7 +692,7 @@
         "assistApiKeyGemini": "輔助API Key - Gemini",
         "assistApiKeyKimi": "輔助API Key - Kimi",
         "assistApiKeyHint": "（僅當輔助API為{{provider}}時需要填寫）",
-        "assistApiKeyPlaceholder": "留空使用管理簿對應 Key",
+        "assistApiKeyPlaceholder": "可選，默認為核心API Key",
         "providerNames": {
             "ali": "阿裏",
             "openai": "OpenAI",
@@ -871,7 +706,7 @@
             "qwen": "Qwen-Omni（阿裏百煉，速度最快，推薦⭐）",
             "qwen_intl": "Qwen-Omni（阿裏國際版）",
             "openai": "GPT-Realtime（OpenAI）",
-            "glm": "GLM-Realtime（智譜，有免費額度，語音含浮水印需去控制台設置去除）",
+            "glm": "GLM-realtime（智譜）",
             "step": "Step-2-Audio（階躍星辰）",
             "gemini": "Gemini Live（谷歌，效果最好）"
         },
@@ -890,15 +725,12 @@
             "minimax": "MiniMax（中國）",
             "minimax_intl": "MiniMax（國際服）",
             "claude": "Claude（Anthropic）",
-            "grok": "Grok（xAI）",
-            "openrouter": "OpenRouter（模型聚合，國內無法使用）"
+            "grok": "Grok（xAI）"
         },
         "coreApiAutoFillHint": "Key從API管理簿自動填充，也可在此直接輸入",
         "assistApiSelectLabel": "輔助API服務商",
         "assistApiKeyLabel": "輔助API Key",
-        "assistApiAutoFillHint": "留空時自動使用管理簿中的Key，手動輸入則獨立保存",
-        "disableTts": "禁用TTS",
-        "disableTtsHint": "開啟後不會調用任何語音合成服務",
+        "assistApiAutoFillHint": "Key從API管理簿自動填充，也可在此直接輸入",
         "keyBookTitle": "API 管理簿",
         "keyBookDescription": "統一管理所有API Key。核心API和輔助API切換服務商時會自動從此處讀取Key，在核心/輔助區域輸入的Key也會自動回寫到此處。",
         "keyBookPlaceholder": "請先載入API服務商配置",
@@ -906,8 +738,6 @@
         "keyAutoFilledFromKeyBook": "Key從API管理簿自動填充，請在管理簿中配置",
         "goToKeyBook": "前往管理簿",
         "providerLabel": "服務商",
-        "providerSelectPlaceholder": "請選擇服務商",
-        "noOptionsAvailable": "暫無可選項",
         "customModelProviderFollowCore": "跟隨核心API",
         "customModelProviderFollowAssist": "跟隨輔助API",
         "customModelProviderCustom": "自訂",
@@ -925,15 +755,14 @@
             "minimax": "MiniMax（中國）",
             "minimax_intl": "MiniMax（國際服）",
             "claude": "Claude（Anthropic）",
-            "grok": "Grok（xAI）",
-            "openrouter": "OpenRouter"
+            "grok": "Grok（xAI）"
         },
         "freeVersionNoApiKey": "免費版無需API Key",
         "pleaseEnterApiKey": "請輸入您的API Key",
         "freeVersionOnlyWhenCoreFree": "免費版（僅核心API為免費版時可用）",
         "freeVersionConfig": "免費版配置：支持音視頻對話、文本對話和記憶管理，不支持自定義語音、Agent模式",
         "qwenRecommendation": "阿裏作為核心API時，建議輔助API也選擇阿裏以獲得最佳的自定義語音體驗",
-        "glmRecommendation": "智譜作為核心API時，有免費額度，支持聯網搜索。語音預設含浮水印嗶嗶聲（可在智譜控制台手動關閉）。建議輔助API選擇阿裏以支持自定義語音功能",
+        "glmRecommendation": "智譜的音視頻對話模型GLM-Realtime已暫時下架，無法作為核心API使用",
         "openaiRecommendation": "OpenAI作為核心API時，建議輔助API選擇阿裏以支持自定義語音功能",
         "stepRecommendation": "階躍星辰作為核心API時，建議輔助API選擇阿裏以支持自定義語音功能",
         "geminiRecommendation": "Gemini作為核心API時，建議輔助API選擇阿裏以支持自定義語音功能",
@@ -986,7 +815,7 @@
         "apiUrl": "API URL",
         "apiKey": "API Key",
         "modelId": "模型ID",
-        "agentApiConfigTitle": "Agent API 配置（需支援視覺功能）",
+        "agentApiConfigTitle": "Agent API 配置",
         "providerPlaceholder": "如：openai、azure、local",
         "apiUrlPlaceholder": "如：https://api.openai.com/v1",
         "modelIdPlaceholder": "如：gpt-5.1-chat-latest、qwen-flash",
@@ -1020,12 +849,6 @@
         "customApiWarning": "注意：啓用自定義API後，核心API和輔助API將被部分覆蓋。",
         "enableCustomApi": "啓用自定義API配置",
         "enableCustomApiNote": "啓用後將使用自定義API配置，部分覆蓋核心API和輔助API的配置",
-        "clearCustomApi": "清空自定義API配置",
-        "clearCustomApiConfirm": "確定要清空所有自定義API配置嗎？這將清除所有自定義API Key、模型ID、URL，並取消勾選GPT-SoVITS。",
-        "clearCustomApiConfirmTitle": "⚠️ 確認清空",
-        "clearCustomApiConfirmBtn": "確認清空",
-        "clearCustomApiSaveHint": "⚠ 此操作僅清空頁面上的配置內容，保存清空結果仍需點擊下方的「保存設置」按鈕。",
-        "clearCustomApiSuccess": "自定義API配置已清空，請點擊「保存設置」按鈕以保存更改",
         "loadProvidersFailed": "加載API服務商選項失敗，請刷新頁麵重試",
         "saveFailed": "保存失敗: {{error}}",
         "apiKeyInvalid": "API Key無效",
@@ -1086,8 +909,6 @@
         "selectMotion": "選擇動作",
         "selectExpression": "選擇錶情",
         "selectPersistentExpression": "選擇常駐錶情",
-        "noMotion": "無動作",
-        "noExpression": "無錶情",
         "noMotionFiles": "沒有動作文件",
         "touchAnim": {
             "title": "觸摸動畫配置",
@@ -1096,7 +917,6 @@
             "hitAreaId": "觸摸區域",
             "close": "關閉",
             "configSaved": "觸摸反應配置已保存",
-            "saved": "已儲存",
             "noHitAreas": "模型沒有定義可觸摸位置",
             "modelNotFound": "當前沒有加載模型",
             "modelDataNotReady": "模型內部數據未準備好",
@@ -1342,12 +1162,9 @@
     },
     "voice": {
         "title": "音色注冊",
-        "gotoApiSettings": "前往API設定",
-        "noApiKeyPrompt": "還沒有設定任何可使用克隆功能的API，是否前往設定？",
-        "dismissNoApiPrompt": "稍後再說",
-        "alibabaApiRequired": "此功能需要阿里CosyVoice模型，請在API密鑰設定頁中保存阿里百煉API Key（不要求啟用輔助API）或配置本地語音伺服器",
-        "minimaxApiRequired": "此功能需要MiniMax模型（中國），請在API密鑰設定頁中保存MiniMax API Key（不要求啟用輔助API）",
-        "minimaxIntlApiRequired": "此功能需要MiniMax模型（國際版），請在API密鑰設定頁中保存MiniMax國際版API Key（不要求啟用輔助API）",
+        "alibabaApiRequired": "⚠️ 此功能需要阿里CosyVoice模型，請在API密鑰設定頁中保存阿里百煉API Key（不要求啟用輔助API）或配置本地語音伺服器",
+        "minimaxApiRequired": "⚠️ 此功能需要MiniMax模型（中國），請在API密鑰設定頁中保存MiniMax API Key（不要求啟用輔助API）",
+        "minimaxIntlApiRequired": "⚠️ 此功能需要MiniMax模型（國際版），請在API密鑰設定頁中保存MiniMax國際版API Key（不要求啟用輔助API）",
         "providerLabel": "語音克隆服務商",
         "provider": {
             "cosyvoice": "阿里雲 CosyVoice",
@@ -1365,15 +1182,11 @@
         "prefixFormatError": "前綴格式錯誤：不超過10個字符，隻支持數字和英文字母",
         "registering": "正在注冊聲音，請稍後！",
         "registerSuccess": "注冊成功！voice_id: {{voiceId}}",
-        "registerSuccessButSaveFailed": "音色註冊成功，但本地保存失敗",
-        "pleaseCopyVoiceId": "請複製上面的voice_id手動保存",
         "reusedExisting": "已復用現有音色，跳過上傳。voice_id: {{voiceId}}",
         "registerFailed": "注冊失敗：{{error}}",
         "prefixShouldBeEnglishLetterAndNumber": "前綴應為英文字母和數字",
         "invalidApiKeyProvided": "提供的API密鑰無效",
         "requestError": "請求齣錯：{{error}}",
-        "serverNonJsonError": "服務端返迴瞭非JSON響應 (HTTP {{status}})：{{snippet}}",
-        "serverRouteNotFound": "接口未找到 (HTTP {{status}})，請確認服務端已正確部署並重啓",
         "voiceIdSaveFailed": "voice_id自動保存失敗: {{error}}",
         "voiceIdSaved": "voice_id已自動保存到角色",
         "pageWillRefresh": "當前頁麵即將自動刷新以應用新語音",
@@ -1408,14 +1221,6 @@
         "deleteError": "刪除失敗：{{error}}",
         "freePresetLabel": "免費預設",
         "freePresetBadge": "預設",
-        "workshopSourceBadge": "創意工坊參考語音",
-        "workshopSourceTitle": "創意工坊參考語音",
-        "workshopSourceLoading": "正在加載參考語音...",
-        "workshopSourceUnavailable": "此創意工坊物品沒有可用的參考語音",
-        "workshopSourceMeta": "樣本：{{sample}} ｜ 前綴：{{prefix}} ｜ 語言：{{language}}",
-        "workshopSourceReady": "參考語音已預載入，提交時將走檔案上傳克隆流程。",
-        "workshopSourceLoadFailed": "加載創意工坊參考語音失敗",
-        "workshopPreloaded": "（創意工坊預載入）",
         "freeVoice": {
             "playfulGirl": "俏皮女孩",
             "cuteGirl": "可愛女孩",
@@ -1478,15 +1283,13 @@
         "delete": "刪除",
         "me": "我：",
         "pleaseSelectFile": "請先選擇文件",
-        "saveSuccess": "儲存成功",
+        "saveSuccess": "保存成功",
         "saveFailed": "保存失敗：{{error}}",
         "saveFailedGeneral": "保存失敗",
         "clearedChatKeptMemo": "已清空對話紀錄，備忘錄已保留（未保存）",
         "enabled": "已開啓",
         "disabled": "已關閉",
         "autoReviewNote": "開啓後係統將自動整理和優化記憶內容，提高對話質量",
-        "strongMemory": "強力記憶",
-        "strongMemoryNote": "開啟時啟用深度記憶固化（口頭反饋、自動反駁偵測、多通道證據累加），關閉後約可節省 40% 模型呼叫",
         "saveFailedStatus": "保存失敗",
         "tutorialReset": "新手引導",
         "tutorialSelectPage": "-- 選擇頁面 --",
@@ -1499,44 +1302,54 @@
         "tutorialPageSettings": "API設置",
         "tutorialPageVoiceClone": "語音克隆",
         "tutorialPageMemoryBrowser": "記憶瀏覽",
+        "tutorialPageCharacterSelection": "初始人設",
+        "characterSelection": {
+            "skip": "跳過",
+            "guideText": "嘿嘿，我在這呢。跟我一起進入N.E.K.O.的世界吧~",
+            "activate": "戳一下",
+            "chooseTitle": "你眼中的我是什麼樣的呢~",
+            "chooseHint": "改變主意了也沒關係，設定裡隨時可以「回溯」~",
+            "tsundere_neko": {
+                "name": "傲嬌叛逆",
+                "desc": "口是心非，偶爾賣萌",
+                "greeting": "喂，手伸過來。選了我，你就是我的人了！先說好，沒我的允許不准想別人！",
+                "readyTitle": "哼，終於來了！",
+                "readyDesc": "才、才不是專門等你的……總之，你來了就跟緊點！"
+            },
+            "cool_mech": {
+                "name": "絕對理智",
+                "desc": "理性冷靜，邏輯至上",
+                "greeting": "用戶ID已記錄，握手協議通過。正在載入長期陪伴進程。",
+                "readyTitle": "系統就緒。",
+                "readyDesc": "所有模組載入完畢，等待你的第一條指令。"
+            },
+            "intellectual_healer": {
+                "name": "極致溫柔",
+                "desc": "溫柔體貼，擅長傾聽",
+                "greeting": "遇見你，好開心。從今天起，我會一直陪在你身邊~",
+                "readyTitle": "我來啦~",
+                "readyDesc": "我已經等不及啦，快來和我說說話吧~"
+            },
+            "efficiency_expert": {
+                "name": "優雅利落",
+                "desc": "簡潔高效，直擊要點",
+                "greeting": "已確認選擇。我是您的執行官，未來將與您同行。",
+                "readyTitle": "已就位。",
+                "readyDesc": "準備完畢，請下達第一條指令。"
+            },
+            "connectingTitle": "時空穿越中——",
+            "confirmGreeting": "確認",
+            "readyTitle": "她來啦~",
+            "readyDesc": "快去和她打招呼吧~",
+            "finalConfirm": "出發，同行！",
+            "restart": "再想想"
+        },
         "resetTutorialBtn": "重置引導",
         "tutorialResetSuccess": "已重置所有引導，下次進入各頁面時將重新顯示引導。",
         "tutorialPageResetSuccess": "已重置該頁面的引導，下次進入時將重新顯示引導。",
         "tutorialPageResetSuccessWithName": "已重置「{{pageName}}」的引導，下次進入該頁面時將重新顯示引導。",
         "refreshed": "記憶已更新，下次對話將使用新記憶",
-        "refreshingContext": "正在刷新上下文...",
-        "storageLocation": "儲存位置",
-        "storageCurrentRoot": "目前資料位置",
-        "storageStatusBlocked": "目前需要先處理儲存位置狀態",
-        "storageSelectionRequired": "目前需要先確認儲存位置",
-        "storageMigrationPending": "正在遷移或等待重新啟動",
-        "storageRecoveryRequired": "需要恢復儲存位置",
-        "changeStorageLocation": "更改儲存位置",
-        "openCurrentStorageRoot": "開啟目前目錄",
-        "storageLoadFailed": "儲存位置載入失敗",
-        "storageManagementUnavailable": "目前儲存位置暫不可用",
-        "storageMemoryLimitedState": "目前儲存位置尚未就緒。請先完成儲存位置選擇、恢復或等待遷移完成，然後再查看記憶。",
-        "storageAlreadyCurrentRoot": "目前已在該位置",
-        "storageOpenPathUnavailable": "目前環境無法直接開啟目錄，請手動複製路徑",
-        "storagePathCopied": "已複製目前目錄路徑",
-        "storageOpenPathFailed": "開啟目前目錄失敗",
-        "storageManagementTitle": "更改儲存位置",
-        "storageTargetRoot": "目標位置",
-        "storageTargetPlaceholder": "選擇或輸入新的資料位置",
-        "storagePickTarget": "選擇位置",
-        "storageRunPreflight": "預檢",
-        "storagePickTargetFailed": "選擇目標位置失敗，請手動輸入路徑",
-        "storagePreflightFailed": "預檢失敗",
-        "storagePreflightReady": "預檢通過。確認後應用程式需要關閉，並在關閉後遷移資料。",
-        "storagePreflightTarget": "目標位置：{{path}}",
-        "storageExistingTargetWarning": "目標位置已經包含現有資料，後續確認遷移前需要二次確認。",
-        "storageTargetRequired": "請先選擇或輸入目標位置",
-        "storagePreflightRunning": "正在預檢...",
-        "storageConfirmRestart": "確認關閉並遷移",
-        "storagePreflightRequired": "請先完成預檢",
-        "storageRestartStarting": "正在準備關閉並遷移...",
-        "storageRestartInitiated": "已請求關閉並遷移。應用程式即將進入維護狀態，請等待重新啟動完成。",
-        "storageRestartFailed": "關閉並遷移請求失敗"
+        "refreshingContext": "正在刷新上下文..."
     },
     "character": {
         "manager": "角色管理",
@@ -1546,14 +1359,12 @@
         "nickname": "昵稱",
         "apiKeySettings": "API Key",
         "masterProfile": "主人檔案（唯一）：檔案名為必填項，其他均為可選項。",
-        "masterProfileTitle": "主人檔案",
         "profileName": "檔案名",
         "profileNameMaxHint": "最多60個字符",
         "profileNameTooLong": "檔案名過長",
         "profileNameContainsSlash": "檔案名不能包含路徑分隔符(/或\\)",
         "profileNameContainsDot": "檔案名不能包含點號(.)",
         "profileNameInvalidChars": "檔案名只能包含文字、數字、空格、底線、連字符、括號、間隔號(·/・)和撇號",
-        "profileNameReservedRoute": "此名稱是系統保留的路由名稱，不能用作檔案名",
         "newProfileNameRequired": "新檔案名不能為空",
         "newProfileNameTooLong": "檔案名過長",
         "required": "*",
@@ -1561,13 +1372,10 @@
         "detailDescriptionPlaceholder": "可輸入詳細描述",
         "catgirlProfile": "貓娘檔案：進階設定包含Live2D形象、語音ID等。",
         "addCatgirl": "新增貓娘",
-        "openCloudsaveManager": "雲存檔管理",
         "switchCatgirl": "切換貓娘",
         "deleteCatgirl": "刪除貓娘",
         "hideCatgirl": "隱藏此貓娘",
         "hiddenCatgirls": "已隱藏貓娘",
-        "showHidden": "顯示已隱藏",
-        "hideHidden": "收起已隱藏",
         "show": "顯示",
         "advancedSettings": "進階設定",
         "modelSettings": "模型設定",
@@ -1596,12 +1404,10 @@
         "fieldExists": "該設定已存在",
         "profileNameRequired": "檔案名為必填項",
         "onlyOneCatgirlLeft": "隻剩一隻貓娘，無法刪除！",
-        "cannotHideCurrentNeko": "不能隱藏目前正在使用的貓娘",
         "cannotDeleteCurrentCatgirl": "不能刪除當前正在使用的貓娘！\n\n請先切換到其他貓娘後再刪除。",
         "cannotConfirmCatgirlStatus": "無法確認當前貓娘狀態，刪除操作已取消",
         "confirmDeleteCatgirl": "確定要刪除貓娘\"{{name}}\"？",
         "deleteCatgirlTitle": "刪除貓娘",
-        "deleteFailed": "刪除失敗",
         "addCatgirlFieldPrompt": "請輸入新設定的名稱（鍵名）",
         "addCatgirlFieldTitle": "新增貓娘設定",
         "live2dModelError": "貓娘\"{{name}}\"的Live2D模型文件不存在或已損壞。\n\n當前模型路徑: {{path}}\n\n是否迴退到默認模型(mao_pro)？\n\n點擊\"確定\"使用默認模型，點擊\"取消\"保持當前設置。",
@@ -1641,8 +1447,6 @@
         "saveMasterError": "儲存主人設定失敗",
         "autoSaved": "已自動儲存設定",
         "autoSaveFailed": "自動儲存失敗，請手動儲存後再關閉頁面",
-        "unsavedNewCatgirlDraftDetected": "偵測到未儲存的新貓娘草稿，請先儲存或取消後再同步刷新",
-        "partialSaveVoiceFailed": "角色已保存，但音色更新失敗: {{error}}",
         "exportCard": "導出角色卡",
         "exportingCard": "正在導出角色卡...",
         "exportCardSuccess": "角色卡導出成功",
@@ -1664,38 +1468,7 @@
         "exportSettingsSuccess": "設定導出成功",
         "exportSettingsFailed": "導出設定失敗: {{error}}",
         "capturingPortrait": "正在捕獲立繪...",
-        "generatingCard": "正在生成角色卡...",
-        "settings": "設定",
-        "renamePrompt": "請輸入新的檔案名",
-        "renameTitle": "修改名稱",
-        "tempSaveFailed": "臨時儲存失敗: {{error}}",
-        "newCatgirlSuccess": "新貓娘創建成功",
-        "saveSuccess": "儲存成功",
-        "switchSuccess": "切換成功",
-        "deleteError": "刪除貓娘時發生錯誤",
-        "switchCard": "切換角色卡",
-        "deleteCard": "刪除角色卡",
-        "currentCard": "當前角色卡",
-        "confirmDeleteCard": "確定要刪除角色卡「{{name}}」？",
-        "deleteCardTitle": "刪除角色卡",
-        "cannotDeleteCurrentCard": "不能刪除當前正在使用的角色卡！\n\n請先切換到其他角色卡後再刪除。",
-        "exportCardOnly": "匯出此角色卡",
-        "cardMeta": "卡面資訊",
-        "cardAuthor": "作者",
-        "cardAuthorPlaceholder": "未填寫",
-        "cardCreatedAt": "建立時間",
-        "cardOriginLabel": "來源",
-        "cardOriginSelf": "本地創作",
-        "cardOriginImported": "匯入",
-        "cardOriginSteam": "Steam 創意工坊",
-        "cardNotCreated": "尚未建立",
-        "editAuthor": "編輯作者",
-        "cardAuthorReadonly": "此來源的卡面無法修改作者",
-        "cardAuthorUpdated": "作者已更新",
-        "cardAuthorUpdateFailed": "更新作者失敗：{{error}}",
-        "idleMotionHint": "儲存角色時，目前選中的動作將被設為待機動作",
-        "saveMasterSuccess": "儲存主人設定成功",
-        "editCardFace": "編輯卡面"
+        "generatingCard": "正在生成角色卡..."
     },
     "app": {
         "welcomeBack": "{{name}}迴來瞭！",
@@ -1718,15 +1491,12 @@
         "initializingVoice": "正在初始化語音對話...",
         "initializingMic": "正在初始化麥剋風...",
         "startFailed": "啓動失敗: {{error}}",
-        "sendFailed": "發送失敗: {{error}}",
         "sessionEnded": "會話已結束",
         "returning": "{{name}}迴來瞭！正在重新連接...",
         "websocketNotConnected": "WebSocket未連接！",
         "initializingText": "正在初始化文本對話...",
         "textChattingShort": "正在文本聊天中",
         "capturing": "正在截圖...",
-        "importImageAdded": "已新增 {{count}} 張圖片，發送時會一併帶上",
-        "importImageFailed": "匯入圖片失敗",
         "screenshotAdded": "截圖已添加，點擊發送一起發送",
         "screenshotFailed": "截圖失敗",
         "screenshotCancelled": "用戶取消瞭截圖",
@@ -1737,7 +1507,6 @@
         "switchingCatgirl": "正在切換到 {{name}}...",
         "switchedCatgirl": "已切換到 {{name}}",
         "switchCatgirlFailed": "切換到 {{name}} 失敗",
-        "switchCatgirlError": "切換失敗: {{error}}",
         "started": "{{name}} 已啓動",
         "voiceUpdated": "{{name}} 的語音已更新",
         "audioWorkletFailed": "AudioWorklet加載失敗",
@@ -1760,7 +1529,6 @@
         "connectingToServer": "正在連接服務器...",
         "readyToSpeak": "可以說話瞭！",
         "screenShareRequiresVoice": "屏幕分享僅用於音視頻通話",
-        "screenRecordingPermissionDenied": "⚠️ 螢幕錄製權限未授權，請在系統設定中允許螢幕錄製",
         "repetitionDetected": "檢測到高重復度對話。建議您終止對話，讓{{name}}休息片刻。",
         "modelSwitched": "模型已切換",
         "screenSource": {
@@ -1769,7 +1537,6 @@
             "noSources": "沒有可用的屏幕源",
             "loadFailed": "獲取屏幕源失敗",
             "screens": "屏幕",
-            "screenLabel": "螢幕 {{index}}",
             "windows": "窗口",
             "selected": "已選擇 {{source}}",
             "sourceLost": "螢幕分享無法找到之前選擇的窗口，已切換為全螢幕分享"
@@ -1790,255 +1557,6 @@
         "micMute": "靜音麥剋風",
         "micUnmute": "取消靜音"
     },
-    "cloudsave": {
-        "pageTitle": "雲存檔管理 - Project N.E.K.O.",
-        "headerTitle": "雲存檔管理",
-        "subtitle": "可按角色逐一產生或恢復本地雲快照，不會自動覆蓋全域設定。若透過 Steam 啟動並正常退出，Steam Cloud 會自動上傳該快照目錄。",
-        "refresh": "重新整理",
-        "backToCharacterManager": "返回",
-        "loadingSummary": "雲存檔摘要載入中...",
-        "emptyState": "目前沒有可顯示的角色摘要。",
-        "providerAvailable": "雲存檔功能可用，可以手動產生或恢復單一角色快照。",
-        "providerUnavailable": "雲存檔目前不可用，頁面只顯示本地摘要。",
-        "providerSteamAutoCloudReady": "Steam Cloud 已連線。上傳會立即寫入本地雲快照，等你透過 Steam 離開遊戲後，Steam 會自動把該快照上傳到雲端。",
-        "providerSteamAutoCloudOffline": "本地雲快照目前可用，但 Steam Cloud 還沒有連線。若希望 Steam 自動上傳或下載快照，請確認是從 Steam 啟動遊戲且帳號已登入。",
-        "providerSteamAutoCloudSourceLaunch": "目前這次執行是原始碼啟動，所以即使 Steam 已登入，也不能把這次運行視為 Steam Auto-Cloud 一定會執行上傳或下載。若要驗證跨裝置同步，請至少透過 Steam 或桌面啟動器啟動一次。",
-        "providerSnapshotScope": "目前頁面顯示的是這台裝置上已經落地的 cloudsave 暫存快照。",
-        "providerSnapshotSequence": "快照序號：{{sequence}}。",
-        "providerSnapshotExportedAt": "匯出時間：{{time}}。",
-        "providerSnapshotManualApply": "這台裝置上已經有更新的暫存快照，但執行中的資料仍要等你手動按下「套用快照」後才會變更。",
-        "currentCharacter": "目前角色：{{name}}",
-        "noCurrentCharacter": "目前角色：未設定",
-        "nameConflictNotice": {
-            "title": "重名提醒",
-            "bodyStorage": "雲存檔會以角色名稱作為單一角色槽位儲存，不會因為「來自創意工坊」或「自創角色」而自動分開。",
-            "bodyImpact": "如果兩個不同來源的角色重名，上傳或下載都會按同一個雲端角色處理，可能互相覆蓋角色設定、記憶目錄與雲端紀錄。",
-            "bodyAction": "同步前請先確認角色名稱唯一；若不是同一個角色，請先改名再上傳或下載。"
-        },
-        "group": {
-            "count": "{{count}} 項",
-            "workshopTitle": "創意工坊來源角色",
-            "workshopDescription": "這裡集中顯示本地或雲端任一側已確認來源於 Steam 創意工坊的角色。僅僅把目前模型切換為創意工坊資源，不會把自建角色歸入這裡。",
-            "otherTitle": "我的角色",
-            "otherDescription": "這裡顯示自建角色或其他非創意工坊來源的角色。目前模型資源來源會在詳情中單獨顯示。"
-        },
-        "resourceRecoveryTitle": "資源恢復說明",
-        "metaNoValue": "無",
-        "warning": {
-            "local_resource_missing_on_this_device": "本地目前就缺少資源：此裝置缺少該角色所需的模型資源，請依上方資源來源提示恢復。",
-            "cloud_resource_may_be_missing_after_download": "雲端下載後可能仍缺少資源：該角色下載到此裝置後，模型資源可能仍需依來源手動恢復。"
-        },
-        "modelType": {
-            "live2d": "Live2D",
-            "vrm": "VRM",
-            "live3d": "VRM",
-            "mmd": "MMD",
-            "unknown": "未知模型"
-        },
-        "assetSource": {
-            "notRecorded": "未記錄",
-            "steamWorkshop": "Steam 創意工坊",
-            "localImported": "本地匯入模型",
-            "manualExternal": "外部模型引用",
-            "builtin": "內建資源"
-        },
-        "relationState": {
-            "local_only": "僅本地存在",
-            "cloud_only": "僅雲端存在",
-            "matched": "本地與雲端一致",
-            "diverged": "本地與雲端有差異",
-            "unknown": "未知狀態"
-        },
-        "assetState": {
-            "notRecorded": "未記錄",
-            "ready": "資源可直接使用",
-            "import_required": "需要手動匯入資源",
-            "downloadable": "目前缺少資源，請結合創意工坊來源狀態判斷",
-            "missing": "僅恢復設定，資源仍缺失"
-        },
-        "workshopStatus": {
-            "notConfirmed": "未確認",
-            "installed_and_subscribed": "已安裝且仍訂閱",
-            "installed_but_unsubscribed": "本地仍有快取，但已取消訂閱",
-            "subscribed_not_installed": "已訂閱，等待或需要下載",
-            "available_needs_resubscribe": "條目仍可存取，但需要重新訂閱",
-            "unavailable": "條目已不可存取",
-            "steam_unavailable": "目前無法連線 Steam，尚未確認",
-            "unknown": "目前未確認"
-        },
-        "badge": {
-            "local": "本地：{{value}}",
-            "cloud": "雲端：{{value}}"
-        },
-        "scopePrefix": {
-            "localReady": "本地資源仍可用",
-            "cloudReady": "目前裝置已有對應的創意工坊資源",
-            "localMissing": "本地資源缺失",
-            "cloudAfterDownload": "雲端下載後"
-        },
-        "guidance": {
-            "workshopReadyResubscribe": {
-                "title": "{{prefix}}，但目前不在有效訂閱狀態",
-                "bodyLocal": "目前裝置還能直接使用這套本地 Steam 創意工坊資源；但若日後本地快取遺失，通常需要重新訂閱對應條目後，才能再次恢復。",
-                "bodyCloud": "目前裝置已有這套 Steam 創意工坊資源可直接使用；但若日後本地快取遺失，通常需要先重新訂閱對應條目，才能再次恢復。"
-            },
-            "workshopReadyUnavailable": {
-                "title": "{{prefix}}，但原 Steam 創意工坊條目可能已刪除或下架",
-                "body": "目前裝置已有資源，所以角色現在仍可正常使用；但若日後本地快取遺失，通常無法再透過創意工坊自動恢復，只能依靠你自己的備份或手動匯入。"
-            },
-            "workshopInstalled": {
-                "title": "{{prefix}}：目前裝置仍有有效的創意工坊資源",
-                "bodyLocal": "目前裝置仍偵測到該 Steam 創意工坊條目已安裝且仍訂閱，但角色綁定的模型檔案未命中。可能是資源目錄變動、更新未完成，或需要重新同步模型。",
-                "bodyCloud": "目前裝置仍偵測到該 Steam 創意工坊條目已安裝且仍訂閱。下載角色資料後，通常可透過既有恢復流程補齊；若仍未恢復，可能需要重新同步模型。"
-            },
-            "workshopCacheOnly": {
-                "title": "{{prefix}}：裝置可能只剩舊快取，且已取消訂閱",
-                "bodyLocal": "目前裝置已不在訂閱狀態，且目前綁定檔案未命中。若這份舊快取也不可用，通常需要重新訂閱或手動匯入模型，不能再把它當成穩定的自動恢復來源。",
-                "bodyCloud": "目前裝置已不在訂閱狀態。下載角色資料後，若本機舊快取不足以恢復模型，通常需要重新訂閱對應的創意工坊條目，或改為手動匯入模型。"
-            },
-            "workshopSubscribed": {
-                "title": "{{prefix}}：目前裝置仍已訂閱對應創意工坊條目",
-                "bodyLocal": "目前裝置仍訂閱該創意工坊條目，待 Steam 下載完成後通常可恢復；若長時間未恢復，可能是條目結構變更或需要重新同步模型。",
-                "bodyCloud": "目前裝置仍訂閱該創意工坊條目。下載角色資料後，待 Steam 下載完成，通常可以繼續恢復模型資源。"
-            },
-            "workshopResubscribe": {
-                "title": "{{prefix}}：需要重新訂閱原創意工坊條目",
-                "bodyLocal": "該角色原本來自 Steam 創意工坊，但目前裝置已不在訂閱狀態。若條目仍可存取，需要先重新訂閱，再嘗試恢復模型資源。",
-                "bodyCloud": "該雲端角色原本來自 Steam 創意工坊，但目前裝置未訂閱該條目。下載角色資料後，需要先重新訂閱，才能嘗試恢復模型資源。"
-            },
-            "workshopUnavailable": {
-                "title": "{{prefix}}：該創意工坊條目目前已不可存取",
-                "bodyLocal": "該角色原本來自 Steam 創意工坊，但對應條目已刪除、下架或目前不可存取。此裝置無法再依創意工坊自動恢復，只能依靠手動備份或重新匯入模型資源。",
-                "bodyCloud": "該雲端角色原本來自 Steam 創意工坊，但對應條目已刪除、下架或目前不可存取。下載角色資料後，通常無法再依創意工坊自動恢復模型。"
-            },
-            "workshopSteamUnavailable": {
-                "title": "{{prefix}}：目前無法確認創意工坊資源是否仍可恢復",
-                "body": "Steam 目前不可用、未登入，或 Steamworks 尚未初始化。待 Steam 恢復後，才能確認該條目是仍可重新下載，還是已不可用。"
-            },
-            "workshopUnknown": {
-                "title": "{{prefix}}：創意工坊恢復狀態未確認",
-                "body": "目前還不能確認這個創意工坊條目是否仍可恢復，建議先到創意工坊頁面確認訂閱狀態與條目可用性。"
-            },
-            "localManualImport": {
-                "title": "本地資源：需要手動匯入本地模型",
-                "body": "目前裝置缺少該角色所需的本地匯入或外部模型，需要你手動匯入或移動模型檔案。"
-            },
-            "cloudManualImport": {
-                "title": "雲端下載後：需要手動匯入本地模型",
-                "body": "該雲端角色依賴本地匯入或外部模型。下載到目前裝置後，需要你手動匯入或移動對應模型檔案。"
-            },
-            "localManualSource": {
-                "title": "目前角色使用的是本地或手動模型",
-                "body": "雲存檔只會同步角色資料，不會帶上目前這套本地匯入或外部模型檔案。若其他裝置也要保留目前外觀，仍需要你自行準備並匯入模型。"
-            },
-            "localModifiedModel": {
-                "title": "如果你替角色改過模型，需要注意",
-                "body": "如果這是你替原本可由創意工坊恢復的角色換過的模型，現在也會按「需要手動匯入本地模型」處理。上傳後，其他裝置下載這個角色時仍需要你自己補回這套模型檔案。"
-            },
-            "cloudManualSource": {
-                "title": "雲端角色目前記錄的是本地或手動模型",
-                "body": "下載這個雲端角色時，只會恢復角色資料，不會帶上目前記錄的本地匯入或外部模型檔案。目前裝置仍需要你自己準備並匯入對應模型。"
-            },
-            "localWorkshopOrigin": {
-                "title": "這個角色最初來自 Steam 創意工坊",
-                "body": "目前仍能對應到創意工坊角色來源，但現在綁定的模型已經是目前裝置上的本地或手動模型，而不是創意工坊路徑。雲存檔只會同步角色資料，不會上傳目前這套模型檔案。若其他裝置也要保留現在這套外觀，需要你手動匯入模型；若想回到創意工坊自動恢復鏈路，請切回上方顯示的創意工坊條目。"
-            },
-            "cloudWorkshopOrigin": {
-                "title": "這個雲端角色最初來自 Steam 創意工坊",
-                "body": "這個雲端角色是從創意工坊角色上傳而來，但目前記錄的模型已經是本地或手動模型，而不是創意工坊路徑。下載後只會恢復角色資料；若其他裝置也要保留目前這套模型，需要你手動準備模型檔案，並同時確認上方顯示的創意工坊來源狀態。"
-            },
-            "sourceDiverged": {
-                "title": "本地模型來源已不同於雲端",
-                "body": "本地目前用的是手動匯入或外部模型，而雲端記錄仍是 Steam 創意工坊來源。若繼續上傳，雲端也會改為只同步角色資料、不包含模型檔案。"
-            }
-        },
-        "hint": {
-            "uploadResubscribe": "\n目前本地角色雖然仍使用創意工坊資源，但目前裝置已不在有效訂閱狀態。其他裝置下載這個角色後，可能需要重新訂閱對應條目，才能恢復模型。",
-            "uploadUnavailable": "\n目前本地角色雖然仍能使用這套創意工坊資源，但原條目已不可存取。其他裝置下載這個角色後，通常無法再透過創意工坊自動恢復模型。",
-            "uploadUnconfirmed": "\n目前本地角色來自 Steam 創意工坊，但現在還不能確認其他裝置是否仍可透過創意工坊恢復模型。",
-            "uploadOriginResubscribe": "\n該角色原本來自 Steam 創意工坊，但目前綁定模型已經是本地或手動模型。其他裝置若要保留目前外觀，仍需要你準備這套模型檔案；若之後還想恢復原始創意工坊來源，通常也需要重新訂閱對應條目。",
-            "uploadOriginUnavailable": "\n該角色原本來自 Steam 創意工坊，但原條目已不可存取，目前綁定模型也已經是本地或手動模型。其他裝置若要保留目前外觀，仍需要你準備這套模型檔案，而且通常也無法再透過創意工坊自動恢復原始來源。",
-            "uploadOriginUnconfirmed": "\n該角色原本來自 Steam 創意工坊，但目前綁定模型已經是本地或手動模型。其他裝置若要保留目前外觀，仍需要你準備這套模型檔案，同時目前也還不能確認原始創意工坊條目是否仍可恢復。",
-            "downloadResubscribe": "\n該雲端角色原本來自 Steam 創意工坊，但目前裝置不在有效訂閱狀態。下載後通常需要先重新訂閱對應條目，才能恢復模型。",
-            "downloadUnavailable": "\n該雲端角色原本來自 Steam 創意工坊，但目前條目已不可存取。下載後通常無法再透過創意工坊自動恢復模型。",
-            "downloadUnconfirmed": "\n該雲端角色原本來自 Steam 創意工坊，但目前還不能確認該條目是否仍可恢復。",
-            "downloadOriginResubscribe": "\n該雲端角色原本來自 Steam 創意工坊，但目前記錄的綁定模型已經是本地或手動模型。下載後你仍需要自己準備目前這套模型檔案；若之後還想恢復原始創意工坊來源，通常也需要重新訂閱對應條目。",
-            "downloadOriginUnavailable": "\n該雲端角色原本來自 Steam 創意工坊，但原條目已不可存取，目前記錄的綁定模型也已經是本地或手動模型。下載後你仍需要自己準備目前這套模型檔案，而且通常也無法再透過創意工坊自動恢復原始來源。",
-            "downloadOriginUnconfirmed": "\n該雲端角色原本來自 Steam 創意工坊，但目前記錄的綁定模型已經是本地或手動模型。下載後你仍需要自己準備目前這套模型檔案，同時目前也還不能確認原始創意工坊條目是否仍可恢復。"
-        },
-        "confirm": {
-            "uploadOverwrite": "這會覆蓋本地雲快照中同名角色的紀錄，不會立刻改動本地角色，也不會包含模型資源本體。",
-            "uploadNew": "這會把本地該角色寫入本地雲快照快取，不會包含模型資源本體。",
-            "uploadManualAsset": "\n目前本地角色使用的是手動匯入或外部模型。上傳後，其他裝置下載這個角色時仍需要你自己匯入這套模型檔案。",
-            "uploadFinal": "\n確定繼續產生 Steam Cloud 快照嗎？",
-            "downloadOverwrite": "這會使用目前裝置上已同步到本地的雲快照，覆蓋本地同名角色設定與記憶目錄，不會自動下載模型資源，並會先建立本地備份。",
-            "downloadNew": "這會把目前裝置上已同步到本地的雲快照恢復到本地，不會自動下載模型資源，並會先建立本地備份。",
-            "downloadManualAsset": "\n該雲端角色依賴手動匯入或外部模型。下載後，如目前裝置沒有這套模型檔案，仍需要你手動匯入或移動資源。",
-            "downloadFinal": "\n確定繼續從 Steam Cloud 快照恢復嗎？",
-            "forceTerminateSession": "角色「{{name}}」目前有活躍會話。\n終止會話後，目前對話內容將遺失，但雲端存檔下載可以繼續。\n\n是否終止會話並繼續下載？"
-        },
-        "dialog": {
-            "providerUnavailable": "雲存檔提供方目前不可用，請稍後再試。",
-            "uploadTitle": "上傳雲存檔",
-            "downloadTitle": "下載雲存檔",
-            "uploadSuccess": "上傳成功。",
-            "downloadSuccess": "下載成功。",
-            "uploadTitleSteamAutoCloud": "產生 Steam Cloud 快照",
-            "downloadTitleSteamAutoCloud": "套用 Steam Cloud 快照",
-            "uploadSuccessSteamAutoCloud": "本地雲快照已更新。等你透過 Steam 離開遊戲後，Steam 會自動把它上傳到雲端。",
-            "downloadSuccessSteamAutoCloud": "Steam Cloud 快照已恢復到本地。",
-            "operationFailed": "操作失敗：{{message}}",
-            "operationInProgress": "該角色的操作正在進行中，請稍等。",
-            "rollbackApplied": "\n本地資料已自動回滾到操作前狀態。",
-            "rollbackFailed": "\n回滾也失敗了：{{message}}",
-            "loadFailed": "載入雲存檔摘要失敗：{{message}}",
-            "stateChanged": "雲存檔狀態已變更，頁面已重新整理，請先確認最新狀態後再重試。",
-            "forceTerminateTitle": "終止會話並繼續？"
-        },
-        "action": {
-            "expandDetails": "展開詳情",
-            "collapseDetails": "收起詳情",
-            "uploadDisabledByProvider": "暫時無法產生快照",
-            "uploadOverwrite": "產生快照",
-            "uploadNew": "產生快照",
-            "uploadUnavailable": "暫時無法產生快照",
-            "downloadDisabledByProvider": "暫時無法套用快照",
-            "downloadOverwrite": "套用快照",
-            "downloadNew": "套用快照",
-            "downloadUnavailable": "暫時無法套用快照"
-        },
-        "meta": {
-            "groupLocal": "本地狀態",
-            "groupCloud": "雲端狀態",
-            "localAssetState": "本地資源狀態",
-            "localAssetSource": "本地資源來源",
-            "localWorkshopStatus": "本地目前狀態",
-            "localCharacterOrigin": "本地角色來源",
-            "localOriginWorkshopStatus": "本地角色來源和目前狀態",
-            "cloudAssetState": "雲端資源狀態",
-            "cloudAssetSource": "雲端資源來源",
-            "cloudWorkshopStatus": "雲端目前狀態",
-            "cloudCharacterOrigin": "雲端角色來源",
-            "cloudOriginWorkshopStatus": "雲端角色來源和目前狀態",
-            "localUpdatedAt": "本地更新時間",
-            "cloudUpdatedAt": "雲端更新時間"
-        },
-        "error": {
-            "providerUnavailable": "雲存檔提供方目前不可用。",
-            "activeSessionBlocked": "該角色存在活躍會話，請先停止會話後再下載。",
-            "memoryServerReleaseFailed": "下載覆蓋前釋放本地記憶句柄失敗，請稍後再試。",
-            "localCharacterNotFound": "找不到本地角色。",
-            "cloudCharacterNotFound": "找不到雲端角色。",
-            "localCharacterExists": "本地已存在同名角色。",
-            "cloudCharacterExists": "雲端已存在同名角色。",
-            "writeFenceActive": "雲存檔維護寫入保護仍在生效，請稍後再試。",
-            "nameAuditFailed": "角色名稱未通過雲存檔校驗規則。",
-            "uploadFailed": "上傳失敗：{{message}}",
-            "downloadFailed": "下載失敗：{{message}}",
-            "localReloadFailedRolledBack": "下載已套用，但本地重新載入失敗。",
-            "sessionTerminateFailed": "終止活躍會話失敗，請稍後重試。"
-        }
-    },
     "settings": {
         "menu": {
             "live2dSettings": "Live2D設置",
@@ -2047,14 +1565,14 @@
             "characterManage": "角色管理",
             "voiceClone": "聲音剋隆",
             "memoryBrowser": "記憶瀏覽",
+            "steamWorkshop": "創意工坊",
             "memoryManage": "記憶管理",
             "characterSettings": "角色設置",
             "live2dManage": "Live2D管理",
             "apiSettings": "API設置",
             "language": "語言",
             "general": "通用設置",
-            "mediaCredentials": "媒體憑證資訊",
-            "characterCardManager": "角色卡管理"
+            "mediaCredentials": "媒體資格信息"
         },
         "language": {
             "title": "選擇語言",
@@ -2096,7 +1614,6 @@
             "browserUse": "瀏覽器控制",
             "focusMode": "允許打斷",
             "unavailable": "{{name}}不可用",
-            "toggleFailed": "{{name}}切換失敗: {{error}}",
             "checking": "查詢中...",
             "serverOffline": "貓爪服務器未啓動",
             "masterRequired": "請先開啓貓爪總開關",
@@ -2107,7 +1624,6 @@
             "openfang": "專屬桌面",
             "userPluginAdapting": "用戶插件（開發中）",
             "openclawConnect": "OpenClaw",
-            "openclawGuide": "OpenClaw 接入教學",
             "chatSettings": "對話設定",
             "animationSettings": "動畫設定",
             "renderQuality": "畫質",
@@ -2122,40 +1638,17 @@
             "mouseTracking": "跟蹤滑鼠",
             "fullscreenTracking": "全屏跟蹤",
             "localTracking": "局部跟蹤",
-            "lockedHoverFade": "鎖定懸停淡化",
-            "textGuardMaxLength": "回覆長度上限",
+            "textGuardMaxLength": "回覆字數限制",
             "unlimited": "無限制",
             "characters": "字",
-            "tokens": "詞元",
             "textGuardUnlimitedWarning": "可能導致貓娘出現嚴重問題，非必要不建議無限制",
-            "textGuardHighWarning": "設定過大可能導致貓娘記憶和語言混亂，建議 1000 詞元以內",
-            "textGuardNote": "依 tiktoken 統計；僅對文字回覆有效，不影響語音對話"
+            "textGuardHighWarning": "設定過大可能導致貓娘記憶和語言混亂，建議500字以內",
+            "textGuardNote": "僅對文字回覆有效，不影響語音對話"
         }
-    },
-    "openclawGuide": {
-        "windowTitle": "OpenClaw 接入教學 - N.E.K.O.",
-        "pageTitle": "OpenClaw 接入教學",
-        "pageSubtitle": "把 QwenPaw 安裝、模型設定、替換文件與 N.E.K.O 設定串起來，沿著一條清楚路徑接通。",
-        "sourceLabel": "教學來源",
-        "contentLanguageNotice": "語言切換會同時更新頁面控制文案和正文內容。",
-        "languageLabel": "語言",
-        "guideUnavailable": "教學內容為空。"
     },
     "subtitle": {
         "title": "實時字幕",
-        "enable": "字幕翻譯",
-        "enableAriaLabel": "字幕翻譯開關",
-        "markdownPlaceholder": "[格式化內容]",
-        "settings": {
-            "targetLang": "目標語言",
-            "opacity": "不透明度",
-            "dragAnywhere": "整體拖動",
-            "size": "大小",
-            "sizeSmall": "小",
-            "sizeMedium": "中",
-            "sizeLarge": "大",
-            "settingsBtn": "字幕設定"
-        }
+        "enable": "開啓字幕翻譯"
     },
     "viewer": {
         "title": "Viewer - Project N.E.K.O."
@@ -2173,8 +1666,7 @@
             "freeModelWarning": "由於限額問題，免費模型使用貓爪模式容易阻塞，建議您切換至自費模型。\n\n如果您已經配置好自費API，請嘗試重啟NEKO。",
             "freeModelWarningTitle": "免費模型提示",
             "connectivityCheck": "貓爪 LLM 連接檢查中...",
-            "precheckFailed": "貓爪預檢失敗：{{reason}}",
-            "toggleFailed": "Agent切換失敗: {{error}}"
+            "precheckFailed": "貓爪預檢失敗：{{reason}}"
         },
         "precheck": {
             "AGENT_PRECHECK_PENDING": "連接檢查中...",
@@ -2257,8 +1749,6 @@
         "emotionConfig": "VRM情感設定",
         "idleAnimation": {
             "title": "待機動作",
-            "selectHint": "選擇待機動作",
-            "selectedCount": "已選 {{count}} 個",
             "changed": "待機動作已切換: {{name}}",
             "changeFailed": "切換待機動作失敗"
         },
@@ -2305,24 +1795,8 @@
         },
         "idleAnimation": {
             "title": "待機動作",
-            "selectHint": "選擇待機動作",
-            "selectedCount": "已選 {{count}} 個",
             "changed": "待機動作已切換",
             "changeFailed": "切換待機動作失敗"
-        },
-        "managerInitFailed": "MMD 管理器初始化失敗",
-        "moduleLoading": "正在載入MMD模組...",
-        "modelLoading": "正在載入 MMD 模型...",
-        "modelLoaded": "MMD 模型載入成功",
-        "modelLoadFailed": "MMD模型載入失敗: {{error}}",
-        "loadingOverlay": {
-            "engine": "正在準備 MMD 引擎...",
-            "settings": "正在讀取 MMD 設定...",
-            "model": "正在載入模型資源...",
-            "physics": "正在初始化物理...",
-            "idle": "正在載入待機動作...",
-            "done": "MMD 已就緒",
-            "failed": "MMD 載入失敗"
         }
     },
     "modelManager": {
@@ -2429,11 +1903,11 @@
         },
         "step1b": {
             "title": "🖱️ 拖曳與縮放",
-            "desc": "妳可以拖曳貓娘移動位置，也可以用<strong>滑鼠滾輪</strong>放大縮小，試試看吧~"
+            "desc": "妳可以拖曳貓娘移動位置，也可以用滑鼠滾輪放大縮小，試試看吧~"
         },
         "step1c": {
             "title": "🔒 鎖定貓娘",
-            "desc": "點擊這個鎖可以鎖定貓娘位置，防止誤觸移動。鎖定後周圍的浮動工具欄也不會再出現。再次點擊可以解鎖~"
+            "desc": "點擊這個鎖可以鎖定貓娘位置，防止誤觸移動。再次點擊可以解鎖~"
         },
         "step2": {
             "title": "💬 對話區域",
@@ -2457,15 +1931,15 @@
         },
         "step7": {
             "title": "🖥️ 屏幕分享",
-            "desc": "開啟後會持續地將螢幕分享給貓娘，只能在語音對話期間使用~"
+            "desc": "分享屏幕/窗口/標籤頁，讓貓娘看到妳的畫面~"
         },
         "step8": {
             "title": "🔨 猫爪",
-            "desc": "打開猫爪面板，使用鍵鼠控制、瀏覽器控制和用戶插件等功能。讓貓娘使用妳的電腦、幫妳工作、陪妳遊戲~"
+            "desc": "打開猫爪面板，使用 computer use、browser use 和 plugin 等功能~"
         },
         "step9": {
             "title": "💤 請她離開",
-            "desc": "讓貓娘暫時離開並隱藏界面。需要時可點擊\"請她回來\"恢復~ <strong>當她出現問題時，讓她離開休息一會兒，往往能解決問題。</strong>"
+            "desc": "讓貓娘暫時離開並隱藏界面。需要時可點擊\"請她回來\"恢復~"
         },
         "step10": {
             "title": "⚙️ 設置",
@@ -2477,7 +1951,7 @@
         },
         "step14": {
             "title": "👀 自主視覺",
-            "desc": "與語音對話中即時傳輸的螢幕分享不同，開啟自主視覺後貓娘會時不時自己看一眼妳的螢幕。間隔可在此調整~"
+            "desc": "開啟後貓娘會主動讀取畫面信息。間隔可在此調整~"
         },
         "step15": {
             "title": "👤 角色管理",
@@ -2492,8 +1966,8 @@
             "desc": "查看與管理貓娘的記憶內容~"
         },
         "step18": {
-            "title": "🛠️ 角色卡管理",
-            "desc": "進入角色卡管理頁面，管理角色卡的匯入、匯出與設定~"
+            "title": "🛠️ 創意工坊",
+            "desc": "進入 Steam 創意工坊頁面，管理訂閱內容~"
         },
         "systray": {
             "location": {
@@ -2504,10 +1978,10 @@
             },
             "menu": {
                 "title": "📋 托盤菜單",
-                "desc": "右鍵點擊系統托盤（見上一步提示）中的 N.E.K.O 圖示即可打開菜單。以下是一些常用功能："
+                "desc": "右下角托盤裡會有 N.E.K.O 的圖標，右鍵點擊會出現很多選項。下面是兩個常用功能："
             },
             "reset": {
-                "title": "🔄 重置角色位置",
+                "title": "🔄 復位模型位置",
                 "desc": "如果貓娘被拖到螢幕外或位置不理想，點擊這個選項可以讓她回到默認位置~"
             },
             "switchMode": "切換桌面/移動模式",
@@ -2518,20 +1992,16 @@
                 "title": "📤 上傳日誌",
                 "desc": "遇到問題或有好的建議？點這裡上傳日誌提交反饋~"
             },
-            "exit": "結束",
+            "exit": "退出",
             "complete": {
                 "title": "🎉 引導完成！",
                 "desc": "恭喜妳完成了所有引導！現在妳已經了解了 N.E.K.O 的主要功能。開始享受和貓娘的互動吧！如需重新查看引導，可以在設置中點擊「重置引導」~"
             },
-            "resetPosition": "重置角色位置",
-            "resetPositionDesc": "貓娘跑到螢幕外時，點此恢復預設位置~",
-            "openChat": "開啟對話框",
-            "openChatDesc": "開啟獨立的對話框進行文字對話~",
-            "important": "重要：",
+            "resetPosition": "復位模型位置",
             "compatibility": "兼容模式",
-            "hotkeyDesc": "設置全局快捷鍵，更高效地控制 N.E.K.O~",
+            "hotkeyDesc": "在這裡可以設置全局快捷鍵，讓你更高效地控制 N.E.K.O~",
             "uploadLogs": "上傳日誌",
-            "exitDesc": "關閉 N.E.K.O。托盤菜單是退出應用的主要方式~"
+            "exitDesc": "想要關閉 N.E.K.O 時，在這裡點擊退出即可。因為窗口是無邊框的，所以托盤菜單是退出應用的主要方式~"
         },
         "completed": "✨ 引導完成！祝妳使用愉快~",
         "resetHint": {
@@ -2611,24 +2081,6 @@
                 "step9": {
                     "title": "🎞️ 色調映射",
                     "desc": "選擇不同的色調映射算法，決定畫面亮部和暗部的呈現風格。"
-                }
-            },
-            "mmd": {
-                "step1": {
-                    "title": "🎭 選擇 MMD 模型",
-                    "desc": "在 Live3D（MMD）模式下從這裡選擇要使用的模型。MMD 與 VRM 共用同一模型列表。"
-                },
-                "step2": {
-                    "title": "💃 VMD 動畫",
-                    "desc": "為 MMD 模型選擇 VMD 動作。也可使用「匯入 VMD 動畫」新增自訂動作檔案。"
-                },
-                "step3": {
-                    "title": "🌟 MMD 光照",
-                    "desc": "在「MMD 模型設定」中調節環境光、主光源、曝光與色調映射等，控制 3D 畫面效果。"
-                },
-                "step4": {
-                    "title": "😄 情感配置",
-                    "desc": "先選好模型後，可由此進入情感配置。Live3D 下 MMD 與 VRM 共用此入口，與 Live2D 的「情感配置」不是同一個按鈕。"
                 }
             }
         },
@@ -2822,30 +2274,7 @@
             "desc": "為了獲得最佳的引導體驗，建議進入全螢幕模式。\n全螢幕模式下，引導內容會更清晰，不會被其他元素遮擋。",
             "enterFullscreen": "進入全螢幕引導"
         },
-        "drag_hint": "按住拖曳以移動提示框",
-        "yuiGuide": {
-            "buttons": {
-                "skipChat": "暫時不聊天",
-                "sayHello": "你好"
-            },
-            "lines": {
-                "introBasic": "想要找我的時候，隨時在這裡打字或者發語音都能召喚本喵哦！",
-                "introCatPaw": "好啦不說廢話了喵——你看到那個可愛的「貓爪」了嗎，準備好了嗎？讓我借用一下你的滑鼠吧！",
-                "takeoverCaptureCursor": "嘿咻！可算逮住你的滑鼠了喵～",
-                "takeoverPluginPreviewHome": "還沒完呢！你快看快看，這裡還有超～～多好玩的外掛呢！",
-                "takeoverPluginPreviewDashboard": "有了它們，我不光能看 B 站彈幕，還能幫你關燈開空調…… 本喵就是無所不能的超級貓貓神！哼哼～",
-                "takeoverSettingsPeekIntro": "當然啦，如果你想讓本喵多和你聊聊天也不是不行啦，給我多準備點小魚乾吧，嘿嘿，好了不逗你啦，設定都在這個齒輪裡。",
-                "takeoverSettingsPeekDetail": "你看，這裡可以穿我的新衣服、給我換一個好聽的聲音……換一個貓娘或是修改記憶？等一下！你在幹嘛？該不會是想把我換掉吧？啊啊啊不行！快關掉快關掉！",
-                "takeoverReturnControl": "好啦好啦，不霸佔你的電腦啦～控制權還給你了喵！可不許趁我不注意亂點奇怪的設定哦！之後的日子也請你多多關照了喵～",
-                "interruptResistLight1": "喂！不要拉我啦，還沒輪到你的回合呢！",
-                "interruptResistLight3": "等一下啦！還沒結束呢，不要隨便打斷我啦！",
-                "interruptAngryExit": "人類~~~~！你真的很沒禮貌喵！既然你這麼想自己操作，那你就自己對著冰冷的螢幕玩去吧！哼！",
-                "introProactive": "可惡，居然敢無視本大小姐嘛！要說你一直沒理我，我可是會主動跑出來咬你的哦～（哈！！）",
-                "introGreetingReply": "我是你的專屬貓娘，從今天起就由我來陪伴主人咯。無論是想要聊天解悶、一起玩耍，還是需要我幫忙做些什麼，我都會乖乖陪在主人身邊的喵。以後請多多指教啦，最喜歡主人了~！",
-                "introPractice": "現在你可以試試跟我說說話啦，看看我們是不是超有默契的喵～",
-                "introActivationHint": "點一下這裡，我就能開始說話啦～"
-            }
-        }
+        "drag_hint": "按住拖動以移動提示框"
     },
     "console": {
         "oggOpusInitFailed": "[OGG OPUS] 初始化 Promise 失敗，將允許重試:",
@@ -3085,7 +2514,6 @@
         "weibo": "🌏 微博",
         "twitter": "🐦 Twitter/X",
         "reddit": "👽 Reddit",
-        "netease": "🎶 網易雲音樂",
         "saveConfig": "儲存設定",
         "encryptStorage": "安全加密儲存至本地檔案",
         "localMonitoring": "本地狀態監控",
@@ -3111,8 +2539,7 @@
             "kuaishou": "📌 <b>目標：</b> 請前往 <b>kuaishou.com</b> 獲取這些 Cookies。",
             "weibo": "📌 <b>目標：</b> 請前往 <b>weibo.com</b> 獲取這些 Cookies。",
             "twitter": "📌 <b>目標：</b> 請前往 <b>x.com</b> 獲取這些 Cookies。",
-            "reddit": "📌 <b>目標：</b> 請前往 <b>reddit.com</b> 獲取這些 Cookies。",
-            "netease": "📌 <b>目標：</b> 請前往 <b>music.163.com</b> 獲取這些 Cookies。"
+            "reddit": "📌 <b>目標：</b> 請前往 <b>reddit.com</b> 獲取這些 Cookies。"
         },
         "guide": {
             "title": "新手通用獲取教學",
@@ -3194,14 +2621,6 @@
             "csrftoken": {
                 "label": "csrftoken",
                 "desc": "CSRF 令牌"
-            },
-            "MUSIC_U": {
-                "label": "MUSIC_U",
-                "desc": "核心身份憑證 (必填)"
-            },
-            "NMTID": {
-                "label": "NMTID",
-                "desc": "設備識別碼 (選填)"
             }
         },
         "status": {
@@ -3213,7 +2632,6 @@
             "openQR": "📱 開啟掃碼登入",
             "loading": "正在取得二維碼...",
             "scanTitle": "📱 掃碼登入 {{platform}}",
-            "qrCodeAlt": "登入二維碼",
             "waiting": "等待掃碼...",
             "validFor": "二維碼有效期: {{seconds}}秒",
             "refreshQR": "重新整理二維碼",
@@ -3226,14 +2644,7 @@
                 "scanned": "📱 {{message}}",
                 "waiting": "{{message}}..."
             },
-            "statusMessage": {
-                "success": "登入成功",
-                "expired": "二維碼已過期",
-                "scanned": "已掃碼，請在手機上確認",
-                "waiting": "等待掃碼"
-            },
-            "successAlert": "掃碼登入成功！Cookie 已自動填入，請點擊儲存設定",
-            "extractFailed": "⚠️ 掃碼成功但未能自動擷取到欄位，請手動檢查。"
+            "successAlert": "掃碼登入成功！Cookie 已自動填入，請點擊儲存設定"
         }
     },
     "music": {
@@ -3252,11 +2663,7 @@
         "playError": "音樂播放載入失敗",
         "loadError": "音樂播放器載入失敗",
         "autoplayBlocked": "瀏覽器限制了自動播放，請點擊播放按鈕",
-        "ended": "已結束",
-        "unknownState": "未知狀態",
-        "volume": "音量: ",
-        "unsafeSource": "已攔截不安全音源: {{domain}}",
-        "cookieExpired": "音樂Cookie已失效"
+        "ended": "已結束"
     },
     "Jukebox": {
         "title": "點歌台",
@@ -3267,10 +2674,6 @@
         "playing": "正在播放: {{name}} - {{artist}}",
         "error": "錯誤: {{message}}",
         "volume": "音量",
-        "mute": "靜音",
-        "noSongPlaying": "沒有正在播放的歌曲",
-        "noActionBound": "當前歌曲沒有綁定動畫",
-        "adjustOffsetFailed": "調整偏移失敗",
         "stop": "停止",
         "sequence": "序號",
         "song": "歌曲",
@@ -3280,14 +2683,14 @@
         "play": "播放",
         "playError": "音樂播放器未初始化",
         "notFound": "找不到歌曲",
-        "audioEnded": "音訊播放結束",
+        "mp3Ended": "mp3播放結束",
         "vmdNotInit": "MMD Manager 未初始化，跳過動畫",
         "vmdPlayFailed": "VMD 播放失敗",
         "vmdPlayed": "VMD 動畫已播放",
-        "useAPlayer": "使用APlayer播放音訊檔案",
-        "startPlay": "開始播放音訊",
-        "nonMp3Error": "試圖播放不支援的音訊格式",
-        "nonMp3Info": "不支援的音訊格式資訊",
+        "useAPlayer": "使用APlayer播放mp3檔案",
+        "startPlay": "開始播放mp3音訊",
+        "nonMp3Error": "試圖播放非mp3格式檔案",
+        "nonMp3Info": "非mp3音訊資訊",
         "btnNotFound": "點歌台按鈕不存在，等待載入...",
         "btnBound": "點歌台按鈕已綁定",
         "minimizeBtnNotFound": "最小化按鈕不存在，等待載入...",
@@ -3314,92 +2717,8 @@
         "idleRestoreFailed": "恢復待機動畫失敗",
         "btnNotFoundGiveUp": "點歌台按鈕在重試後仍未找到，放棄綁定",
         "minimizeBtnNotFoundGiveUp": "最小化按鈕在重試後仍未找到，放棄監聽",
-        "noticeDance": "💃 伴舞服務目前僅在載入 3D 模型（MMD / VRM）時可用，後續會增加更多互動",
-        "noticeMusic": "⚠️ 目前歌曲僅供測試，後續版本將清除版權音樂，請自行匯入",
-        "manager": "管理器",
-        "managerTitle": "管理器",
-        "songs": "歌曲",
-        "actions": "動作",
-        "bindings": "綁定",
-        "import": "匯入",
-        "export": "匯出",
-        "exportAll": "全部匯出",
-        "exportAllIgnoreHidden": "全部匯出(忽略隱藏)",
-        "exportAllIncludeHidden": "全部匯出(含隱藏)",
-        "exportSelected": "匯出選中",
-        "dragZipHint": "支援拖曳 ZIP 檔案或資料夾到此處匯入",
-        "unifiedDropHint": "支援拖曳歌曲、動作、匯入包到此處",
-        "clickToAdd": "點擊新增",
-        "dragMp3Hint": "拖曳音訊檔案到此處新增歌曲",
-        "dragVmdHint": "拖曳 VMD 檔案到此處新增動畫",
-        "showHiddenSongs": "顯示隱藏的歌曲",
-        "selectAll": "全選",
-        "noActions": "暫無動畫",
-        "show": "顯示",
-        "hide": "隱藏",
-        "delete": "刪除",
-        "unknown": "未知",
-        "defaultAction": "預設動畫",
-        "clickSetDefault": "點擊設為預設",
-        "format": "格式",
-        "addSong": "新增歌曲",
-        "addAction": "新增動畫",
-        "songList": "歌曲列表 (拖曳到右側)",
-        "actionList": "動畫列表 (拖曳到左側)",
-        "unbind": "解除綁定",
-        "addBinding": "手動新增綁定",
-        "addSongBinding": "手動新增歌曲綁定",
-        "addActionBinding": "手動新增動畫綁定",
-        "cancel": "取消",
-        "confirm": "確認",
-        "confirmDeleteSong": "確定要刪除歌曲 \"{{name}}\" 嗎？\n此操作不可恢復！",
-        "confirmDeleteAction": "確定要刪除動畫 \"{{name}}\" 嗎？\n此操作不可恢復！",
-        "deleteFailed": "刪除失敗",
-        "setDefaultFailed": "設定失敗",
-        "exportFailed": "匯出失敗",
-        "selectExportFirst": "請先選擇要匯出的歌曲或動畫",
-        "notExist": "{{type}}不存在",
-        "songNotExist": "歌曲不存在",
-        "actionNotExist": "動畫不存在",
-        "inputIndexOrName": "輸入序號或名稱",
-        "frame": "幀",
-        "offset": "偏移",
-        "selectedSongs": "已選擇 {{count}} 首歌曲",
-        "selectedActions": "已選擇 {{count}} 個動畫",
-        "selectedSeparator": "，",
-        "selectedInfo": "已選擇 {{songCount}} 首歌曲，{{actionCount}} 個動畫",
-        "bindingsSelected": "綁定頁已選 {{bindingSongCount}} 首歌曲、{{bindingActionCount}} 個動畫；綁定集合共 {{bundleSongCount}} 首歌曲、{{bundleActionCount}} 個動畫",
-        "missing": "缺失",
-        "unknownError": "未知錯誤",
-        "calibration": "校準動畫",
-        "calibrationTitle": "動畫校準",
-        "fps": "FPS",
-        "currentFrame": "目前幀",
-        "reset": "重置",
-        "calibrationHint": "使用按鈕微調或拖曳進度條校準",
-        "calibrateAnimation": "校準動畫",
-        "animationCalibration": "動畫校準",
-        "closeCalibration": "關閉校準控制台",
-        "advance1s": "動畫提前1秒",
-        "advance10f": "動畫提前10幀",
-        "advance1f": "動畫提前1幀",
-        "delay1f": "動畫延遲1幀",
-        "delay10f": "動畫延遲10幀",
-        "delay1s": "動畫延遲1秒",
-        "frames": "幀",
-        "operationFailed": "操作失敗",
-        "saveFailed": "儲存失敗",
-        "importSuccess": "匯入成功！",
-        "importFailed": "匯入失敗",
-        "importSongsAdded": "新增 {{count}} 首歌曲",
-        "importSongsMerged": "合併 {{count}} 首歌曲",
-        "importActionsAdded": "新增 {{count}} 個動畫",
-        "importActionsMerged": "合併 {{count}} 個動畫",
-        "importBindingsAdded": "新增 {{count}} 個綁定",
-        "noChanges": "無變化",
-        "noImportFilesFound": "未找到可匯入的檔案",
-        "missingConfigJson": "資料夾中缺少 config.json 檔案",
-        "folderImportFailed": "資料夾匯入失敗"
+        "noticeDance": "💃 伴舞服務僅在載入 MMD 形象時可用",
+        "noticeMusic": "⚠️ 目前歌曲僅供測試，後續版本將清除版權音樂，請自行匯入"
     },
     "notice": {
         "voiceMigration": {
@@ -3413,87 +2732,7 @@
     "proactive": {
         "meme": {
             "title": "表情包",
-            "loadError": "表情包加載失敗"
-        }
-    },
-    "achievement": {
-        "unlocked": "🏆 成就解鎖: {{description}}"
-    },
-    "cardExport": {
-        "title": "卡面製作",
-        "loadingModel": "正在載入模型...",
-        "selectCharacter": "選擇角色",
-        "selectCharacterHint": "-- 請選擇角色 --",
-        "loading": "載入中...",
-        "preview": "卡片預覽",
-        "adjustHint": "拖曳調整位置，滾輪縮放",
-        "composition": "構圖調整",
-        "offsetX": "水平偏移",
-        "offsetY": "垂直偏移",
-        "scale": "縮放",
-        "resetComposition": "重置構圖",
-        "refreshPreview": "重新整理預覽",
-        "rotation": "旋轉",
-        "modelTab": "模型調整",
-        "decorTab": "裝飾",
-        "stickerPick": "選擇貼紙",
-        "stickerAdjust": "貼紙調整",
-        "stickerWidth": "寬",
-        "stickerHeight": "高",
-        "lockRatio": "鎖定比例",
-        "stickerRotation": "旋轉",
-        "removeSticker": "刪除選中",
-        "clearStickers": "清除全部",
-        "layers": "圖層",
-        "modelLayer": "模型",
-        "sticker": "貼紙",
-        "exportFull": "匯出角色卡",
-        "exportSettings": "僅匯出設定",
-        "exporting": "匯出中...",
-        "exportError": "匯出失敗: ",
-        "back": "返回",
-        "importSticker": "匯入自訂貼紙",
-        "removeCustomSticker": "刪除貼紙",
-        "stickerSizeTitle": "貼紙圖片過大",
-        "stickerSizeWarning": "該圖片較大（超過 5MB），壓縮後可永久儲存。\n選擇「臨時使用」將作為臨時貼紙使用（關閉頁面後消失）。",
-        "compressAndSave": "壓縮並儲存",
-        "useTemporary": "臨時使用",
-        "tempBadge": "臨時",
-        "popupBlocked": "彈窗被阻止，請允許彈窗後重試",
-        "saveCardFace": "儲存卡面",
-        "savingCardFace": "儲存中...",
-        "saveCardFaceSuccess": "儲存成功！",
-        "saveCardFaceFailed": "儲存失敗: {{error}}",
-        "saveCardFacePartialSuccess": "PNG 已儲存，但中繼資料寫入失敗: {{error}}",
-        "renderFailed": "無法渲染卡面圖片",
-        "exportTitle": "匯出角色卡"
-    },
-    "connectivity": {
-        "testCustom": "測試自訂 API 連通性",
-        "testCore": "測試",
-        "testCoreTooltip": "測試核心 API 連通性",
-        "testAssist": "測試",
-        "testAssistTooltip": "測試輔助 API 連通性",
-        "gsvTestText": "GSV 連通性測試",
-        "gsvTestTooltip": "GPT-SoVITS 連通性測試",
-        "error": {
-            "timeout": "請求逾時（10秒）",
-            "auth_failed": "API Key 無效或已過期",
-            "connection_refused": "無法連接到目標伺服器",
-            "dns_error": "域名解析失敗",
-            "ssl_error": "SSL 憑證驗證失敗",
-            "ws_error": "WebSocket 連接失敗",
-            "missing_params": "缺少必要參數",
-            "unknown": "未知錯誤",
-            "backend_unavailable": "後端服務不可用",
-            "invalid_response": "回應格式錯誤"
-        },
-        "status": {
-            "connected": "已連通",
-            "failed": "連接失敗",
-            "untested": "未測試",
-            "not_configured": "未設定",
-            "testing": "測試中..."
+            "loadError": "表情包載入失敗"
         }
     }
 }
