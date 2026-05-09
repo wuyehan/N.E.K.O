@@ -10,6 +10,7 @@ import struct  # For packing audio data
 import re
 import time
 from collections import deque
+from difflib import SequenceMatcher
 from functools import lru_cache
 from pathlib import Path
 from typing import Any, Awaitable, Callable, Optional
@@ -46,6 +47,7 @@ from config import (
     SESSION_ARCHIVE_TRIGGER_TOKENS,
     SESSION_TURN_THRESHOLD,
     AVATAR_INTERACTION_DEDUPE_MAX_ITEMS,
+    HIDE_DIRTY_VOICE_TRANSCRIPTS,
 )
 from config.prompts_sys import (
     _loc,
@@ -72,6 +74,52 @@ _STATUS_EMOJI = {
     "failed": "❌",
     "cancelled": "🚫",
 }
+
+_VOICE_ECHO_LOOKBACK_SECONDS = 20.0
+_VOICE_ECHO_LOOKBACK_CHARS = 1200
+_VOICE_ECHO_MIN_NORMALIZED_CHARS = 6
+_VOICE_ECHO_MIN_WINDOW_CHARS = 10
+_VOICE_ECHO_SIMILARITY_THRESHOLD = 0.88
+_VOICE_ECHO_NORMALIZE_RE = re.compile(r"[\W_]+", re.UNICODE)
+
+
+def _normalize_voice_echo_text(text: str) -> str:
+    return _VOICE_ECHO_NORMALIZE_RE.sub("", str(text or "").casefold())
+
+
+def _looks_like_recent_ai_echo(transcript: str, recent_ai_text: str) -> bool:
+    """Return True when STT text is probably the assistant's own recent audio.
+
+    This intentionally requires a close text match. Voice barge-in during AI
+    playback should keep flowing unless it resembles the AI text that was just
+    rendered/spoken.
+    """
+    transcript_norm = _normalize_voice_echo_text(transcript)
+    if len(transcript_norm) < _VOICE_ECHO_MIN_NORMALIZED_CHARS:
+        return False
+    recent_norm = _normalize_voice_echo_text(recent_ai_text)
+    if len(recent_norm) < _VOICE_ECHO_MIN_NORMALIZED_CHARS:
+        return False
+    if len(transcript_norm) > len(recent_norm):
+        return SequenceMatcher(None, transcript_norm, recent_norm).ratio() >= _VOICE_ECHO_SIMILARITY_THRESHOLD
+    if len(transcript_norm) < _VOICE_ECHO_MIN_WINDOW_CHARS:
+        return False
+    if transcript_norm in recent_norm:
+        return True
+
+    window_len = len(transcript_norm)
+    step = max(1, window_len // 3)
+    best = 0.0
+    last_start = len(recent_norm) - window_len
+    starts = list(range(0, last_start + 1, step))
+    if not starts or starts[-1] != last_start:
+        starts.append(last_start)
+    for start in starts:
+        candidate = recent_norm[start:start + window_len]
+        best = max(best, SequenceMatcher(None, transcript_norm, candidate).ratio())
+        if best >= _VOICE_ECHO_SIMILARITY_THRESHOLD:
+            return True
+    return False
 
 
 def _format_callback_source(cb: dict, lang: str) -> str:
@@ -544,6 +592,11 @@ class LLMSessionManager:
         # 时连同 on_ai_message 一起喂给 tracker。后者用末尾文本判断是否问问号
         # → 触发 unfinished_thread 机制（5 分钟内允许至多 2 次跟进）。
         self._current_ai_turn_text: str = ''
+        self._recent_ai_voice_echo_text: str = ''
+        self._recent_ai_voice_echo_at: float = 0.0
+        self._pending_ai_voice_echo_text: str = ''
+        self._pending_ai_voice_echo_chunks = deque()
+        self._confirmed_ai_voice_echo_audio_speech_ids: set[str] = set()
 
         # 事件驱动状态机：收口 "谁占用当前 turn" 的所有信号，供 proactive 流水线
         # 零成本（O(1) 读）频繁询问 is_proactive_preempted。事件发射点分布在
@@ -734,6 +787,7 @@ class LLMSessionManager:
         if not text:
             return
         self.tts_request_queue.put((speech_id, text))
+        self._remember_pending_ai_voice_echo(speech_id, text)
 
     def _reset_tts_stream_normalizer(self) -> None:
         """清空所有 TTS 文本 stripper 状态。中断 / 轮次结束 / session 重建时调用。"""
@@ -771,6 +825,7 @@ class LLMSessionManager:
         self._tts_bracket_stripper.flush()
         if flushed and self._tts_norm_speech_id is not None:
             self.tts_request_queue.put((self._tts_norm_speech_id, flushed))
+            self._remember_pending_ai_voice_echo(self._tts_norm_speech_id, flushed)
 
         self.tts_request_queue.put((None, None))
         self._tts_done_queued_for_turn = True
@@ -902,6 +957,9 @@ class LLMSessionManager:
         async with self.tts_cache_lock:
             self.tts_pending_chunks.clear()
             self._tts_done_pending_until_ready = False
+            # Drop only queued-but-unconfirmed TTS text. Already-confirmed
+            # audio may still be echoed by STT shortly after an interrupt.
+            self._discard_pending_ai_voice_echo()
 
     @property
     def is_tts_pipeline_ready(self) -> bool:
@@ -988,6 +1046,7 @@ class LLMSessionManager:
         if is_first_chunk and self.use_tts:
             async with self.tts_cache_lock:
                 self.tts_pending_chunks.clear()
+                self._discard_pending_ai_voice_echo()
 
             if self.tts_thread and self.tts_thread.is_alive():
                 # 清空响应队列中待发送的音频数据
@@ -998,7 +1057,11 @@ class LLMSessionManager:
                         break
 
         # 文本模式下，无论是否使用TTS，都要发送文本到前端显示
-        await self.send_lanlan_response(text, is_first_chunk)
+        await self.send_lanlan_response(
+            text,
+            is_first_chunk,
+            remember_voice_echo=not self.use_tts,
+        )
         
         # 如果配置了TTS，将文本发送到TTS队列或缓存
         if self.use_tts:
@@ -1423,6 +1486,137 @@ class LLMSessionManager:
                     self.lanlan_name, bucket, exc,
                 )
 
+    def _reset_voice_echo_suppression_cache(self) -> None:
+        self._recent_ai_voice_echo_text = ''
+        self._recent_ai_voice_echo_at = 0.0
+        self._pending_ai_voice_echo_text = ''
+        pending_chunks = getattr(self, "_pending_ai_voice_echo_chunks", None)
+        if pending_chunks is None:
+            self._pending_ai_voice_echo_chunks = deque()
+        else:
+            pending_chunks.clear()
+        confirmed_speech_ids = getattr(self, "_confirmed_ai_voice_echo_audio_speech_ids", None)
+        if confirmed_speech_ids is None:
+            self._confirmed_ai_voice_echo_audio_speech_ids = set()
+        else:
+            confirmed_speech_ids.clear()
+
+    def _remember_recent_ai_voice_echo(self, text: str) -> None:
+        if not text:
+            return
+        recent_echo_text = (getattr(self, "_recent_ai_voice_echo_text", "") or "") + text
+        self._recent_ai_voice_echo_text = recent_echo_text[-_VOICE_ECHO_LOOKBACK_CHARS:]
+        self._recent_ai_voice_echo_at = time.time()
+
+    @staticmethod
+    def _pending_ai_voice_echo_item_speech_id(item) -> str | None:
+        if isinstance(item, tuple) and len(item) == 2:
+            return item[0]
+        return None
+
+    @staticmethod
+    def _pending_ai_voice_echo_item_text(item) -> str:
+        if isinstance(item, tuple) and len(item) == 2:
+            return item[1]
+        return item
+
+    def _remember_pending_ai_voice_echo(self, speech_id: str | None, text: str) -> None:
+        if not text:
+            return
+        pending_chunks = getattr(self, "_pending_ai_voice_echo_chunks", None)
+        if pending_chunks is None:
+            pending_chunks = deque()
+            self._pending_ai_voice_echo_chunks = pending_chunks
+        pending_chunks.append((speech_id, text))
+        self._sync_pending_ai_voice_echo_text()
+
+    def _sync_pending_ai_voice_echo_text(self) -> None:
+        pending_chunks = getattr(self, "_pending_ai_voice_echo_chunks", None)
+        if pending_chunks is None:
+            pending_chunks = deque()
+            pending_echo_text = getattr(self, "_pending_ai_voice_echo_text", "") or ""
+            if pending_echo_text:
+                pending_chunks.append((None, pending_echo_text))
+            self._pending_ai_voice_echo_chunks = pending_chunks
+
+        pending_echo_text = "".join(
+            self._pending_ai_voice_echo_item_text(chunk)
+            for chunk in pending_chunks
+        )
+        excess = max(0, len(pending_echo_text) - _VOICE_ECHO_LOOKBACK_CHARS)
+        while pending_chunks:
+            first_text = self._pending_ai_voice_echo_item_text(pending_chunks[0])
+            if not first_text:
+                pending_chunks.popleft()
+                continue
+            if excess < len(first_text):
+                break
+            excess -= len(first_text)
+            pending_chunks.popleft()
+        if pending_chunks and excess > 0:
+            first_chunk = pending_chunks[0]
+            first_speech_id = self._pending_ai_voice_echo_item_speech_id(first_chunk)
+            first_text = self._pending_ai_voice_echo_item_text(first_chunk)
+            pending_chunks[0] = (first_speech_id, first_text[excess:])
+
+        self._pending_ai_voice_echo_text = "".join(
+            self._pending_ai_voice_echo_item_text(chunk)
+            for chunk in pending_chunks
+        )
+
+    def _confirm_pending_ai_voice_echo(self, speech_id: str | None = None) -> None:
+        if speech_id is None:
+            return
+
+        confirmed_speech_ids = getattr(self, "_confirmed_ai_voice_echo_audio_speech_ids", None)
+        if confirmed_speech_ids is None:
+            confirmed_speech_ids = set()
+            self._confirmed_ai_voice_echo_audio_speech_ids = confirmed_speech_ids
+        # Without chunk-level playback confirmation, one speech id can only safely promote one chunk.
+        if speech_id in confirmed_speech_ids:
+            return
+
+        pending_chunks = getattr(self, "_pending_ai_voice_echo_chunks", None)
+        if pending_chunks is None:
+            pending_echo_text = getattr(self, "_pending_ai_voice_echo_text", "") or ""
+            pending_chunks = deque()
+            if pending_echo_text:
+                pending_chunks.append((None, pending_echo_text))
+            self._pending_ai_voice_echo_chunks = pending_chunks
+            self._sync_pending_ai_voice_echo_text()
+            return
+
+        if not pending_chunks:
+            self._pending_ai_voice_echo_text = ''
+            return
+
+        pending_speech_id = self._pending_ai_voice_echo_item_speech_id(pending_chunks[0])
+        if pending_speech_id != speech_id:
+            return
+
+        pending_echo_text = self._pending_ai_voice_echo_item_text(pending_chunks.popleft())
+        self._sync_pending_ai_voice_echo_text()
+        confirmed_speech_ids.add(speech_id)
+        self._remember_recent_ai_voice_echo(pending_echo_text)
+
+    def _discard_pending_ai_voice_echo(self) -> None:
+        self._pending_ai_voice_echo_text = ''
+        pending_chunks = getattr(self, "_pending_ai_voice_echo_chunks", None)
+        if pending_chunks is not None:
+            pending_chunks.clear()
+        confirmed_speech_ids = getattr(self, "_confirmed_ai_voice_echo_audio_speech_ids", None)
+        if confirmed_speech_ids is not None:
+            confirmed_speech_ids.clear()
+
+    def _should_suppress_dirty_voice_transcript(self, transcript_text: str) -> bool:
+        if not HIDE_DIRTY_VOICE_TRANSCRIPTS:
+            return False
+        recent_ai_at = float(getattr(self, "_recent_ai_voice_echo_at", 0.0) or 0.0)
+        if recent_ai_at <= 0 or (time.time() - recent_ai_at) > _VOICE_ECHO_LOOKBACK_SECONDS:
+            return False
+        recent_ai_text = getattr(self, "_recent_ai_voice_echo_text", "") or ""
+        return _looks_like_recent_ai_echo(transcript_text, recent_ai_text)
+
     async def handle_input_transcript(self, transcript: str, *, is_voice_source: bool = True):
         """输入转录回调：同步转录文本到消息队列和缓存，并发送到前端显示
 
@@ -1436,19 +1630,20 @@ class LLMSessionManager:
             twice would double-bump _conv_seq and add the text to the
             buffer twice)
         """
+        transcript_text = transcript.strip()
+        voice_rms_recorded = False
+
         # 更新用户活动时间戳（用于主动搭话检测）
         self.last_user_activity_time = time.time()
-        if is_voice_source:
-            # transcript 到达 → VAD 在窗口内捕捉到声音，标记 voice RMS 活跃；
-            # 即使转录为空（VAD 误触发或转录失败）也算一次"用户在发声"，
-            # 维持 voice_engaged 状态。
-            self._activity_tracker.on_voice_rms()
-        transcript_text = transcript.strip()
         if (
             is_voice_source
             and transcript_text
             and self._takeover_input_dispatcher is not None
         ):
+            # takeover 路由优先于 echo suppression；否则接管流程里用户说出
+            # 与 AI 近期播报相同的口令时，会被当成脏回声提前吞掉。
+            self._activity_tracker.on_voice_rms()
+            voice_rms_recorded = True
             try:
                 handled = await self._takeover_input_dispatcher(
                     self.lanlan_name,
@@ -1469,6 +1664,23 @@ class LLMSessionManager:
                     return
             except Exception as exc:
                 logger.warning("[%s] session takeover dispatcher failed: %s", self.lanlan_name, exc)
+
+        if (
+            is_voice_source
+            and transcript_text
+            and self._should_suppress_dirty_voice_transcript(transcript_text)
+        ):
+            logger.info(
+                "[%s] suppressed likely AI echo voice transcript len=%d",
+                self.lanlan_name, len(transcript_text),
+            )
+            return
+
+        if is_voice_source and not voice_rms_recorded:
+            # transcript 到达 → VAD 在窗口内捕捉到声音，标记 voice RMS 活跃；
+            # 即使转录为空（VAD 误触发或转录失败）也算一次"用户在发声"，
+            # 维持 voice_engaged 状态。
+            self._activity_tracker.on_voice_rms()
 
         if is_voice_source:
             # 仅非空转录才算"用户消息"：on_user_message 会清掉 unfinished_thread、
@@ -1545,7 +1757,11 @@ class LLMSessionManager:
             )
             return
         # 无论是否使用TTS，都要发送文本到前端显示
-        await self.send_lanlan_response(text, is_first_chunk)
+        await self.send_lanlan_response(
+            text,
+            is_first_chunk,
+            remember_voice_echo=not self.use_tts,
+        )
         
         # 如果配置了TTS，将文本发送到TTS队列或缓存
         if self.use_tts:
@@ -1576,6 +1792,7 @@ class LLMSessionManager:
         request_id: Any = _REQUEST_ID_UNSET,
         track_ai_turn: bool = True,
         cache_for_new_session: bool = True,
+        remember_voice_echo: bool = False,
     ):
         """Qwen输出转录回调: 可用于前端显示/缓存/同步。
 
@@ -1596,6 +1813,8 @@ class LLMSessionManager:
         # 等可能的 markup——tracker 自己会做二次 strip。
         if track_ai_turn:
             self._current_ai_turn_text += text_clean
+            if remember_voice_echo:
+                self._remember_recent_ai_voice_echo(text_clean)
         effective_turn_id = turn_id or self.current_speech_id
         effective_request_id = (
             self._active_text_request_id
@@ -1927,7 +2146,6 @@ class LLMSessionManager:
                     self.tts_pending_chunks.append((turn_id, clean))
                 status = self._request_tts_done_locked()
                 audio_queued = status in {"queued", "deferred", "already"}
-
         if emit_turn_end_after:
             await self.emit_mirror_turn_end(
                 metadata=metadata,
@@ -2880,6 +3098,7 @@ class LLMSessionManager:
             logger.info(f"启动新session: input_mode={input_mode}, new={new}")
             self.websocket = websocket
             self.input_mode = input_mode
+            self._reset_voice_echo_suppression_cache()
         
             # 立即通知前端系统正在准备（静默期开始）
             await self.send_session_preparing(input_mode)
@@ -5471,6 +5690,7 @@ class LLMSessionManager:
                 self._audio_stream_epoch += 1
                 self._clear_audio_stream_queue("end_session_inactive")
                 self._cancel_audio_stream_worker("end_session_inactive")
+                self._reset_voice_echo_suppression_cache()
                 _inactive_early = True
                 # start_tts_if_needed 可能已启动 TTS 线程/handler，
                 # 但 is_active 尚未置 True 就失败了——快照引用以便释放锁后清理
@@ -5513,6 +5733,7 @@ class LLMSessionManager:
                 self._audio_stream_epoch += 1
                 self._clear_audio_stream_queue("end_session_post_init_inactive")
                 self._cancel_audio_stream_worker("end_session_post_init_inactive")
+                self._reset_voice_echo_suppression_cache()
                 return
             if expected_session is not None and expected_session is not self.session:
                 logger.info("⏭️ end_session: expected_session stale (post-init), skipping")
@@ -5530,6 +5751,7 @@ class LLMSessionManager:
             self._audio_stream_epoch += 1
             self._clear_audio_stream_queue("end_session")
             self._cancel_audio_stream_worker("end_session")
+            self._reset_voice_echo_suppression_cache()
 
             # Activity tracker：session 关闭，voice_engaged 不再可能触发。
             self._activity_tracker.on_voice_mode(False)
@@ -5754,13 +5976,17 @@ class LLMSessionManager:
                 self._last_speech_output_time = time.time()
                 self._last_speech_output_bytes = len(tts_audio)
                 self.sync_message_queue.put({"type": "binary", "data": tts_audio})
+                return True
             else:
                 ws_state = getattr(self.websocket, 'client_state', None) if self.websocket else None
                 logger.warning(f"⚠️ send_speech skipped: ws={self.websocket is not None}, state={ws_state}")
+                return False
         except WebSocketDisconnect:
             logger.warning("⚠️ send_speech: WebSocket disconnected")
+            return False
         except Exception as e:
             logger.error(f"💥 WS Send Response Error: {e}")
+            return False
 
     async def tts_response_handler(self):
         q = self.tts_response_queue
@@ -5910,12 +6136,16 @@ class LLMSessionManager:
                         continue
                 elif isinstance(data, tuple) and len(data) == 3 and data[0] == "__audio__":
                     _, speech_id, audio_payload = data
-                    await self.send_speech(audio_payload, speech_id=speech_id)
+                    if await self.send_speech(audio_payload, speech_id=speech_id):
+                        self._confirm_pending_ai_voice_echo(speech_id)
+                    else:
+                        self._discard_pending_ai_voice_echo()
                     continue
 
                 size = len(data) if isinstance(data, (bytes, bytearray)) else f"type={type(data).__name__}"
                 logger.debug(f"🎧 handler dequeued audio: {size}, qsize≈{q.qsize()}")
                 await self.send_speech(data)
+                self._discard_pending_ai_voice_echo()
             except asyncio.CancelledError:
                 logger.info("🎧 tts_response_handler cancelled")
                 # asyncio.to_thread 取消后，线程池里那个 thread 仍阻塞在 q.get()。
