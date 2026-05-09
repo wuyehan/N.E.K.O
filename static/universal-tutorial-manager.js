@@ -78,6 +78,12 @@ class UniversalTutorialManager {
         this._teardownPromise = null;
         this._tutorialViewportPlacementResizeHandler = null;
         this._tutorialViewportPlacementResizeTimer = null;
+        this._tutorialScrollBlockHandler = this.blockTutorialScrollEvent.bind(this);
+        this._tutorialScrollBlockOptions = { capture: true, passive: false };
+        this._isTutorialScrollBlocked = false;
+        this._tutorialPointerBlockHandler = this.blockTutorialPointerEvent.bind(this);
+        this._tutorialPointerBlockOptions = { capture: true, passive: false };
+        this._isTutorialPointerBlocked = false;
         this._isDestroyed = false;
 
         // 刷新延迟常量
@@ -1559,7 +1565,7 @@ class UniversalTutorialManager {
         }
 
         // 角色管理
-        if (path.includes('chara_manager')) {
+        if (path.includes('character_card_manager') || path.includes('chara_manager')) {
             return 'chara_manager';
         }
 
@@ -2703,24 +2709,45 @@ class UniversalTutorialManager {
     getCharaManagerSteps() {
         return [
             {
-                element: '#master-section',
+                element: '#master-profile-section',
                 popover: {
                     title: this.t('tutorial.chara_manager.step1.title', '👤 主人档案'),
-                    description: this.t('tutorial.chara_manager.step1.desc', '这是您的主人档案。填写您的信息后，猫娘会根据这些信息来称呼您。'),
+                    description: this.t('tutorial.chara_manager.step1.desc', '这是您的主人档案。档案名是必填项，其他信息（性别、昵称等）都是可选的。这些信息会影响猫娘对您的称呼和态度。'),
                 }
             },
             {
-                element: '#catgirl-section',
+                element: '#character-cards-content',
                 popover: {
                     title: this.t('tutorial.chara_manager.step6.title', '🐱 猫娘档案'),
-                    description: this.t('tutorial.chara_manager.step6.desc', '这里可以创建和管理多个猫娘角色。每个角色都有独特的性格设定。'),
+                    description: this.t('tutorial.chara_manager.step6.desc', '这里可以创建和管理多个猫娘角色。每个角色都有独特的性格、Live2D 形象和语音设定。您可以在不同的角色之间切换。'),
                 }
             },
             {
-                element: '.catgirl-block:first-child button[id^="switch-btn-"]',
+                element: '.chara-add-btn',
+                popover: {
+                    title: this.t('tutorial.chara_manager.step7.title', '➕ 新增猫娘'),
+                    description: this.t('tutorial.chara_manager.step7.desc', '点击这个按钮创建一个新的猫娘角色。您可以为她设置名字、性格、形象和语音。每个角色都是独立的，有自己的记忆和性格。'),
+                }
+            },
+            {
+                element: '.chara-card-item:first-child, .chara-list-item:first-child',
+                popover: {
+                    title: this.t('tutorial.chara_manager.step8.title', '📋 猫娘卡片'),
+                    description: this.t('tutorial.chara_manager.step8.desc', '点击猫娘名称可以展开或折叠详细信息。每个猫娘都有独立的设定，包括基础信息和进阶配置。'),
+                }
+            },
+            {
+                element: '.chara-card-item:first-child .card-action-btn.switch-btn, .chara-list-item:first-child .list-action-btn.switch-btn',
                 popover: {
                     title: this.t('tutorial.chara_manager.step11.title', '🔄 切换猫娘'),
                     description: this.t('tutorial.chara_manager.step11.desc', '点击此按钮可以将这个猫娘设为当前活跃角色。切换后，主页会使用该角色的形象和性格。'),
+                }
+            },
+            {
+                element: '#api-key-settings-btn',
+                popover: {
+                    title: this.t('tutorial.chara_manager.step5.title', '🔑 API Key 设置'),
+                    description: this.t('tutorial.chara_manager.step5.desc', '点击这里配置 AI 服务的 API Key。这是猫娘能够进行对话的必要配置。'),
                 }
             }
         ];
@@ -3232,16 +3259,77 @@ class UniversalTutorialManager {
         if (this._isBodyLocked) return;
         this._originalBodyOverflow = document.body.style.overflow;
         document.body.style.overflow = 'hidden';
+        this.blockTutorialScroll();
+        this.blockTutorialPointerEvents();
         this._isBodyLocked = true;
         console.log('[Tutorial] 禁用页面滚动');
     }
 
     unlockBodyScroll() {
         if (!this._isBodyLocked) return;
+        this.unblockTutorialPointerEvents();
+        this.unblockTutorialScroll();
         document.body.style.overflow = this._originalBodyOverflow ?? '';
         this._originalBodyOverflow = undefined;
         this._isBodyLocked = false;
         console.log('[Tutorial] 恢复页面滚动');
+    }
+
+    blockTutorialScrollEvent(event) {
+        if (!this.isTutorialRunning && !window.isInTutorial) return;
+        if (event && typeof event.preventDefault === 'function') {
+            event.preventDefault();
+        }
+    }
+
+    blockTutorialScroll() {
+        if (this._isTutorialScrollBlocked) return;
+        window.addEventListener('wheel', this._tutorialScrollBlockHandler, this._tutorialScrollBlockOptions);
+        window.addEventListener('touchmove', this._tutorialScrollBlockHandler, this._tutorialScrollBlockOptions);
+        this._isTutorialScrollBlocked = true;
+    }
+
+    unblockTutorialScroll() {
+        if (!this._isTutorialScrollBlocked) return;
+        window.removeEventListener('wheel', this._tutorialScrollBlockHandler, this._tutorialScrollBlockOptions);
+        window.removeEventListener('touchmove', this._tutorialScrollBlockHandler, this._tutorialScrollBlockOptions);
+        this._isTutorialScrollBlocked = false;
+    }
+
+    isTutorialControlEventTarget(target) {
+        if (!target || typeof target.closest !== 'function') return false;
+        return !!target.closest('.driver-popover, #neko-tutorial-skip-btn');
+    }
+
+    blockTutorialPointerEvent(event) {
+        if (!this.isTutorialRunning && !window.isInTutorial) return;
+        if (this.isTutorialControlEventTarget(event && event.target)) return;
+        if (event && typeof event.preventDefault === 'function') {
+            event.preventDefault();
+        }
+        if (event && typeof event.stopImmediatePropagation === 'function') {
+            event.stopImmediatePropagation();
+        } else if (event && typeof event.stopPropagation === 'function') {
+            event.stopPropagation();
+        }
+    }
+
+    blockTutorialPointerEvents() {
+        if (this._isTutorialPointerBlocked) return;
+        window.addEventListener('pointerdown', this._tutorialPointerBlockHandler, this._tutorialPointerBlockOptions);
+        window.addEventListener('mousedown', this._tutorialPointerBlockHandler, this._tutorialPointerBlockOptions);
+        window.addEventListener('click', this._tutorialPointerBlockHandler, this._tutorialPointerBlockOptions);
+        window.addEventListener('touchstart', this._tutorialPointerBlockHandler, this._tutorialPointerBlockOptions);
+        this._isTutorialPointerBlocked = true;
+    }
+
+    unblockTutorialPointerEvents() {
+        if (!this._isTutorialPointerBlocked) return;
+        window.removeEventListener('pointerdown', this._tutorialPointerBlockHandler, this._tutorialPointerBlockOptions);
+        window.removeEventListener('mousedown', this._tutorialPointerBlockHandler, this._tutorialPointerBlockOptions);
+        window.removeEventListener('click', this._tutorialPointerBlockHandler, this._tutorialPointerBlockOptions);
+        window.removeEventListener('touchstart', this._tutorialPointerBlockHandler, this._tutorialPointerBlockOptions);
+        this._isTutorialPointerBlocked = false;
     }
 
     restoreTutorialInteractionState() {
@@ -3999,8 +4087,8 @@ class UniversalTutorialManager {
             const startTime = Date.now();
 
             const checkCatgirlCards = () => {
-                const catgirlList = document.getElementById('catgirl-list');
-                const firstCatgirl = document.querySelector('.catgirl-block:first-child');
+                const catgirlList = document.getElementById('chara-cards-container');
+                const firstCatgirl = document.querySelector('.chara-card-item, .chara-list-item');
 
                 if (catgirlList && firstCatgirl) {
                     console.log('[Tutorial] 猫娘卡片已创建');
