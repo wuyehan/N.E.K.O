@@ -4791,6 +4791,13 @@ class UniversalTutorialManager {
         this._teardownTutorialUI();
 
         if (endMeta.reason === 'destroy') {
+            window.dispatchEvent(new CustomEvent('neko:tutorial-ended-without-completion', {
+                detail: {
+                    page: this.currentPage,
+                    source: completedSource,
+                    reason: endMeta.rawReason
+                }
+            }));
             this.logPromptFlow('tutorial-ended-without-completion', {
                 page: this.currentPage,
                 source: completedSource,

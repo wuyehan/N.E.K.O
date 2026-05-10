@@ -563,7 +563,7 @@ def test_tutorial_destroy_does_not_mark_seen_but_skip_does():
 
     assert "if (endMeta.reason === 'destroy')" in tutorial_source
     assert "if (endMeta.reason === 'skip')" in tutorial_source
-    assert "neko:tutorial-ended-without-completion" not in tutorial_source
+    assert "neko:tutorial-ended-without-completion" in tutorial_source
     assert "neko:tutorial-skipped" in tutorial_source
 
 
