@@ -132,17 +132,15 @@ def test_tutorial_prompt_reset_route_clears_completed_state(tutorial_prompt_clie
 
 
 @pytest.mark.unit
-def test_tutorial_prompt_reset_route_allows_remote_frontend_without_local_csrf(unauthenticated_prompt_client):
+def test_tutorial_prompt_reset_route_rejects_request_without_csrf_and_origin(unauthenticated_prompt_client):
     client, _config = unauthenticated_prompt_client
 
     response = client.post("/api/tutorial-prompt/reset", json={
         "reason": "manual_home_tutorial_reset",
     })
 
-    assert response.status_code == 200
-    body = response.json()
-    assert body["ok"] is True
-    assert body["state"]["status"] == "observing"
+    assert response.status_code == 403
+    assert response.json().get("error_code") == "csrf_validation_failed"
 
 
 @pytest.mark.unit
