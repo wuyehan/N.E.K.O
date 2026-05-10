@@ -132,6 +132,20 @@ def test_tutorial_prompt_reset_route_clears_completed_state(tutorial_prompt_clie
 
 
 @pytest.mark.unit
+def test_tutorial_prompt_reset_route_allows_remote_frontend_without_local_csrf(unauthenticated_prompt_client):
+    client, _config = unauthenticated_prompt_client
+
+    response = client.post("/api/tutorial-prompt/reset", json={
+        "reason": "manual_home_tutorial_reset",
+    })
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["ok"] is True
+    assert body["state"]["status"] == "observing"
+
+
+@pytest.mark.unit
 def test_yui_guide_handoff_token_is_backend_authoritative_and_single_use(tutorial_prompt_client):
     client, _config = tutorial_prompt_client
 

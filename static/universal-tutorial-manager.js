@@ -29,36 +29,10 @@ function logTutorialPromptFlow(step, details = {}) {
     console.log(TUTORIAL_PROMPT_FLOW_PREFIX + ' ' + step, details);
 }
 
-async function getTutorialMutationHeaders() {
-    const headers = { 'Content-Type': 'application/json' };
-    const helper = window.nekoLocalMutationSecurity;
-    if (helper && typeof helper.getMutationHeaders === 'function') {
-        try {
-            return Object.assign(headers, await helper.getMutationHeaders());
-        } catch (error) {
-            console.warn('[Tutorial] 获取本地写入安全头失败，尝试直接读取页面配置:', error);
-        }
-    }
-
-    try {
-        const response = await fetch('/api/config/page_config', { cache: 'no-store' });
-        if (!response.ok) {
-            return headers;
-        }
-        const data = await response.json();
-        if (data && typeof data.autostart_csrf_token === 'string' && data.autostart_csrf_token) {
-            headers['X-CSRF-Token'] = data.autostart_csrf_token;
-        }
-    } catch (error) {
-        console.warn('[Tutorial] 读取页面配置失败，继续使用基础请求头:', error);
-    }
-    return headers;
-}
-
 async function postTutorialPromptReset(reason) {
     const response = await fetch('/api/tutorial-prompt/reset', {
         method: 'POST',
-        headers: await getTutorialMutationHeaders(),
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ reason }),
     });
     if (!response.ok) {
@@ -5217,11 +5191,11 @@ class UniversalTutorialManager {
     }
 
     async resetAllTutorials() {
+        await this.resetHomeTutorialPromptState('manual_all_tutorial_reset');
         TUTORIAL_PAGES.forEach(page => {
             this.getStorageKeysForPage(page).forEach(key => localStorage.removeItem(key));
         });
         this.markTutorialManualStartIntent('home');
-        await this.resetHomeTutorialPromptState('manual_all_tutorial_reset');
         console.log('[Tutorial] 已重置所有页面引导');
         this.notifyTutorialResetForCurrentPageIfNeeded('all');
     } 
@@ -5235,6 +5209,10 @@ class UniversalTutorialManager {
             return;
         }
 
+        if (pageKey === 'home') {
+            await this.resetHomeTutorialPromptState('manual_home_tutorial_reset');
+        }
+
         this.getStorageKeysForPage(pageKey).forEach((storageKey) => {
             const oldVal = localStorage.getItem(storageKey);
             localStorage.removeItem(storageKey);
@@ -5243,7 +5221,6 @@ class UniversalTutorialManager {
 
         if (pageKey === 'home') {
             this.markTutorialManualStartIntent('home');
-            await this.resetHomeTutorialPromptState('manual_home_tutorial_reset');
         }
 
         console.log('[Tutorial] 已重置页面引导:', pageKey);
@@ -5373,9 +5350,9 @@ async function resetAllTutorials() {
         await window.universalTutorialManager.resetAllTutorials();
     } else {
         // 如果管理器未初始化，直接清除 localStorage
+        await postTutorialPromptReset('manual_all_tutorial_reset');
         TUTORIAL_PAGES.forEach(page => { localStorage.removeItem(getTutorialStorageKeyForPage(page)); });
         localStorage.setItem(getTutorialManualIntentKeyForPage('home'), 'true');
-        await postTutorialPromptReset('manual_all_tutorial_reset');
     }
     alert(window.t ? window.t('memory.tutorialResetSuccess', '已重置所有引导，下次进入各页面时将重新显示引导。') : '已重置所有引导，下次进入各页面时将重新显示引导。');
 }
@@ -5427,6 +5404,9 @@ async function resetTutorialForPage(pageKey) {
     if (window.universalTutorialManager) {
         await window.universalTutorialManager.resetPageTutorial(pageKey);
     } else {
+        if (pageKey === 'home') {
+            await postTutorialPromptReset('manual_home_tutorial_reset');
+        }
         if (pageKey === 'model_manager') {
             localStorage.removeItem(getTutorialStorageKeyForPage('model_manager'));
             localStorage.removeItem(getTutorialStorageKeyForPage('model_manager_live2d'));
@@ -5438,7 +5418,6 @@ async function resetTutorialForPage(pageKey) {
         }
         if (pageKey === 'home') {
             localStorage.setItem(getTutorialManualIntentKeyForPage('home'), 'true');
-            await postTutorialPromptReset('manual_home_tutorial_reset');
         }
     }
 

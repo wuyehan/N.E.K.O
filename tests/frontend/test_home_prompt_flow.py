@@ -762,6 +762,135 @@ def test_tutorial_started_event_retries_failed_sync_on_heartbeat(
 
 
 @pytest.mark.frontend
+def test_home_tutorial_skip_persists_completion_state(
+    mock_page: Page,
+):
+    _bootstrap_tutorial_prompt_page(
+        mock_page,
+        setup_js="""
+            window.__tutorialStartedBodies = [];
+            window.__tutorialCompletedBodies = [];
+            window.getTutorialStorageKeyForPage = function(page) {
+                return page === 'home' ? 'neko_tutorial_home_yui_v1' : 'neko_tutorial_' + page;
+            };
+            window.universalTutorialManager = {
+                currentPage: 'home',
+                isTutorialRunning: false,
+                hasSeenTutorial: function() {
+                    return false;
+                },
+                logPromptFlow: function() {},
+                requestTutorialStart: async function() {
+                    return false;
+                },
+            };
+        """,
+        fetch_js="""
+            if (requestUrl === '/api/tutorial-prompt/state') {
+                return jsonResponse({
+                    state: {
+                        status: 'observing',
+                        never_remind: false,
+                        deferred_until: 0,
+                        manual_home_tutorial_viewed: false,
+                        home_tutorial_completed: false,
+                    },
+                });
+            }
+            if (requestUrl === '/api/tutorial-prompt/heartbeat') {
+                return jsonResponse({
+                    ok: true,
+                    should_prompt: false,
+                    state: {
+                        status: 'observing',
+                        never_remind: false,
+                        deferred_until: 0,
+                        manual_home_tutorial_viewed: false,
+                        home_tutorial_completed: false,
+                    },
+                });
+            }
+            if (requestUrl === '/api/tutorial-prompt/tutorial-started') {
+                window.__tutorialStartedBodies.push(body);
+                return jsonResponse({
+                    ok: true,
+                    tutorial_run_token: 'skip-run-token',
+                    state: {
+                        status: 'started',
+                        never_remind: false,
+                        deferred_until: 0,
+                        manual_home_tutorial_viewed: true,
+                        home_tutorial_completed: false,
+                    },
+                });
+            }
+            if (requestUrl === '/api/tutorial-prompt/tutorial-completed') {
+                window.__tutorialCompletedBodies.push(body);
+                return jsonResponse({
+                    ok: true,
+                    state: {
+                        status: 'completed',
+                        never_remind: false,
+                        deferred_until: 0,
+                        manual_home_tutorial_viewed: true,
+                        home_tutorial_completed: true,
+                    },
+                });
+            }
+        """,
+    )
+
+    mock_page.evaluate(
+        """
+        () => {
+            window.dispatchEvent(new CustomEvent('neko:tutorial-started', {
+                detail: {
+                    page: 'home',
+                    source: 'manual',
+                },
+            }));
+        }
+        """
+    )
+    mock_page.wait_for_function(
+        "() => window.__tutorialStartedBodies.length === 1",
+        timeout=5000,
+    )
+
+    mock_page.evaluate(
+        """
+        () => {
+            window.dispatchEvent(new CustomEvent('neko:tutorial-skipped', {
+                detail: {
+                    page: 'home',
+                    source: 'manual',
+                },
+            }));
+        }
+        """
+    )
+    mock_page.wait_for_function(
+        "() => window.__tutorialCompletedBodies.length === 1",
+        timeout=5000,
+    )
+
+    result = mock_page.evaluate(
+        """
+        () => ({
+            completedBodies: window.__tutorialCompletedBodies.slice(),
+            preferredSeen: window.localStorage.getItem('neko_tutorial_home_yui_v1'),
+            legacySeen: window.localStorage.getItem('neko_tutorial_home'),
+        })
+        """
+    )
+
+    assert result["completedBodies"][0]["source"] == "manual"
+    assert result["completedBodies"][0]["tutorial_run_token"] == "skip-run-token"
+    assert result["preferredSeen"] == "true"
+    assert result["legacySeen"] == "true"
+
+
+@pytest.mark.frontend
 def test_home_tutorial_skip_restores_temporarily_disabled_galgame_mode(
     mock_page: Page,
 ):

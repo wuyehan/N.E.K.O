@@ -1101,10 +1101,6 @@ async def post_tutorial_prompt_decision(request: Request):
 @router.post("/tutorial-prompt/reset")
 async def post_tutorial_prompt_reset(request: Request):
     """重置主页新手引导状态，供记忆浏览的手动重置入口调用。"""
-    validation_error = _validate_local_mutation_request(request)
-    if validation_error is not None:
-        return validation_error
-
     return reset_tutorial_prompt_state(config_manager=get_config_manager())
 
 
