@@ -6,6 +6,21 @@
     const AUTOSTART_STATUS_MAX_AGE_MS = HEARTBEAT_INTERVAL_MS;
     const AUTOSTART_PROMPT_COORDINATION_KEY = 'home-autostart-prompt';
     const AUTOSTART_PROMPT_PRIORITY = 100;
+    const AUTOSTART_PROMPT_VOICE_BASE_URL = '/static/autostart_prompt_voices/';
+    const AUTOSTART_PROMPT_VOICE_LANGUAGES = {
+        'zh': 'zh-CN',
+        'zh-cn': 'zh-CN',
+        'zh-hans': 'zh-CN',
+        'cn': 'zh-CN',
+        'zh-tw': 'zh-TW',
+        'zh-hant': 'zh-TW',
+        'tw': 'zh-TW',
+        'en': 'en',
+        'ko': 'ko',
+        'ko-kr': 'ko',
+        'ru': 'ru',
+        'ru-ru': 'ru',
+    };
 
     const promptShared = window.nekoPromptShared;
     if (!promptShared || typeof promptShared.createPromptTools !== 'function') {
@@ -688,12 +703,100 @@
         return typeof window.showDecisionPrompt === 'function';
     }
 
+    function normalizeAutostartPromptVoiceLanguage(rawLanguage) {
+        const normalized = String(rawLanguage || '').trim().toLowerCase().replace(/_/g, '-');
+        if (!normalized) {
+            return '';
+        }
+        if (AUTOSTART_PROMPT_VOICE_LANGUAGES[normalized]) {
+            return AUTOSTART_PROMPT_VOICE_LANGUAGES[normalized];
+        }
+        const primary = normalized.split('-')[0];
+        return AUTOSTART_PROMPT_VOICE_LANGUAGES[primary] || '';
+    }
+
+    function getAutostartPromptLanguage() {
+        if (window.i18next && typeof window.i18next.language === 'string') {
+            return normalizeAutostartPromptVoiceLanguage(window.i18next.language);
+        }
+        try {
+            const storedLanguage = window.localStorage.getItem('i18nextLng');
+            if (storedLanguage) {
+                return normalizeAutostartPromptVoiceLanguage(storedLanguage);
+            }
+        } catch (_) {
+            // ignore
+        }
+        if (window.navigator && typeof window.navigator.language === 'string') {
+            return normalizeAutostartPromptVoiceLanguage(window.navigator.language);
+        }
+        return '';
+    }
+
+    function getAutostartPromptVoiceUrl() {
+        const language = getAutostartPromptLanguage();
+        if (!language) {
+            return '';
+        }
+        return new URL(
+            AUTOSTART_PROMPT_VOICE_BASE_URL + encodeURIComponent(language) + '.mp3',
+            window.location.origin
+        ).href;
+    }
+
+    function startAutostartPromptVoice() {
+        const voiceUrl = getAutostartPromptVoiceUrl();
+        if (!voiceUrl || typeof window.Audio !== 'function') {
+            return null;
+        }
+
+        let audio = null;
+        let stopped = false;
+        try {
+            audio = new window.Audio(voiceUrl);
+            audio.preload = 'auto';
+            const playResult = audio.play();
+            if (playResult && typeof playResult.catch === 'function') {
+                playResult.catch(() => { });
+            }
+        } catch (_) {
+            return null;
+        }
+
+        return {
+            stop: function () {
+                if (stopped || !audio) {
+                    return;
+                }
+                stopped = true;
+                try {
+                    audio.pause();
+                } catch (_) {
+                    // ignore
+                }
+                try {
+                    audio.currentTime = 0;
+                } catch (_) {
+                    // ignore
+                }
+            }
+        };
+    }
+
     async function showPrompt(promptToken) {
         state.promptOpen = true;
         state.lastPromptTokenSeen = promptToken;
+        let promptVoice = null;
+        const stopPromptVoice = function () {
+            if (promptVoice && typeof promptVoice.stop === 'function') {
+                promptVoice.stop();
+            }
+            promptVoice = null;
+        };
         logFlow('prompt-open', { token: shortPromptToken(promptToken) });
         try {
             const decision = await window.showDecisionPrompt({
+                skin: 'autostart-retention',
                 title: translate('autostartPrompt.title', '要不要让 N.E.K.O 开机自动启动？'),
                 message: translate(
                     'autostartPrompt.message',
@@ -707,17 +810,15 @@
                 closeOnClickOutside: false,
                 closeOnEscape: false,
                 onShown: function () {
+                    stopPromptVoice();
+                    promptVoice = startAutostartPromptVoice();
                     return postShownAck(promptToken);
                 },
+                onResolve: stopPromptVoice,
                 buttons: [
                     {
-                        value: 'never',
-                        text: translate('autostartPrompt.never', '不再提示'),
-                        variant: 'secondary'
-                    },
-                    {
                         value: 'later',
-                        text: translate('autostartPrompt.later', '稍后再说'),
+                        text: translate('autostartPrompt.later', '以后提醒'),
                         variant: 'secondary'
                     },
                     {
@@ -740,6 +841,7 @@
                 await handlePromptAcceptance(promptToken);
             }
         } finally {
+            stopPromptVoice();
             state.promptOpen = false;
         }
     }

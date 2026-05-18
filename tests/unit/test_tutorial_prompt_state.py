@@ -1242,13 +1242,13 @@ def test_malformed_token_usage_collections_do_not_crash_or_mark_existing_user(tm
 
 
 @pytest.mark.unit
-def test_autostart_prompt_uses_5_min_threshold_24_hour_later_and_7_day_never_cooldowns(tmp_path):
+def test_autostart_prompt_uses_30_min_threshold_3_day_later_and_7_day_never_cooldowns(tmp_path):
     config = DummyConfig(tmp_path)
 
     runtime_config = load_autostart_prompt_runtime_config(config)
 
-    assert AUTOSTART_MIN_PROMPT_FOREGROUND_MS == 5 * 60 * 1000
-    assert AUTOSTART_LATER_COOLDOWN_MS == 24 * 60 * 60 * 1000
+    assert AUTOSTART_MIN_PROMPT_FOREGROUND_MS == 30 * 60 * 1000
+    assert AUTOSTART_LATER_COOLDOWN_MS == 3 * 24 * 60 * 60 * 1000
     assert AUTOSTART_NEVER_COOLDOWN_MS == 7 * 24 * 60 * 60 * 1000
     assert runtime_config["min_prompt_foreground_ms"] == AUTOSTART_MIN_PROMPT_FOREGROUND_MS
     assert runtime_config["later_cooldown_ms"] == AUTOSTART_LATER_COOLDOWN_MS
