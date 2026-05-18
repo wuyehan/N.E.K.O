@@ -256,6 +256,7 @@
 
     function _stripProminentMarkdown(value) {
         return String(value || '')
+            .replace(/^#{1,6}\s+/, '')
             .replace(/\*\*(.*?)\*\*/g, '$1')
             .replace(/(?<!\*)\*(?!\*)(.*?)(?<!\*)\*(?!\*)/g, '$1')
             .trim();
@@ -267,12 +268,16 @@
             .map(line => line.trim())
             .filter(Boolean);
         const firstLine = lines[0] || '';
-        const headingText = _stripProminentMarkdown(firstLine);
+        const firstLineIsItem = /^[-•]\s+/.test(firstLine);
+        const headingText = firstLineIsItem ? '' : _stripProminentMarkdown(firstLine);
         const versionMatch = headingText.match(/^v?([0-9]+(?:\.[0-9]+)*)(?:\s+(.+))?$/i);
         const version = notice.version || (versionMatch ? versionMatch[1] : '');
         const title = notice.title || (versionMatch ? versionMatch[2] : '') || headingText || _prominentNoticeText('notice.changelog.title', '更新内容');
+        const firstLineIsHeading = !!firstLine
+            && !firstLineIsItem
+            && (!!versionMatch || (!notice.title && !!headingText));
         const itemLines = lines
-            .slice(firstLine ? 1 : 0)
+            .slice(firstLineIsHeading ? 1 : 0)
             .filter(line => /^[-•]\s+/.test(line));
 
         const itemsHtml = itemLines.map(line => {

@@ -6,7 +6,6 @@ import pytest
 from utils.autostart_prompt_state import (
     AUTOSTART_LATER_COOLDOWN_MS,
     AUTOSTART_MIN_PROMPT_FOREGROUND_MS,
-    AUTOSTART_NEVER_COOLDOWN_MS,
     get_autostart_prompt_state_response,
     get_autostart_prompt_state_path,
     load_autostart_prompt_runtime_config,
@@ -1242,17 +1241,16 @@ def test_malformed_token_usage_collections_do_not_crash_or_mark_existing_user(tm
 
 
 @pytest.mark.unit
-def test_autostart_prompt_uses_30_min_threshold_3_day_later_and_7_day_never_cooldowns(tmp_path):
+def test_autostart_prompt_uses_30_min_threshold_and_3_day_later_cooldown(tmp_path):
     config = DummyConfig(tmp_path)
 
     runtime_config = load_autostart_prompt_runtime_config(config)
 
     assert AUTOSTART_MIN_PROMPT_FOREGROUND_MS == 30 * 60 * 1000
     assert AUTOSTART_LATER_COOLDOWN_MS == 3 * 24 * 60 * 60 * 1000
-    assert AUTOSTART_NEVER_COOLDOWN_MS == 7 * 24 * 60 * 60 * 1000
     assert runtime_config["min_prompt_foreground_ms"] == AUTOSTART_MIN_PROMPT_FOREGROUND_MS
     assert runtime_config["later_cooldown_ms"] == AUTOSTART_LATER_COOLDOWN_MS
-    assert runtime_config["never_cooldown_ms"] == AUTOSTART_NEVER_COOLDOWN_MS
+    assert "never_cooldown_ms" not in runtime_config
 
     blocked = process_autostart_prompt_heartbeat(
         {"foreground_ms_delta": AUTOSTART_MIN_PROMPT_FOREGROUND_MS - 1},
@@ -1279,7 +1277,7 @@ def test_autostart_prompt_uses_30_min_threshold_3_day_later_and_7_day_never_cool
 
 
 @pytest.mark.unit
-def test_autostart_never_decision_defers_for_7_days_instead_of_permanent_suppression(tmp_path):
+def test_autostart_never_decision_is_rejected_after_button_removal(tmp_path):
     config = DummyConfig(tmp_path)
 
     prompt = process_autostart_prompt_heartbeat(
@@ -1288,31 +1286,37 @@ def test_autostart_never_decision_defers_for_7_days_instead_of_permanent_suppres
         now_ms=1_000,
     )
 
-    decision = record_autostart_prompt_decision(
-        {"decision": "never", "prompt_token": prompt["prompt_token"]},
+    with pytest.raises(ValueError, match="invalid decision"):
+        record_autostart_prompt_decision(
+            {"decision": "never", "prompt_token": prompt["prompt_token"]},
+            config_manager=config,
+            now_ms=2_000,
+        )
+
+
+@pytest.mark.unit
+def test_autostart_legacy_never_state_no_longer_suppresses_prompt(tmp_path):
+    config = DummyConfig(tmp_path)
+    save_autostart_prompt_state(
+        {
+            "prompt_kind": "autostart_prompt",
+            "status": "never",
+            "never_remind": True,
+            "foreground_ms": AUTOSTART_MIN_PROMPT_FOREGROUND_MS,
+        },
+        config_manager=config,
+    )
+
+    response = process_autostart_prompt_heartbeat(
+        {"foreground_ms_delta": 0},
         config_manager=config,
         now_ms=2_000,
     )
 
-    assert decision["state"]["status"] == "deferred"
-    assert decision["state"]["never_remind"] is False
-    assert decision["state"]["deferred_until"] == 2_000 + AUTOSTART_NEVER_COOLDOWN_MS
-
-    blocked = process_autostart_prompt_heartbeat(
-        {"foreground_ms_delta": 0},
-        config_manager=config,
-        now_ms=2_000 + AUTOSTART_NEVER_COOLDOWN_MS - 1,
-    )
-    assert blocked["should_prompt"] is False
-    assert blocked["prompt_reason"] == "cooldown_active"
-
-    retried = process_autostart_prompt_heartbeat(
-        {"foreground_ms_delta": 0},
-        config_manager=config,
-        now_ms=2_000 + AUTOSTART_NEVER_COOLDOWN_MS + 1,
-    )
-    assert retried["should_prompt"] is True
-    assert retried["prompt_reason"] == "usage_timeout"
+    assert response["should_prompt"] is True
+    assert response["prompt_reason"] == "usage_timeout"
+    assert response["state"]["status"] == "observing"
+    assert response["state"]["never_remind"] is False
 
 
 @pytest.mark.unit
@@ -1633,8 +1637,7 @@ def test_autostart_accept_without_enable_confirmation_enters_retryable_error(tmp
 
 
 @pytest.mark.unit
-@pytest.mark.parametrize("decision", ["later", "never"])
-def test_autostart_non_accept_decisions_clear_stale_prompt_attribution(tmp_path, decision):
+def test_autostart_later_decision_clears_stale_prompt_attribution(tmp_path):
     config = DummyConfig(tmp_path)
     runtime_config = load_autostart_prompt_runtime_config(config)
     first_prompt = process_autostart_prompt_heartbeat(
@@ -1661,7 +1664,7 @@ def test_autostart_non_accept_decisions_clear_stale_prompt_attribution(tmp_path,
 
     decision_response = record_autostart_prompt_decision(
         {
-            "decision": decision,
+            "decision": "later",
             "prompt_token": retry_prompt["prompt_token"],
         },
         config_manager=config,

@@ -186,6 +186,37 @@ def mock_memory_server():
 
 
 @pytest.mark.frontend
+def test_changelog_notice_preserves_leading_list_item(mock_page: Page):
+    _bootstrap_page(
+        mock_page,
+        setup_js="""
+            window.appState = { dom: {} };
+            window.appConst = {};
+        """,
+        script_names=("app-ui.js",),
+    )
+
+    mock_page.evaluate(
+        """
+        () => {
+            window.showProminentNotice({
+                kind: 'changelog',
+                version: '0.8.2',
+                title: '更新内容',
+                message: '- **新增**：第一条更新\\n- **修复**：第二条更新',
+            });
+        }
+        """
+    )
+
+    items = mock_page.locator(".prominent-notice-changelog-item")
+    expect(items).to_have_count(2)
+    expect(items.nth(0)).to_contain_text("新增")
+    expect(items.nth(0)).to_contain_text("第一条更新")
+    expect(items.nth(1)).to_contain_text("第二条更新")
+
+
+@pytest.mark.frontend
 def test_home_prompt_queue_serializes_tutorial_and_autostart_prompts(
     mock_page: Page,
 ):

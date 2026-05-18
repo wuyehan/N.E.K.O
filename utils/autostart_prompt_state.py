@@ -47,7 +47,6 @@ AUTOSTART_PROMPT_LEGACY_STATE_FILENAME = "autostart_prompt.json"
 AUTOSTART_PROMPT_STATE_KIND = "autostart_prompt"
 AUTOSTART_MIN_PROMPT_FOREGROUND_MS = 30 * 60 * 1000
 AUTOSTART_LATER_COOLDOWN_MS = 3 * 24 * 60 * 60 * 1000
-AUTOSTART_NEVER_COOLDOWN_MS = 7 * 24 * 60 * 60 * 1000
 AUTOSTART_MAX_RECENT_HEARTBEAT_TOKENS = 16
 
 AUTOSTART_PROMPT_EXTRA_FIELDS = (
@@ -151,7 +150,9 @@ def _normalize_autostart_prompt_state(raw_state: Any) -> dict[str, Any]:
 
     def _resolve_status(state: dict[str, Any]) -> None:
         if state["never_remind"]:
-            state["status"] = "never"
+            state["never_remind"] = False
+        if state["status"] == "never":
+            state["status"] = "observing"
         if state["autostart_enabled"] or state["completed_at"] > 0:
             state["autostart_enabled"] = True
             if state["enabled_at"] <= 0 and state["completed_at"] > 0:
@@ -181,12 +182,6 @@ def load_autostart_prompt_runtime_config(config_manager=None) -> dict[str, int]:
         "later_cooldown_ms": clamp_int(
             raw_config.get("later_cooldown_ms"),
             default=AUTOSTART_LATER_COOLDOWN_MS,
-            minimum=MIN_ALLOWED_LATER_COOLDOWN_MS,
-            maximum=MAX_ALLOWED_LATER_COOLDOWN_MS,
-        ),
-        "never_cooldown_ms": clamp_int(
-            raw_config.get("never_cooldown_ms"),
-            default=AUTOSTART_NEVER_COOLDOWN_MS,
             minimum=MIN_ALLOWED_LATER_COOLDOWN_MS,
             maximum=MAX_ALLOWED_LATER_COOLDOWN_MS,
         ),
@@ -256,8 +251,6 @@ def _compute_autostart_prompt_eligibility(
         return False, "autostart_enabled"
     if state["status"] == "started":
         return False, "autostart_pending"
-    if state["never_remind"] or state["status"] == "never":
-        return False, "never_remind"
     if state["shown_count"] >= max_prompt_shows:
         return False, "show_limit_reached"
     if (
@@ -567,7 +560,7 @@ def record_autostart_prompt_decision(
         limit=64,
     ).lower()
 
-    if decision not in {"accept", "later", "never"}:
+    if decision not in {"accept", "later"}:
         raise ValueError("invalid decision")
     if not prompt_token:
         raise ValueError("invalid prompt_token")
@@ -587,16 +580,7 @@ def record_autostart_prompt_decision(
             max_prompt_shows=runtime_config["max_prompt_shows"],
         )
 
-        if decision == "never":
-            changed |= clear_started_via_prompt_state(state)
-            if state["never_remind"]:
-                state["never_remind"] = False
-                changed = True
-            state["status"] = "deferred"
-            state["deferred_until"] = now_ms_value + runtime_config["never_cooldown_ms"]
-            state["last_error"] = ""
-            changed |= increment_funnel_count(state, "never")
-        elif decision == "later":
+        if decision == "later":
             changed |= clear_started_via_prompt_state(state)
             state["status"] = "deferred"
             state["deferred_until"] = now_ms_value + runtime_config["later_cooldown_ms"]

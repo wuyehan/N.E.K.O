@@ -50,7 +50,6 @@
         pendingWeakHomeInteractions: 0,
         pendingChatTurns: 0,
         pendingVoiceSessions: 0,
-        neverRemind: false,
         deferredUntil: 0,
         autostartEnabled: false,
         autostartSupported: true,
@@ -138,21 +137,18 @@
 
         const previous = {
             autostartEnabled: state.autostartEnabled,
-            neverRemind: state.neverRemind,
             deferredUntil: state.deferredUntil,
         };
         const status = serverState.status ? String(serverState.status).toLowerCase() : '';
         const serverAutostartEnabled = serverState.autostart_enabled === true;
         const completedAt = normalizeMs(serverState.completed_at);
 
-        state.neverRemind = serverState.never_remind === true;
         state.deferredUntil = normalizeMs(serverState.deferred_until);
         if (!state.autostartStatusAuthoritative) {
             state.autostartEnabled = serverAutostartEnabled || status === 'completed' || completedAt > 0;
         }
 
         const changed = previous.autostartEnabled !== state.autostartEnabled
-            || previous.neverRemind !== state.neverRemind
             || previous.deferredUntil !== state.deferredUntil;
 
         if (changed || source === 'initial-state') {
@@ -160,7 +156,6 @@
                 source: source || 'unknown',
                 status: status || null,
                 autostartEnabled: state.autostartEnabled,
-                neverRemind: state.neverRemind,
                 deferredUntil: state.deferredUntil || 0,
             });
         }
@@ -607,7 +602,6 @@
 
     function isPromptSuppressedLocally() {
         return state.autostartEnabled
-            || state.neverRemind
             || state.deferredUntil > Date.now();
     }
 
@@ -829,10 +823,6 @@
                 ]
             });
 
-            if (decision === 'never') {
-                await postDecision({ decision: 'never', prompt_token: promptToken });
-                return;
-            }
             if (decision === 'later') {
                 await postDecision({ decision: 'later', prompt_token: promptToken });
                 return;
