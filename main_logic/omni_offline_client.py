@@ -528,7 +528,7 @@ class OmniOfflineClient:
         master_name: str = "",
         on_tool_call: Optional[OnToolCallCallback] = None,
         tool_definitions: Optional[List[ToolDefinition]] = None,
-        max_tool_iterations: int = 6,
+        max_tool_iterations: int = 3,
         enable_long_response_summary: bool = False,
     ):
         # Use base_url directly without conversion
@@ -904,9 +904,43 @@ class OmniOfflineClient:
                 continue
             return
         logger.warning(
-            "OmniOfflineClient: tool iteration cap %d reached, stopping",
+            "OmniOfflineClient: tool iteration cap %d reached; forcing final answer without tools",
             self.max_tool_iterations,
         )
+        # Forced-finalize：工具轮次封顶后，去掉 tools 再调一次，逼模型基于已
+        # 积累的 tool 结果给出最终文本。否则弱模型在 finish_reason=tool_calls
+        # 上死循环到封顶后整轮静默，上游只能报"未产生文本回复"，用户那边就
+        # 表现为不回话。去掉 tools 后模型无法再发起调用，必须输出文本。
+        final_overrides = {
+            k: v for k, v in overrides.items() if k not in ("tools", "tool_choice")
+        }
+        final_finish_reason: Optional[str] = None
+        final_prompt_tokens: Optional[int] = None
+        async for chunk in self.llm.astream(messages, **final_overrides):
+            if chunk.finish_reason:
+                final_finish_reason = chunk.finish_reason
+            if chunk.usage_metadata:
+                pt = chunk.usage_metadata.get("prompt_tokens")
+                if pt:
+                    final_prompt_tokens = pt
+            # 与常规 tool-loop 路径一致：不向下游转发 thinking 模型的纯
+            # reasoning chunk（有 reasoning_content、无 content / tool delta /
+            # finish / usage）。stream_text 在首个 yield 的 chunk 上记 TTFT，
+            # 放行 reasoning-only 会把"首推理 token"误当首 token，污染封顶轮延迟埋点。
+            if (
+                getattr(chunk, "reasoning_content", None)
+                and not getattr(chunk, "content", None)
+                and not chunk.tool_call_deltas
+                and not chunk.finish_reason
+                and not chunk.usage_metadata
+            ):
+                continue
+            yield chunk
+        # prompt_tokens 走局部变量、流结束后无条件回填（与 genai 路径同口径）：这次
+        # forced-finalize 没给 usage 时写回 None，而非沿用上一轮 tool-iteration 的旧
+        # 值，避免上层 empty-completion 诊断串台。
+        self._last_finish_reason = final_finish_reason
+        self._last_prompt_tokens = final_prompt_tokens
 
     async def _astream_genai_with_tools(self, messages, **overrides):
         """google-genai streaming with tool support. Yields
@@ -1162,9 +1196,73 @@ class OmniOfflineClient:
                 continue
             return
         logger.warning(
-            "OmniOfflineClient(genai): tool iteration cap %d reached",
+            "OmniOfflineClient(genai): tool iteration cap %d reached; forcing final answer without tools",
             self.max_tool_iterations,
         )
+        # Forced-finalize：与 OpenAI 路径对偶。去掉 tools 再生成一次，逼模型
+        # 基于已积累的 tool 结果输出最终文本，避免封顶后整轮静默。
+        # 不吞异常：与 OpenAI 路径一致，让 SDK 调用失败原样向上抛，由 stream_text /
+        # prompt_ephemeral 现成的 retry / 状态上报 / response_discarded 清泡泡逻辑
+        # 接管。若在这里 try/except 成 warning，就把真实失败伪装成"空回复"，弱模型
+        # 超限后反而可能重回静音态，与本兜底目标冲突。
+        final_cfg_kw = {k: v for k, v in gen_config_kw.items() if k != "tools"}
+        final_system_instruction, final_contents = _genai_messages_to_contents(messages)
+        if final_system_instruction:
+            final_cfg_kw["system_instruction"] = final_system_instruction
+        final_config = types.GenerateContentConfig(**final_cfg_kw)
+        final_stream = await self._genai_client.aio.models.generate_content_stream(
+            model=self.model,
+            contents=final_contents,
+            config=final_config,
+        )
+        final_finish_reason: Optional[str] = None
+        final_block_reason: Optional[str] = None
+        final_prompt_tokens: Optional[int] = None
+        final_had_text = False
+        async for chunk in final_stream:
+            # 与常规 genai 分支对偶地采集空回复诊断：block_reason / finish_reason /
+            # prompt_tokens。否则若 forced-finalize 也被 safety / recitation /
+            # max-tokens 挡住而无文本，上层只能引用上一轮 tool-iteration 的过期
+            # finish_reason，诊断失真。
+            pf = getattr(chunk, "prompt_feedback", None)
+            if pf is not None:
+                br = getattr(pf, "block_reason", None)
+                if br:
+                    final_block_reason = str(br)
+            usage_meta = getattr(chunk, "usage_metadata", None)
+            if usage_meta is not None:
+                pt = getattr(usage_meta, "prompt_token_count", 0) or 0
+                if pt:
+                    final_prompt_tokens = pt
+            candidates = getattr(chunk, "candidates", None) or []
+            if not candidates:
+                continue
+            cand = candidates[0]
+            fr = getattr(cand, "finish_reason", None)
+            if fr:
+                final_finish_reason = str(fr)
+            cand_content = getattr(cand, "content", None)
+            for part in (getattr(cand_content, "parts", None) or []):
+                if getattr(part, "thought", False):
+                    continue
+                text = getattr(part, "text", None) or ""
+                if text:
+                    final_had_text = True
+                    yield LLMStreamChunk(content=text)
+        # 统一回填本次 forced-finalize 自己的诊断值（含 prompt_tokens）。prompt_tokens
+        # 走局部变量、流结束后无条件回填：若这次被挡住/没给 usage，写回 None 而非沿用
+        # 上一轮 tool-iteration 的旧值，避免 INFO log / 上层 LLM_NO_RESPONSE 诊断串台。
+        self._last_finish_reason = final_finish_reason
+        self._last_block_reason = final_block_reason
+        self._last_prompt_tokens = final_prompt_tokens
+        if not final_had_text:
+            logger.info(
+                "OmniOfflineClient(genai): forced-finalize empty completion "
+                "finish_reason=%s block_reason=%s model=%s prompt_tokens=%s",
+                final_finish_reason, final_block_reason,
+                getattr(self, "model", None),
+                final_prompt_tokens,
+            )
 
     def update_max_response_length(self, max_length: int) -> None:
         """更新回复 token 上限（用户可能在对话期间修改设置）。
