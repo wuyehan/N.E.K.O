@@ -50,7 +50,7 @@ class _FakeOmniOffline(OmniOfflineClient):
         self._raise = raise_exc
         self.called_with: list[str] = []
 
-    async def prompt_ephemeral(self, instruction: str) -> bool:
+    async def prompt_ephemeral(self, instruction: str, *, images=None) -> bool:
         self.called_with.append(instruction)
         if self._raise is not None:
             raise self._raise
@@ -91,6 +91,9 @@ def _make_mgr(session=None) -> LLMSessionManager:
     mgr._tts_done_queued_for_turn = False
     mgr.pending_agent_callbacks = []
     mgr.pending_extra_replies = []
+    # Mirror the production __init__ playback-gate flag (the double is built
+    # via __new__, so __init__ never ran). Default False = gate open.
+    mgr._voice_playback_active = False
     mgr._takeover_active = False
     mgr._takeover_input_dispatcher = None
     mgr._get_text_guard_max_length = MagicMock(return_value=200)
@@ -787,7 +790,7 @@ async def test_user_input_between_claim_and_lock_is_detected():
         def __init__(self):
             pass
 
-        async def prompt_ephemeral(self, instruction):
+        async def prompt_ephemeral(self, instruction, *, images=None):
             await sess_wait.wait()
             return True
 
@@ -837,7 +840,7 @@ async def test_user_input_during_agent_delivery_sets_preempted():
         def __init__(self):
             pass  # 跳过父类初始化
 
-        async def prompt_ephemeral(self, instruction):
+        async def prompt_ephemeral(self, instruction, *, images=None):
             # 模拟 LLM 耗时，期间 user input 抢占
             await sess_wait.wait()
             return True
