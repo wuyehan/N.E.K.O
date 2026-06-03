@@ -92,6 +92,7 @@ const COMPACT_SPEECH_FALLBACK_REVEAL_DELAY_MS = 700;
 const SPEECH_PLAYBACK_STATE_STORAGE_KEY = 'neko_speech_playback_state';
 const SPEECH_PLAYBACK_CHANNEL_NAME = 'neko_speech_playback_channel';
 const COMPACT_EXPORT_HISTORY_OPEN_STORAGE_KEY = 'neko.reactChatWindow.compactExportHistoryOpen';
+export const COMPACT_EXPORT_HISTORY_VISIBILITY_ANIMATION_MS = 560;
 const COMPACT_INPUT_TOOL_WHEEL_ITEM_COUNT = 7;
 const COMPACT_INPUT_TOOL_WHEEL_DRAG_THRESHOLD = 22;
 const COMPACT_INPUT_TOOL_WHEEL_SCROLL_THRESHOLD = 64;
@@ -104,6 +105,11 @@ const COMPACT_INPUT_TOOL_WHEEL_CHARGE_MAX_STEPS = COMPACT_INPUT_TOOL_WHEEL_CHARG
 const COMPACT_INPUT_TOOL_WHEEL_CHARGE_RELEASE_STEP_MS = 36;
 const COMPACT_INPUT_TOOL_WHEEL_CENTER_X = 116;
 const COMPACT_INPUT_TOOL_WHEEL_CENTER_Y = 116;
+// Drag-to-rotate sensitivity scalar (arc = radius * angleDelta), NOT a layout
+// value. Kept at 91.92 so the rotate-by-drag feel is unchanged even though the
+// visual orbit radius (--compact-tool-wheel-orbit-radius in styles.css) was
+// halved — the angle itself is measured from real geometry, this only scales
+// how much angular travel counts as one step.
 const COMPACT_INPUT_TOOL_WHEEL_ORBIT_RADIUS = 91.92;
 const COMPACT_INPUT_TOOL_WHEEL_HOVER_RADIUS = 116;
 const COMPACT_INPUT_TOOL_WHEEL_ANGLE_MIN_RADIUS = 16;
@@ -256,6 +262,12 @@ function createCompactToolWheelChargeState(): CompactToolWheelChargeState {
 
 type CompactMessagePreview = {
   messageId: string;
+  // Stable identity of the whole merged turn: the id of the earliest message
+  // folded into this preview. Unchanged as more bubbles stream into the same
+  // turn (messageId re-keys to the latest bubble, this does not), and changes
+  // when a genuinely new turn begins. Used to tell an appended bubble from a
+  // new turn without relying on text-prefix matching.
+  turnStartId: string;
   author: string;
   text: string;
   fullText: string;
@@ -310,11 +322,12 @@ function isDesktopCompactSurfaceLayoutActive(): boolean {
 }
 
 function readPersistedCompactExportHistoryOpen(): boolean {
-  if (typeof window === 'undefined') return false;
+  if (typeof window === 'undefined') return true;
   try {
-    return window.localStorage?.getItem(COMPACT_EXPORT_HISTORY_OPEN_STORAGE_KEY) === 'true';
+    const persisted = window.localStorage?.getItem(COMPACT_EXPORT_HISTORY_OPEN_STORAGE_KEY);
+    return persisted === null ? true : persisted === 'true';
   } catch {
-    return false;
+    return true;
   }
 }
 
@@ -397,6 +410,9 @@ function getCompactMessagePreview(messages: ChatMessage[]): CompactMessagePrevie
     let turnAuthor = '';
     const latestStreamingMessage = messages[latestStreamingAssistantIndex];
     const turnMessageId = String(latestStreamingMessage?.id || 'assistant-streaming');
+    // Walks backward to the earliest merged bubble, so the last assignment in
+    // the loop is the turn's anchor id.
+    let turnStartId = turnMessageId;
     let previousIncludedCreatedAt = typeof latestStreamingMessage?.createdAt === 'number'
       && Number.isFinite(latestStreamingMessage.createdAt)
       ? latestStreamingMessage.createdAt
@@ -420,6 +436,12 @@ function getCompactMessagePreview(messages: ChatMessage[]): CompactMessagePrevie
         }
         previousIncludedCreatedAt = createdAt;
       }
+      // Anchor the turn to every message folded in, before the empty-text skip.
+      // A bubble can be momentarily text-less (still streaming, image-only) then
+      // gain text; if the anchor only moved on text-bearing bubbles it would
+      // drift to a later bubble and back, re-keying the same turn as a new one
+      // and replaying the caption.
+      turnStartId = String(message.id || turnMessageId);
       const text = getMessageBlockPreviewText(message);
       if (!text) continue;
       turnTexts.unshift(text);
@@ -429,6 +451,7 @@ function getCompactMessagePreview(messages: ChatMessage[]): CompactMessagePrevie
       const turnText = normalizeCompactPreviewText(turnTexts.join(' '));
       return {
         messageId: turnMessageId || 'assistant-streaming',
+        turnStartId,
         author: turnAuthor,
         text: turnText,
         fullText: turnText,
@@ -448,6 +471,7 @@ function getCompactMessagePreview(messages: ChatMessage[]): CompactMessagePrevie
     const isStreamingAssistantMessage = message.role === 'assistant' && message.status === 'streaming';
     const preview = {
       messageId: message.id,
+      turnStartId: String(message.id),
       author: message.author,
       text: isStreamingAssistantMessage ? text : truncateCompactPreview(text, COMPACT_PREVIEW_MAX_LENGTH),
       fullText: text,
@@ -556,6 +580,7 @@ const compactCursorZoneSelector = [
   '.compact-input-tool-fan',
   '.compact-input-tool-toggle',
   '.compact-export-history-anchor',
+  '.compact-history-visibility-handle',
   '.send-button-circle',
   '.window-topbar-actions',
   '.topbar-action-btn',
@@ -1124,7 +1149,6 @@ export default function App({
   const compactInputToolWheelChargeReleaseActiveRef = useRef(false);
   const compactInputToolWheelSuppressClickRef = useRef(false);
   const compactInputToolWheelScrollDeltaRef = useRef(0);
-  const compactInputToolTogglePointerHandledRef = useRef(false);
   const compactInputToolFanPositionSyncRef = useRef<(() => void) | null>(null);
   const compactInputToolFanCloseTimerRef = useRef<number | null>(null);
   const compactInputToolFanInteractiveTimerRef = useRef<number | null>(null);
@@ -1160,6 +1184,12 @@ export default function App({
   const compactSpeechLastFrameTimeRef = useRef(0);
   const compactSpeechPreviewIdRef = useRef('');
   const compactSpeechPreviewTextRef = useRef('');
+  // Identity of the turn the speech reveal is currently walking through (the
+  // preview's turnStartId). Updated when the preview re-keys (messageId change),
+  // so it holds the *previous* turn's anchor at the moment a new bubble arrives
+  // — used to tell an appended bubble (same turn → keep revealing) from a
+  // brand-new turn (rewind to the start) without text-prefix guessing.
+  const compactSpeechRevealTurnIdRef = useRef('');
   const compactSpeechFallbackRevealRef = useRef(false);
   const compactSpeechFallbackTimerRef = useRef<number | null>(null);
   const isCompactSurfaceRef = useRef(false);
@@ -1190,10 +1220,14 @@ export default function App({
   const [compactInputToolWheelChargeReleaseActive, setCompactInputToolWheelChargeReleaseActive] = useState(false);
   const [compactSurfaceResizeWidth, setCompactSurfaceResizeWidth] = useState<number | null>(null);
   const [compactExportHistoryOpen, setCompactExportHistoryOpen] = useState(readPersistedCompactExportHistoryOpen);
+  const [compactExportHistoryMounted, setCompactExportHistoryMounted] = useState(readPersistedCompactExportHistoryOpen);
+  const [compactExportControlsOpen, setCompactExportControlsOpen] = useState(false);
   const [compactExportPreviewOpen, setCompactExportPreviewOpen] = useState(false);
   const [compactExportSelectedIds, setCompactExportSelectedIds] = useState<Set<string>>(() => new Set());
   const [compactExportAutoScrollToBottom, setCompactExportAutoScrollToBottom] = useState(true);
   const compactSurfaceResizeStateRef = useRef<CompactSurfaceResizeState | null>(null);
+  const compactHistoryVisibilitySuppressClickRef = useRef(false);
+  const compactExportHistoryUnmountTimerRef = useRef<number | null>(null);
   const submittingRef = useRef(false);
   const lastRollbackKeyRef = useRef('');
   const lastToolCursorResetKeyRef = useRef('');
@@ -1318,7 +1352,13 @@ export default function App({
   const resolvedScreenshotAriaLabel = screenshotButtonAriaLabel || screenshotButtonLabel;
   const resolvedTranslateAriaLabel = translateButtonAriaLabel || translateButtonLabel;
   const resolvedGalgameAriaLabel = galgameToggleButtonAriaLabel || galgameToggleButtonLabel;
-  const compactExportHistoryButtonLabel = i18n('chat.compactExportHistory', 'History');
+  const compactExportControlsVisible = compactExportHistoryOpen && compactExportControlsOpen;
+  const compactExportHistoryToggleLabel = compactExportHistoryOpen
+    ? i18n('chat.compactHistoryToggleClose', 'Hide history')
+    : i18n('chat.compactHistoryToggleOpen', 'Show history');
+  const compactExportControlsButtonLabel = compactExportControlsVisible
+    ? i18n('chat.compactHistoryControlsHide', 'Hide history actions')
+    : i18n('chat.compactHistoryControlsShow', 'Show history actions');
   // ChoicePrompt and galgame options share the same composer-anchored slot.
   // The transient invite should win when both are present so we do not stack
   // two button groups in the same compact surface.
@@ -1410,18 +1450,75 @@ export default function App({
     [compactExportSelectableMessages],
   );
   const compactExportSelectableCount = compactExportSelectableMessages.length;
-  const handleCompactExportConversationClick = useCallback(() => {
-    setCompactExportHistoryOpen((open) => {
-      const nextOpen = !open;
-      persistCompactExportHistoryOpen(nextOpen);
-      if (nextOpen) {
-        setCompactExportAutoScrollToBottom(true);
-      } else {
-        setCompactExportPreviewOpen(false);
-      }
-      return nextOpen;
-    });
+  const clearCompactExportHistoryUnmountTimer = useCallback(() => {
+    if (compactExportHistoryUnmountTimerRef.current === null) return;
+    window.clearTimeout(compactExportHistoryUnmountTimerRef.current);
+    compactExportHistoryUnmountTimerRef.current = null;
   }, []);
+  const openCompactExportHistory = useCallback(() => {
+    clearCompactExportHistoryUnmountTimer();
+    setCompactExportHistoryMounted(true);
+    setCompactExportHistoryOpen(true);
+    persistCompactExportHistoryOpen(true);
+    setCompactExportAutoScrollToBottom(true);
+  }, [clearCompactExportHistoryUnmountTimer]);
+  const closeCompactExportHistory = useCallback(() => {
+    clearCompactExportHistoryUnmountTimer();
+    setCompactExportHistoryOpen(false);
+    persistCompactExportHistoryOpen(false);
+    setCompactExportPreviewOpen(false);
+    compactExportHistoryUnmountTimerRef.current = window.setTimeout(() => {
+      setCompactExportHistoryMounted(false);
+      compactExportHistoryUnmountTimerRef.current = null;
+    }, COMPACT_EXPORT_HISTORY_VISIBILITY_ANIMATION_MS);
+  }, [clearCompactExportHistoryUnmountTimer]);
+  useEffect(() => () => {
+    clearCompactExportHistoryUnmountTimer();
+  }, [clearCompactExportHistoryUnmountTimer]);
+  const handleCompactHistoryVisibilityToggle = useCallback(() => {
+    if (compactExportHistoryOpen) {
+      closeCompactExportHistory();
+      return;
+    }
+    openCompactExportHistory();
+  }, [closeCompactExportHistory, compactExportHistoryOpen, openCompactExportHistory]);
+  const handleCompactHistoryVisibilityPress = useCallback((event: ReactPointerEvent<HTMLButtonElement>) => {
+    if (event.pointerType === 'mouse' && event.button !== 0) return;
+    event.preventDefault();
+    event.stopPropagation();
+    compactHistoryVisibilitySuppressClickRef.current = true;
+    handleCompactHistoryVisibilityToggle();
+  }, [handleCompactHistoryVisibilityToggle]);
+  const handleCompactHistoryVisibilityClick = useCallback((event: ReactMouseEvent<HTMLButtonElement>) => {
+    if (compactHistoryVisibilitySuppressClickRef.current) {
+      compactHistoryVisibilitySuppressClickRef.current = false;
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
+    handleCompactHistoryVisibilityToggle();
+  }, [handleCompactHistoryVisibilityToggle]);
+  const handleCompactHistoryVisibilityPointerCancel = useCallback(() => {
+    compactHistoryVisibilitySuppressClickRef.current = false;
+  }, []);
+  const handleCompactExportControlsToggle = useCallback(() => {
+    if (!compactExportHistoryOpen) {
+      openCompactExportHistory();
+      setCompactExportControlsOpen(true);
+      return;
+    }
+    if (compactExportPreviewOpen) {
+      setCompactExportPreviewOpen(false);
+      setCompactExportControlsOpen(true);
+      return;
+    }
+    setCompactExportControlsOpen((open) => {
+      if (open) {
+        setCompactExportSelectedIds(prev => (prev.size === 0 ? prev : new Set()));
+      }
+      return !open;
+    });
+  }, [compactExportHistoryOpen, compactExportPreviewOpen, openCompactExportHistory]);
   const handleCompactExportToggleMessage = useCallback((messageId: string) => {
     if (!compactExportSelectableIds.has(messageId)) return;
     setCompactExportSelectedIds((prev) => {
@@ -1505,6 +1602,7 @@ export default function App({
     setCompactExportPreviewOpen(false);
     setCompactExportSelectedIds(prev => (prev.size === 0 ? prev : new Set()));
     setCompactExportAutoScrollToBottom(true);
+    setCompactExportControlsOpen(false);
   }, [isCompactSurface]);
 
   useEffect(() => {
@@ -1688,13 +1786,38 @@ export default function App({
       window.clearTimeout(compactSpeechFallbackTimerRef.current);
       compactSpeechFallbackTimerRef.current = null;
     }
-    compactSpeechVisibleLengthRef.current = 0;
+    // Decouple the input-bar caption from per-bubble identity. The merged-turn
+    // preview is re-keyed to the latest streaming bubble's id, so every new
+    // bubble changes messageId even though it belongs to the same turn. While
+    // we're still inside that turn (same turnStartId), keep the revealed length
+    // so the caption continues appending instead of replaying the whole turn;
+    // only a genuinely new turn rewinds the reveal to the start. Keyed on the
+    // turn anchor rather than a text prefix, so two turns whose text happens to
+    // share a prefix can't be mistaken for a continuation.
+    const previousRevealTurnId = compactSpeechRevealTurnIdRef.current;
+    const nextRevealTurnId = compactPreviewIsStreaming ? (compactMessagePreview?.turnStartId || '') : '';
+    const continuesPreviousTurn = nextRevealTurnId.length > 0
+      && nextRevealTurnId === previousRevealTurnId;
+    const seedVisibleLength = continuesPreviousTurn
+      ? Math.min(compactSpeechVisibleLengthRef.current, compactPreviewText.length)
+      : 0;
+    // When the same turn continues, carry the fallback-reveal driver forward.
+    // Otherwise the appended text would freeze: the fallback timer re-arms but
+    // bails whenever visibleLength > 0 (the seeded length), so nothing would
+    // drive the reveal past the seed in the no-speech-playback path. Playback
+    // state is still reset to false so a finished bubble's audio can't snap the
+    // appended text to full — the next bubble's audio (or the carried fallback)
+    // resumes the reveal from the seed.
+    const keepFallbackReveal = continuesPreviousTurn && compactSpeechFallbackRevealRef.current;
+    compactSpeechRevealTurnIdRef.current = nextRevealTurnId;
+
+    compactSpeechVisibleLengthRef.current = seedVisibleLength;
     compactSpeechPlaybackStartedRef.current = false;
-    compactSpeechFallbackRevealRef.current = false;
+    compactSpeechFallbackRevealRef.current = keepFallbackReveal;
     compactSpeechRevealCarryRef.current = 0;
     compactSpeechLastFrameTimeRef.current = 0;
-    setCompactSpeechVisibleLength(0);
-    setCompactSpeechFallbackRevealActive(false);
+    setCompactSpeechVisibleLength(seedVisibleLength);
+    setCompactSpeechFallbackRevealActive(keepFallbackReveal);
   }, [compactMessagePreview?.messageId]);
 
   useEffect(() => {
@@ -1748,14 +1871,26 @@ export default function App({
         !isCompactSurfaceRef.current
         || compactSpeechPlaybackStartedRef.current
         || playbackHasStarted
-        || compactSpeechVisibleLengthRef.current > 0
+        // Bail when the reveal is already being driven or has finished — NOT
+        // merely when visibleLength > 0. A same-turn continuation seeds a
+        // nonzero prefix that may still be stalled (e.g. the previous bubble was
+        // revealed by speech, the appended bubble gets no playback/unavailable
+        // signal); the old `> 0` guard left that frozen. Let the timer engage so
+        // it reveals the appended text instead.
+        || compactSpeechFallbackRevealRef.current
+        || compactSpeechVisibleLengthRef.current >= compactPreviewText.length
       ) {
         return;
       }
       compactSpeechFallbackRevealRef.current = true;
       compactSpeechRevealCarryRef.current = 0;
       compactSpeechLastFrameTimeRef.current = 0;
-      compactSpeechVisibleLengthRef.current = Math.min(1, compactPreviewText.length);
+      // Resume from the already-seeded prefix (continuation) rather than rewinding
+      // to the first char; only an unseeded first bubble starts at 1.
+      compactSpeechVisibleLengthRef.current = Math.max(
+        compactSpeechVisibleLengthRef.current,
+        Math.min(1, compactPreviewText.length),
+      );
       setCompactSpeechVisibleLength(compactSpeechVisibleLengthRef.current);
       setCompactSpeechFallbackRevealActive(true);
     }, COMPACT_SPEECH_FALLBACK_REVEAL_DELAY_MS);
@@ -2360,6 +2495,19 @@ export default function App({
     }));
   }, []);
 
+  // Tell the desktop shell to keep the whole wheel region solid while the fan is
+  // open, so mouse-wheel scrolling responds across the entire circle (not only
+  // over the icon buttons). Released when the fan closes. See preload
+  // neko:compact-tool-fan-open-state-change.
+  const dispatchCompactToolFanOpenState = useCallback((open: boolean) => {
+    window.dispatchEvent(new CustomEvent('neko:compact-tool-fan-open-state-change', {
+      detail: {
+        open,
+        timestamp: Date.now(),
+      },
+    }));
+  }, []);
+
   const scheduleCompactInputToolWheelDragGuardRelease = useCallback(() => {
     clearCompactInputToolWheelDragGuardTimer();
     compactInputToolWheelDragGuardTimerRef.current = window.setTimeout(() => {
@@ -2400,6 +2548,7 @@ export default function App({
     compactInputToolFanPositionSyncRef.current?.();
     compactInputToolFanOpenRef.current = false;
     setCompactInputToolFanOpen(false);
+    dispatchCompactToolFanOpenState(false);
     if (!options?.afterClose) return;
     const desktopWindow = window as Window & {
       __nekoDesktopCompactLayout?: {
@@ -2418,6 +2567,7 @@ export default function App({
     clearCompactInputToolWheelFastAnimationTimer,
     clearCompactInputToolWheelChargeReleaseTimer,
     dispatchCompactToolWheelDragState,
+    dispatchCompactToolFanOpenState,
     resetCompactInputToolWheelCharge,
     setCompactInputToolFanInteractiveState,
   ]);
@@ -2456,11 +2606,13 @@ export default function App({
     });
     return () => window.cancelAnimationFrame(frameId);
   }, [
+    activeCursorToolId,
     compactInputToolFanInteractive,
     compactInputToolFanOpen,
     compactInputToolWheelIndex,
     effectiveCompactChatState,
     isCompactSurface,
+    toolMenuOpen,
   ]);
 
   const openCompactInputToolFan = useCallback((intent: 'click' | 'hover') => {
@@ -2472,6 +2624,7 @@ export default function App({
     updateCompactInputToolFanPosition();
     compactInputToolFanOpenRef.current = true;
     setCompactInputToolFanOpen(true);
+    dispatchCompactToolFanOpenState(true);
     compactInputToolFanInteractiveTimerRef.current = window.setTimeout(() => {
       compactInputToolFanInteractiveTimerRef.current = null;
       if (!compactInputToolFanOpenIntentRef.current) return;
@@ -2482,6 +2635,7 @@ export default function App({
     clearCompactInputToolFanInteractiveTimer,
     compactInputHasPayload,
     composerDisabled,
+    dispatchCompactToolFanOpenState,
     setCompactInputToolFanInteractiveState,
     updateCompactInputToolFanPosition,
   ]);
@@ -3053,7 +3207,6 @@ export default function App({
     if (!options?.ignoreToolFan && compactInputToolFanOpen) return;
     if (draftRef.current.trim().length > 0) return;
     if (composerAttachments.length > 0) return;
-    if (!options?.ignoreFocusedShell && compactExportHistoryOpen) return;
     const activeElement = document.activeElement;
     if (
       !options?.ignoreFocusedShell
@@ -3062,7 +3215,7 @@ export default function App({
         !!compactInputShellRef.current?.contains(activeElement)
         || (
           activeElement instanceof Element
-          && !!activeElement.closest('.compact-export-history-anchor')
+          && !!activeElement.closest('.compact-export-history-anchor, .compact-history-visibility-handle')
         )
       )
     ) {
@@ -3071,7 +3224,6 @@ export default function App({
     requestCompactChatState('default');
   }, [
     compactInputToolFanOpen,
-    compactExportHistoryOpen,
     composerAttachments.length,
     effectiveCompactChatState,
     isCompactSurface,
@@ -3102,7 +3254,7 @@ export default function App({
         || !!compactChoiceLayerRef.current?.contains(target)
         || (
           target instanceof Element
-          && !!target.closest('.compact-export-history-anchor')
+          && !!target.closest('.compact-export-history-anchor, .compact-history-visibility-handle')
         )
       )
     );
@@ -4004,15 +4156,11 @@ export default function App({
       className={`send-button-circle compact-input-tool-toggle${compactInputToolFanOpen ? ' is-open' : ''}`}
       ref={compactInputToolToggleRef}
       type={compactToolToggleActsAsSubmit ? 'submit' : 'button'}
+      data-compact-no-drag="true"
       aria-label={compactToolToggleActsAsSubmit ? sendButtonLabel : overflowMenuAriaLabel}
       aria-haspopup={compactToolToggleActsAsSubmit ? undefined : 'true'}
       aria-expanded={compactToolToggleActsAsSubmit ? undefined : compactInputToolFanOpen}
       disabled={compactToolToggleActsAsSubmit ? !canSubmit : composerDisabled}
-      onPointerDown={compactToolToggleActsAsSubmit ? undefined : (event) => {
-        event.preventDefault();
-        compactInputToolTogglePointerHandledRef.current = true;
-        toggleCompactInputToolFanByClick();
-      }}
       onPointerEnter={compactToolToggleActsAsSubmit ? undefined : handleCompactInputToolHoverEnter}
       onPointerLeave={compactToolToggleActsAsSubmit ? undefined : handleCompactInputToolHoverLeave}
       onFocus={compactToolToggleActsAsSubmit ? undefined : clearCompactInputToolFanCloseTimer}
@@ -4021,10 +4169,6 @@ export default function App({
         scheduleCompactInputCollapse();
       }}
       onClick={compactToolToggleActsAsSubmit ? undefined : () => {
-        if (compactInputToolTogglePointerHandledRef.current) {
-          compactInputToolTogglePointerHandledRef.current = false;
-          return;
-        }
         toggleCompactInputToolFanByClick();
       }}
     >
@@ -4045,6 +4189,7 @@ export default function App({
       aria-label={overflowMenuAriaLabel}
       data-compact-geometry-item="toolFan"
       data-compact-geometry-owner="surface"
+      data-compact-no-drag="true"
       data-compact-input-tool-fan-open={compactInputToolFanOpen ? 'true' : 'false'}
       data-compact-input-tool-fan-interactive={compactInputToolFanInteractive ? 'true' : 'false'}
       data-compact-tool-wheel-fast-animation={compactInputToolWheelFastAnimation ? 'true' : 'false'}
@@ -4235,17 +4380,17 @@ export default function App({
         <img src="/static/icons/jukebox_icon.png" alt="" aria-hidden="true" />
       </button>
       <button
-        className={`composer-tool-btn compact-input-tool-item compact-input-tool-item-export${compactExportHistoryOpen ? ' is-active' : ''}`}
+        className={`composer-tool-btn compact-input-tool-item compact-input-tool-item-export${compactExportControlsVisible ? ' is-active' : ''}`}
         type="button"
-        aria-label={compactExportHistoryButtonLabel}
-        aria-pressed={compactExportHistoryOpen}
-        title={compactExportHistoryButtonLabel}
+        aria-label={compactExportControlsButtonLabel}
+        aria-pressed={compactExportControlsVisible}
+        title={compactExportControlsButtonLabel}
         disabled={compactInputToolFanActionsDisabled}
         tabIndex={getCompactToolWheelTabIndex(5)}
         aria-hidden={getCompactToolWheelAriaHidden(5)}
         data-compact-tool-wheel-slot={getCompactToolWheelSlotValue(5)}
-        data-compact-tool-active={compactExportHistoryOpen ? 'true' : 'false'}
-        onClick={compactFanRunAction(handleCompactExportConversationClick)}
+        data-compact-tool-active={compactExportControlsVisible ? 'true' : 'false'}
+        onClick={compactFanRunAction(handleCompactExportControlsToggle)}
       >
         <svg viewBox="0 0 1024 1024" width="24" height="24" fill="currentColor" aria-hidden="true">
           <path d="M855.467 501.333c-17.067 0-32 14.934-32 32v198.4c0 70.4-59.734 130.134-130.134 130.134H356.267c-83.2 0-151.467-66.134-151.467-149.334V358.4c0-64 53.333-117.333 117.333-117.333h168.534c17.066 0 32-14.934 32-32s-14.934-32-32-32H322.133c-100.266 0-181.333 81.066-181.333 181.333v352c0 117.333 96 213.333 215.467 213.333h337.066c106.667 0 194.134-87.466 194.134-194.133V533.333c0-17.066-14.934-32-32-32zM680.533 256H761.6L458.667 569.6A30.933 30.933 0 0 0 480 622.933c8.533 0 17.067-4.266 23.467-10.666l305.066-313.6v89.6c0 17.066 14.934 32 32 32s32-14.934 32-32v-147.2c0-27.734-23.466-51.2-51.2-51.2h-140.8c-17.066 0-32 14.933-32 32s14.934 34.133 32 34.133z" />
@@ -4256,7 +4401,7 @@ export default function App({
         ref={toolMenuRef}
         aria-hidden={getCompactToolWheelAriaHidden(6)}
         data-compact-tool-wheel-slot={getCompactToolWheelSlotValue(6)}
-        data-compact-tool-active={activeToolItem ? 'true' : 'false'}
+        data-compact-tool-active={toolMenuOpen || activeToolItem ? 'true' : 'false'}
       >
         <button
           className={`composer-tool-btn composer-emoji-btn${toolMenuOpen || activeToolItem ? ' is-active' : ''}`}
@@ -4311,7 +4456,7 @@ export default function App({
               setToolMenuOpen(false);
             }}
           >
-            <span aria-hidden="true">脳</span>
+            <span className="composer-tool-clear-icon" aria-hidden="true" />
           </button>
         ) : null}
       </div>
@@ -4388,6 +4533,7 @@ export default function App({
       ref={isCompactSurface ? compactChoiceLayerRef : undefined}
       data-compact-geometry-item={isCompactSurface ? 'choice' : undefined}
       data-compact-geometry-owner={isCompactSurface ? 'surface' : undefined}
+      data-compact-no-drag={isCompactSurface ? 'true' : undefined}
       data-choice-layer-open={compactChoiceLayerOpen ? 'true' : 'false'}
       data-chat-surface-mode={chatSurfaceMode}
       data-compact-choice-placement={isCompactSurface ? compactChoiceLayerPlacement : undefined}
@@ -4490,7 +4636,7 @@ export default function App({
     ? (typeof document !== 'undefined' ? createPortal(choiceLayerNode, document.body) : choiceLayerNode)
     : null;
 
-  const compactExportHistoryElement = isCompactSurface && compactExportHistoryOpen ? (
+  const compactExportHistoryElement = isCompactSurface && compactExportHistoryMounted ? (
     <CompactExportHistoryPanel
       messages={messages}
       selectedIds={compactExportSelectedIds}
@@ -4498,7 +4644,9 @@ export default function App({
       selectableCount={compactExportSelectableCount}
       autoScrollToBottom={compactExportAutoScrollToBottom}
       previewOpen={compactExportPreviewOpen}
+      controlsOpen={compactExportControlsOpen}
       choiceLayerAbove={compactChoiceLayerOpen && compactChoiceLayerPlacement === 'above'}
+      visibilityState={compactExportHistoryOpen ? 'open' : 'closing'}
       failedStatusLabel={failedStatusLabel}
       onAutoScrollToBottomChange={setCompactExportAutoScrollToBottom}
       onToggleMessage={handleCompactExportToggleMessage}
@@ -4516,6 +4664,25 @@ export default function App({
     />
   ) : null;
   const compactExportHistoryNode = compactExportHistoryElement;
+  const compactHistoryVisibilityHandleNode = isCompactSurface ? (
+    <button
+      className={`compact-history-visibility-handle${compactExportHistoryOpen ? ' is-open' : ''}`}
+      type="button"
+      aria-label={compactExportHistoryToggleLabel}
+      aria-expanded={compactExportHistoryOpen}
+      title={compactExportHistoryToggleLabel}
+      data-compact-geometry-owner="surface"
+      data-compact-geometry-item="historyHandle"
+      data-compact-no-drag="true"
+      data-compact-history-open={compactExportHistoryOpen ? 'true' : 'false'}
+      onPointerDown={handleCompactHistoryVisibilityPress}
+      onPointerCancel={handleCompactHistoryVisibilityPointerCancel}
+      onPointerLeave={handleCompactHistoryVisibilityPointerCancel}
+      onClick={handleCompactHistoryVisibilityClick}
+    >
+      <span className="compact-history-visibility-handle-triangle" aria-hidden="true" />
+    </button>
+  ) : null;
   const compactSurfaceShellStyle = isCompactSurface
     && compactSurfaceEffectiveWidth !== null
     && !isDesktopCompactSurfaceLayoutActive()
@@ -4550,11 +4717,13 @@ export default function App({
       data-chat-surface-mode={chatSurfaceMode}
       data-compact-chat-state={effectiveCompactChatState}
       data-compact-export-history-open={isCompactSurface && compactExportHistoryOpen ? 'true' : 'false'}
+      data-compact-export-controls-open={isCompactSurface && compactExportControlsVisible ? 'true' : 'false'}
       data-compact-export-preview-open={isCompactSurface && compactExportPreviewOpen ? 'true' : 'false'}
       data-compact-export-selected-count={isCompactSurface ? compactExportSelectedCount : 0}
       data-compact-export-auto-scroll={isCompactSurface && compactExportAutoScrollToBottom ? 'true' : 'false'}
     >
       {compactExportHistoryNode}
+      {compactHistoryVisibilityHandleNode}
       {compactChoiceLayerNode}
       {floatingFistDrops.map(drop => (
         <span
@@ -4722,17 +4891,11 @@ export default function App({
                 onBlurCapture={effectiveCompactChatState === 'input' ? scheduleCompactInputCollapse : undefined}
               >
                 <div
-                  className="compact-chat-drag-handle"
-                  data-compact-drag-handle="true"
-                  data-compact-geometry-item="dragHandle"
-                  data-compact-geometry-owner="surface"
-                  aria-hidden="true"
-                />
-                <div
                   className="compact-chat-resize-handle compact-chat-resize-handle-left"
                   data-compact-resize-side="left"
                   data-compact-geometry-item="resizeHandle"
                   data-compact-geometry-owner="surface"
+                  data-compact-no-drag="true"
                   aria-hidden="true"
                   onPointerDown={(event) => handleCompactSurfaceResizePointerDown('left', event)}
                   onPointerMove={handleCompactSurfaceResizePointerMove}
@@ -4745,6 +4908,7 @@ export default function App({
                   data-compact-resize-side="right"
                   data-compact-geometry-item="resizeHandle"
                   data-compact-geometry-owner="surface"
+                  data-compact-no-drag="true"
                   aria-hidden="true"
                   onPointerDown={(event) => handleCompactSurfaceResizePointerDown('right', event)}
                   onPointerMove={handleCompactSurfaceResizePointerMove}
@@ -4756,6 +4920,7 @@ export default function App({
                   className="compact-chat-surface-frame"
                   data-compact-geometry-item={effectiveCompactChatState === 'input' ? 'input' : 'capsule'}
                   data-compact-geometry-owner="surface"
+                  data-compact-drag-surface="true"
                   data-compact-chat-state={effectiveCompactChatState}
                   data-compact-geometry-part={effectiveCompactChatState === 'input' ? 'inputBody' : 'capsuleBody'}
                   data-compact-tool-toggle-visible={compactToolToggleVisible ? 'true' : 'false'}
@@ -4765,6 +4930,7 @@ export default function App({
                       <textarea
                         className="composer-input"
                         ref={compactInputRef}
+                        data-compact-no-drag="true"
                         placeholder={inputPlaceholder}
                         aria-label={inputPlaceholder}
                         rows={1}

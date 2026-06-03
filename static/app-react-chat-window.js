@@ -22,6 +22,7 @@
     var loadedPromise = null;
     var mounted = false;
     var dragState = null;
+    var suppressDragReleaseClick = false;
     var resizeState = null;
     var minimized = false;
     var savedShellSize = null;
@@ -253,7 +254,6 @@
     var mobileExpandClickGuard = null;
     var mobileExpandVisualGuardTimer = 0;
     var compactMinimizeBallFrame = 0;
-    var compactMinimizeBallSnapshot = '';
     var compactSurfaceAnchorSnapshot = '';
     var compactDesktopSurfaceAnchorSnapshot = '';
     var compactInteractionGeometrySnapshot = '';
@@ -1018,7 +1018,7 @@
         var item = element.getAttribute('data-compact-geometry-item') || '';
         if (item === 'choice' && element.getAttribute('data-choice-layer-open') !== 'true') return false;
         if (item === 'toolFan' && element.getAttribute('data-compact-input-tool-fan-open') !== 'true') return false;
-        if (element.getAttribute('aria-hidden') === 'true' && item !== 'dragHandle' && item !== 'resizeHandle') return false;
+        if (element.getAttribute('aria-hidden') === 'true' && item !== 'resizeHandle') return false;
         var style = window.getComputedStyle ? window.getComputedStyle(element) : null;
         if (style && (style.display === 'none' || style.visibility === 'hidden')) return false;
         return true;
@@ -1071,6 +1071,8 @@
     }
 
     var COMPACT_TOOL_FAN_CIRCLE_SLICE_COUNT = 18;
+    var COMPACT_TOOL_AVATAR_CHOICE_FLOAT_PADDING_X = 6;
+    var COMPACT_TOOL_AVATAR_CHOICE_FLOAT_PADDING_Y = 12;
 
     function readCompactToolFanPixelVar(style, name, fallback) {
         var rawValue = style ? style.getPropertyValue(name) : '';
@@ -1108,13 +1110,37 @@
         return slices;
     }
 
+    function expandCompactRect(rect, expandX, expandTop, expandBottom) {
+        if (!rect) return null;
+        var left = rect.left - expandX;
+        var top = rect.top - expandTop;
+        var right = rect.right + expandX;
+        var bottom = rect.bottom + expandBottom;
+        return {
+            left: left,
+            top: top,
+            width: right - left,
+            height: bottom - top,
+            right: right,
+            bottom: bottom
+        };
+    }
+
+    function buildCompactAvatarToolChoiceHitRect(rect) {
+        return expandCompactRect(
+            rect,
+            COMPACT_TOOL_AVATAR_CHOICE_FLOAT_PADDING_X,
+            COMPACT_TOOL_AVATAR_CHOICE_FLOAT_PADDING_Y,
+            COMPACT_TOOL_AVATAR_CHOICE_FLOAT_PADDING_Y
+        );
+    }
+
     function isCompactSurfaceBaseAnchorKind(kind) {
         return kind === 'surfaceShell' || kind === 'capsule' || kind === 'input';
     }
 
     function getCompactSurfaceGeometryRole(kind) {
         if (isCompactSurfaceBaseAnchorKind(kind)) return 'baseAnchor';
-        if (kind === 'dragHandle') return 'baseHit';
         return 'extraIsland';
     }
 
@@ -1152,6 +1178,8 @@
                 if (!isAvatarToolChoice && (!slot || slot.indexOf('hidden') === 0)) return null;
                 var rect = normalizeCompactDomRect(child.getBoundingClientRect());
                 if (!rect) return null;
+                var hitRect = isAvatarToolChoice ? buildCompactAvatarToolChoiceHitRect(rect) : rect;
+                if (!hitRect) return null;
                 return {
                     id: isAvatarToolChoice
                         ? 'toolFan:avatarToolChoice:' + index
@@ -1159,8 +1187,8 @@
                     owner: 'surface',
                     kind: 'toolFan',
                     visualRect: rect,
-                    hitRect: rect,
-                    nativeRect: rect,
+                    hitRect: hitRect,
+                    nativeRect: hitRect,
                     interactive: true
                 };
             })
@@ -1283,9 +1311,9 @@
         });
         var surfaceRects = surfaceItems.map(function (item) { return item.nativeRect; });
         var baseSurfaceRects = baseSurfaceItems.map(function (item) { return item.nativeRect; });
-        var ballRect = isCompactHomeMinimizeBallEnabled() && !isElectronCompactExternalBallEnabled()
-            ? normalizeCompactDomRect(getCompactMinimizeBallTarget())
-            : null;
+        // compact 态不再渲染模型旁的悬浮最小化球，故不再上报其 hit/native 区域，
+        // 避免 Electron 桌面壳为一个不可见的球保留点击区域（externalBall 仍走桌面外部球）。
+        var ballRect = null;
         return {
             mode: getCurrentChatSurfaceMode(),
             compactChatState: getCurrentCompactChatState(),
@@ -1422,47 +1450,12 @@
         syncCompactInteractionGeometry();
     }
 
-    function clearCompactMinimizeBallAnchor() {
-        var shell = getShell();
-        if (!shell) return;
-        shell.style.removeProperty('--compact-minimize-ball-left');
-        shell.style.removeProperty('--compact-minimize-ball-top');
-        compactMinimizeBallSnapshot = '';
-        syncCompactInteractionGeometry();
-    }
-
-    function syncCompactMinimizeBallAnchor() {
-        var shell = getShell();
-        if (!shell) return;
-        if (!isCompactHomeMinimizeBallEnabled()) {
-            clearCompactMinimizeBallAnchor();
-            return;
-        }
-
-        var placement = getCompactMinimizeBallTarget();
-        if (!placement) {
-            clearCompactMinimizeBallAnchor();
-            return;
-        }
-
-        var snapshot = Math.round(placement.left) + ':' + Math.round(placement.top);
-        if (snapshot === compactMinimizeBallSnapshot) {
-            return;
-        }
-
-        compactMinimizeBallSnapshot = snapshot;
-        shell.style.setProperty('--compact-minimize-ball-left', Math.round(placement.left) + 'px');
-        shell.style.setProperty('--compact-minimize-ball-top', Math.round(placement.top) + 'px');
-        syncCompactInteractionGeometry();
-    }
-
     function stopCompactMinimizeBallTracking() {
         if (compactMinimizeBallFrame) {
             window.cancelAnimationFrame(compactMinimizeBallFrame);
             compactMinimizeBallFrame = 0;
         }
         compactSurfacePendingModelOpen = false;
-        clearCompactMinimizeBallAnchor();
         clearCompactSurfaceAnchor();
     }
 
@@ -1482,13 +1475,11 @@
                 return;
             }
             syncCompactSurfaceAnchor();
-            syncCompactMinimizeBallAnchor();
             syncCompactInteractionGeometry();
             compactMinimizeBallFrame = window.requestAnimationFrame(loop);
         };
 
         syncCompactSurfaceAnchor();
-        syncCompactMinimizeBallAnchor();
         syncCompactInteractionGeometry();
         compactMinimizeBallFrame = window.requestAnimationFrame(loop);
     }
@@ -1565,6 +1556,29 @@
     function blockMobileExpandSyntheticPointerEvent(event) {
         if (!shouldBlockMobileExpandClick(event)) return;
         // 手机端触摸展开后浏览器会补发同坐标鼠标事件；从 mousedown 起吞掉，避免按钮出现按压反馈。
+        event.preventDefault();
+        event.stopPropagation();
+        if (typeof event.stopImmediatePropagation === 'function') {
+            event.stopImmediatePropagation();
+        }
+    }
+
+    // Web 宿主下用鼠标拖拽 surface 本体后，浏览器仍会在 mouseup 落点补发一次
+    // click（mousedown 的 preventDefault 不取消 click）。落点若是胶囊按钮会被误判为
+    // 点击而展开输入框。拖拽真正移动过(moved)时 arm 此守卫，吞掉紧随其后的那一次
+    // click。click 与 mouseup 同任务同步派发，setTimeout(…,0) 必在其后清旗，既兜底
+    // 「落点无 click」也不会误吞之后无关的点击。touch 路径已在 touchstart
+    // preventDefault 阶段抑制了合成 click，不经此守卫。
+    function armDragReleaseClickGuard() {
+        suppressDragReleaseClick = true;
+        window.setTimeout(function () {
+            suppressDragReleaseClick = false;
+        }, 0);
+    }
+
+    function consumeDragReleaseClickGuard(event) {
+        if (!suppressDragReleaseClick) return;
+        suppressDragReleaseClick = false;
         event.preventDefault();
         event.stopPropagation();
         if (typeof event.stopImmediatePropagation === 'function') {
@@ -4785,12 +4799,10 @@
 
     var CLICK_THRESHOLD = 5; // px – 移动距离低于此值视为点击
 
-    function isCompactDragHandleTarget(target) {
-        return !!(
-            target
-            && typeof target.closest === 'function'
-            && target.closest('[data-compact-drag-handle="true"]')
-        );
+    function isCompactDragSurfaceTarget(target) {
+        if (!target || typeof target.closest !== 'function') return false;
+        if (target.closest('[data-compact-no-drag="true"]')) return false;
+        return !!target.closest('[data-compact-drag-surface="true"]');
     }
 
     function startDrag(clientX, clientY, options) {
@@ -4828,6 +4840,8 @@
             dragState.moved = true;
         }
 
+        if (dragState.compactSurface && !dragState.moved) return;
+
         var left = clientX - dragState.pointerOffsetX;
         var top = clientY - dragState.pointerOffsetY;
         if (dragState.compactSurface) {
@@ -4856,6 +4870,11 @@
 
         dragState = null;
         document.body.classList.remove('react-chat-window-dragging');
+
+        // 移动过的拖拽不该再变成点击：吞掉 mouseup 落点补发的那一次 click。
+        if (wasMoved) {
+            armDragReleaseClickGuard();
+        }
 
         // 最小化状态下，未发生拖拽移动 → 视为点击，恢复窗口
         // 但 suppressClick=true（如教程接管强制中断）时不触发，避免误展开
@@ -4899,7 +4918,7 @@
         document.addEventListener('mousedown', function (event) {
             if (event.button !== 0) return;
             if (isElectronChatWindow()) return;
-            if (!isCompactDragHandleTarget(event.target)) return;
+            if (!isCompactDragSurfaceTarget(event.target)) return;
             startDrag(event.clientX, event.clientY, {
                 compactSurface: true
             });
@@ -4909,7 +4928,7 @@
 
         document.addEventListener('touchstart', function (event) {
             if (isElectronChatWindow()) return;
-            if (!isCompactDragHandleTarget(event.target)) return;
+            if (!isCompactDragSurfaceTarget(event.target)) return;
             if (!event.touches || event.touches.length === 0) return;
             startDrag(event.touches[0].clientX, event.touches[0].clientY, {
                 compactSurface: true
@@ -5287,6 +5306,7 @@
         document.addEventListener('mousedown', blockMobileExpandSyntheticPointerEvent, true);
         document.addEventListener('mouseup', blockMobileExpandSyntheticPointerEvent, true);
         document.addEventListener('click', blockMobileExpandSyntheticPointerEvent, true);
+        document.addEventListener('click', consumeDragReleaseClickGuard, true);
         bindDragging();
         createResizeEdges();
         bindResizing();

@@ -1274,21 +1274,35 @@ svg {
   background: #44b7fe;
   color: #fff;
   cursor: pointer;
-  font-size: 11px;
-  font-weight: 700;
-  line-height: 1;
   box-shadow: 0 2px 6px rgba(35, 116, 190, 0.28);
   transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.composer-tool-clear-btn::before,
+.composer-tool-clear-btn::after {
+  content: "";
+  position: absolute;
+  left: 3px;
+  right: 3px;
+  top: 50%;
+  height: 1.5px;
+  border-radius: 999px;
+  background: currentColor;
+  transform-origin: center;
+}
+
+.composer-tool-clear-btn::before {
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.composer-tool-clear-btn::after {
+  transform: translateY(-50%) rotate(-45deg);
 }
 
 .composer-tool-clear-btn:hover {
   background: #229ceb;
   transform: scale(1.08);
   box-shadow: 0 3px 8px rgba(35, 116, 190, 0.34);
-}
-
-.composer-tool-clear-btn span {
-  transform: translateY(-0.5px);
 }
 
 .composer-tool-btn:disabled {
@@ -2029,70 +2043,6 @@ body.electron-chat-window.subtitle-web-host .compact-chat-surface-shell {
   box-shadow: none;
 }
 
-.compact-chat-drag-handle {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 88px;
-  height: 16px;
-  background: none;
-  border: 0;
-  cursor: grab;
-  opacity: 0;
-  pointer-events: auto;
-  transform: translateX(-50%);
-  transition: opacity 0.16s ease, transform 0.16s ease;
-  z-index: 8;
-}
-
-.compact-chat-drag-handle::before {
-  content: "";
-  position: absolute;
-  pointer-events: none;
-  top: 50%;
-  left: 50%;
-  width: 38px;
-  height: 3px;
-  background: linear-gradient(
-    90deg,
-    rgba(0, 184, 255, 0) 0%,
-    rgba(0, 184, 255, 0.72) 18%,
-    rgba(0, 196, 255, 0.88) 50%,
-    rgba(0, 184, 255, 0.72) 82%,
-    rgba(0, 184, 255, 0) 100%
-  );
-  border-radius: 999px;
-  clip-path: polygon(0 50%, 11% 0, 89% 0, 100% 50%, 89% 100%, 11% 100%);
-  transform: translate(-50%, -50%);
-  transition: width 0.16s ease, background 0.16s ease, opacity 0.16s ease;
-}
-
-.compact-chat-surface-shell:hover > .compact-chat-drag-handle,
-.compact-chat-drag-handle:hover,
-.compact-chat-drag-handle:active {
-  opacity: 1;
-}
-
-.compact-chat-drag-handle:hover {
-  transform: translateX(-50%);
-}
-
-.compact-chat-drag-handle:hover::before {
-  width: 44px;
-  background: linear-gradient(
-    90deg,
-    rgba(0, 196, 255, 0) 0%,
-    rgba(0, 196, 255, 0.82) 18%,
-    rgba(0, 210, 255, 0.96) 50%,
-    rgba(0, 196, 255, 0.82) 82%,
-    rgba(0, 196, 255, 0) 100%
-  );
-}
-
-.compact-chat-drag-handle:active {
-  cursor: grabbing;
-}
-
 .compact-chat-resize-handle {
   position: absolute;
   top: 4px;
@@ -2126,7 +2076,7 @@ body.electron-chat-window.subtitle-web-host .compact-chat-surface-shell {
   position: fixed;
   --compact-export-surface-width: var(--compact-surface-resize-width, var(--desktop-compact-surface-width, var(--compact-surface-width, 430px)));
   left: calc(var(--desktop-compact-surface-left, var(--compact-surface-left, 50vw)) + (var(--compact-export-surface-width) / 2));
-  bottom: calc(100vh - var(--desktop-compact-surface-top, var(--compact-surface-top, 68vh)) + 12px);
+  bottom: calc(100vh - var(--desktop-compact-surface-top, var(--compact-surface-top, 68vh)) + 34px);
   /* Geometry-critical: derive collapse compensation from control metrics; do not animate layout properties here. */
   --compact-export-controls-padding-y: clamp(4px, calc(var(--compact-export-surface-width) * 0.0116), 6px);
   --compact-export-controls-border-width: 1px;
@@ -2166,9 +2116,7 @@ body.electron-chat-window.subtitle-web-host .compact-chat-surface-shell {
 }
 
 .compact-export-history-anchor.controls-collapsed {
-  --compact-export-controls-collapse-delta: calc(
-    var(--compact-export-controls-expanded-block-size) - var(--compact-export-controls-collapsed-block-size)
-  );
+  --compact-export-controls-collapse-delta: var(--compact-export-controls-expanded-block-size);
 }
 
 body.electron-chat-window.subtitle-web-host .compact-export-history-anchor {
@@ -2211,6 +2159,7 @@ body.electron-chat-window.subtitle-web-host .compact-export-history-anchor {
   height: calc(var(--compact-export-history-region-height) + var(--compact-export-controls-collapse-delta));
   max-height: calc(var(--compact-export-history-region-height) + var(--compact-export-controls-collapse-delta));
   min-height: 0;
+  overflow-anchor: none;
   overflow-y: auto;
   overflow-x: visible;
   overscroll-behavior: contain;
@@ -2230,6 +2179,7 @@ body.electron-chat-window.subtitle-web-host .compact-export-history-anchor {
   flex-direction: column;
   gap: 0;
   min-height: 100%;
+  overflow-anchor: none;
   pointer-events: none;
 }
 
@@ -2276,6 +2226,7 @@ body.electron-chat-window.subtitle-web-host .compact-export-history-anchor {
   display: flex;
   width: 100%;
   min-width: 0;
+  --compact-history-motion-x: 46px;
   margin-top: var(--compact-history-gap-before, 8px);
   border: 0;
   background: transparent;
@@ -2287,12 +2238,49 @@ body.electron-chat-window.subtitle-web-host .compact-export-history-anchor {
   -webkit-app-region: no-drag;
 }
 
+.compact-export-history-anchor[data-compact-export-history-visibility="closing"] .compact-export-history-message {
+  pointer-events: none;
+}
+
+.compact-export-history-anchor[data-compact-export-history-visibility="closing"] .compact-export-history-controls,
+.compact-export-history-anchor[data-compact-export-history-visibility="closing"] .compact-export-preview-region {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.12s ease;
+}
+
+@keyframes compact-history-message-enter {
+  from {
+    opacity: 0;
+    translate: var(--compact-history-motion-x) 0;
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes compact-history-message-exit {
+  from {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  to {
+    opacity: 0;
+    translate: var(--compact-history-motion-x) 0;
+  }
+}
+
 .compact-export-history-message.is-user {
+  --compact-history-motion-x: -46px;
   justify-content: flex-end;
 }
 
 .compact-export-history-message.is-assistant,
 .compact-export-history-message.is-system {
+  --compact-history-motion-x: 46px;
   justify-content: flex-start;
 }
 
@@ -2347,6 +2335,17 @@ body.electron-chat-window.subtitle-web-host .compact-export-history-anchor {
   transform-origin: var(--compact-history-drag-origin-x, 50%) var(--compact-history-drag-origin-y, 50%);
   transform: translateX(var(--compact-history-stagger-x, 0px)) rotate(var(--compact-history-rotate, 0deg));
   transition: border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+}
+
+.compact-export-history-anchor[data-compact-export-history-visibility="open"] .compact-export-history-message:not([data-compact-history-drag-phase]) .compact-export-history-bubble {
+  animation: compact-history-message-enter 0.26s cubic-bezier(0.2, 0.78, 0.34, 1) both;
+  animation-delay: var(--compact-history-enter-delay, 0ms);
+}
+
+.compact-export-history-anchor[data-compact-export-history-visibility="closing"] .compact-export-history-bubble {
+  animation: compact-history-message-exit 0.2s ease-in both;
+  animation-delay: var(--compact-history-exit-delay, 0ms);
+  pointer-events: none;
 }
 
 .compact-export-history-message.is-disabled .compact-export-history-bubble {
@@ -2737,16 +2736,6 @@ body.electron-chat-window.subtitle-web-host .compact-export-history-anchor {
     box-shadow 0.16s ease;
 }
 
-.compact-export-history-controls.is-collapsed {
-  width: var(--compact-export-controls-collapsed-width);
-  padding: 0;
-  border-color: transparent;
-  background: transparent;
-  box-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-}
-
 .compact-export-history-controls-content {
   display: flex;
   align-items: center;
@@ -2754,80 +2743,132 @@ body.electron-chat-window.subtitle-web-host .compact-export-history-anchor {
   min-width: 0;
 }
 
-.compact-export-history-controls-content[hidden] {
-  display: none;
-}
-
-.compact-export-history-controls-toggle {
+.compact-history-visibility-handle {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
-  width: 22px;
-  height: 22px;
+  --compact-history-handle-surface-width: var(--compact-surface-resize-width, var(--desktop-compact-surface-width, var(--compact-surface-width, 430px)));
+  --compact-history-handle-line-width: clamp(38px, calc(var(--compact-history-handle-surface-width) * 0.102), 50px);
+  width: clamp(96px, calc(var(--compact-history-handle-surface-width) * 0.24), 132px);
+  height: clamp(22px, calc(var(--compact-history-handle-surface-width) * 0.052), 28px);
   padding: 0;
   border: 0;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.62);
-  color: #2f6f9f;
+  background: transparent;
+  color: rgba(0, 196, 255, 0.88);
   cursor: pointer;
   transition: background 0.14s ease, color 0.14s ease, transform 0.14s ease;
 }
 
-.compact-export-history-controls.is-collapsed .compact-export-history-controls-toggle {
-  width: var(--compact-export-controls-collapsed-width);
-  height: var(--compact-export-controls-collapsed-toggle-height);
-  background: transparent;
-  color: #4f8fbd;
+.compact-history-visibility-handle {
+  position: fixed;
+  left: calc(var(--desktop-compact-surface-left, var(--compact-surface-left, 50vw)) + (var(--compact-history-handle-surface-width) / 2));
+  top: calc(var(--desktop-compact-surface-top, var(--compact-surface-top, 68vh)) + 8px);
+  bottom: auto;
+  transform: translate(-50%, -50%);
+  z-index: 100002;
+  pointer-events: auto;
+  -webkit-app-region: no-drag;
 }
 
-.compact-export-history-controls.is-collapsed .compact-export-history-controls-toggle::before,
-.compact-export-history-controls.is-collapsed .compact-export-history-controls-toggle::after {
+.compact-history-visibility-handle.is-open {
+  --compact-history-handle-line-width: 100%;
+}
+
+.compact-history-visibility-handle::before,
+.compact-history-visibility-handle::after {
   content: "";
   position: absolute;
   top: 50%;
-  height: 1px;
   border-radius: 999px;
-  transform: translateY(-50%);
 }
 
-.compact-export-history-controls.is-collapsed .compact-export-history-controls-toggle::before {
-  left: 0;
-  right: calc(50% + 8px);
-  background: linear-gradient(90deg, transparent, rgba(67, 145, 190, 0.46));
-}
-
-.compact-export-history-controls.is-collapsed .compact-export-history-controls-toggle::after {
-  left: calc(50% + 8px);
-  right: 0;
-  background: linear-gradient(90deg, rgba(67, 145, 190, 0.46), transparent);
-}
-
-.compact-export-history-controls-toggle:hover {
-  background: rgba(220, 242, 255, 0.94);
-  color: #1f83bd;
-}
-
-.compact-export-history-controls.is-collapsed .compact-export-history-controls-toggle:hover {
-  background: transparent;
-  color: #1f83bd;
-}
-
-.compact-export-history-controls-triangle {
-  position: relative;
+.compact-history-visibility-handle::before {
+  left: 50%;
   z-index: 1;
-  width: 0;
-  height: 0;
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  border-top: 6px solid currentColor;
-  transform: translateY(1px);
-  transition: transform 0.16s ease;
+  width: var(--compact-history-handle-line-width);
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 184, 255, 0) 0%,
+    rgba(0, 184, 255, 0.72) 18%,
+    rgba(0, 196, 255, 0.88) 50%,
+    rgba(0, 184, 255, 0.72) 82%,
+    rgba(0, 184, 255, 0) 100%
+  );
+  clip-path: polygon(0 50%, 18% 26%, 36% 0, 64% 0, 82% 26%, 100% 50%, 82% 74%, 64% 100%, 36% 100%, 18% 74%);
+  filter:
+    drop-shadow(0 0 4px rgba(118, 220, 255, 0.4))
+    drop-shadow(0 0 9px rgba(118, 220, 255, 0.2));
+  opacity: 0.92;
+  transform: translate(-50%, -50%);
+  animation: compact-history-handle-breathe 2.35s ease-in-out infinite;
+  transition: width 0.16s ease, background 0.16s ease;
 }
 
-.compact-export-history-controls.is-collapsed .compact-export-history-controls-triangle {
-  transform: translateY(-1px) rotate(180deg);
+.compact-history-visibility-handle::after {
+  left: 50%;
+  z-index: 0;
+  width: var(--compact-history-handle-line-width);
+  height: 8px;
+  background: linear-gradient(
+    90deg,
+    rgba(116, 220, 255, 0) 0%,
+    rgba(116, 220, 255, 0.22) 22%,
+    rgba(154, 232, 255, 0.5) 50%,
+    rgba(116, 220, 255, 0.22) 78%,
+    rgba(116, 220, 255, 0) 100%
+  );
+  filter: blur(3px);
+  opacity: 0.42;
+  transform: translate(-50%, -50%) scaleX(1.16);
+  animation: compact-history-handle-glow-breathe 2.35s ease-in-out infinite;
+  transition: width 0.16s ease, opacity 0.16s ease;
+}
+
+.compact-history-visibility-handle:hover {
+  background: transparent;
+  color: rgba(0, 210, 255, 0.96);
+}
+
+@keyframes compact-history-handle-breathe {
+  0%,
+  100% {
+    opacity: 0.72;
+    filter:
+      drop-shadow(0 0 3px rgba(118, 220, 255, 0.28))
+      drop-shadow(0 0 7px rgba(118, 220, 255, 0.12));
+  }
+
+  50% {
+    opacity: 1;
+    filter:
+      drop-shadow(0 0 7px rgba(118, 220, 255, 0.72))
+      drop-shadow(0 0 16px rgba(118, 220, 255, 0.36));
+  }
+}
+
+@keyframes compact-history-handle-glow-breathe {
+  0%,
+  100% {
+    opacity: 0.28;
+    transform: translate(-50%, -50%) scaleX(1.08);
+  }
+
+  50% {
+    opacity: 0.64;
+    transform: translate(-50%, -50%) scaleX(1.18);
+  }
+}
+
+.compact-history-visibility-handle-triangle {
+  display: none;
+}
+
+.compact-history-visibility-handle.is-open .compact-history-visibility-handle-triangle {
+  display: none;
 }
 
 .compact-export-history-count {
@@ -3218,6 +3259,9 @@ body.electron-chat-window.subtitle-web-host .compact-export-history-anchor {
   z-index: 5;
   isolation: isolate;
   -webkit-app-region: no-drag;
+  /* Long-press grabs the surface for dragging; keep touch gestures from being
+     reinterpreted as a pan/scroll (which would pointercancel the hold). */
+  touch-action: none;
   transform: none;
 }
 
@@ -3275,6 +3319,12 @@ body.electron-chat-window.subtitle-web-host .compact-export-history-anchor {
   --compact-tool-button-size: 38px;
   --compact-tool-fan-hit-outset: 52px;
   --compact-tool-wheel-hover-radius: 116px;
+  /* Orbit radius = how far the tool icons sit from the arrow center (visual
+     only). 45.96px (a straight halving of the original 91.92px) packed the icons
+     in too tight, so it's dialed back to 80px. The drag-rotate sensitivity
+     scalar in App.tsx is intentionally left at 91.92 so rotate-by-drag feel is
+     unchanged. */
+  --compact-tool-wheel-orbit-radius: 80px;
   --compact-tool-fan-focus-x: var(--compact-tool-wheel-hover-radius);
   --compact-tool-fan-focus-y: var(--compact-tool-wheel-hover-radius);
   --compact-tool-wheel-center-x: var(--compact-tool-wheel-hover-radius);
@@ -3387,10 +3437,6 @@ body.electron-chat-window.subtitle-web-host .compact-export-history-anchor {
     );
 }
 
-.compact-chat-drag-handle {
-  -webkit-app-region: no-drag;
-}
-
 .compact-input-tool-fan .compact-input-tool-item {
   position: absolute;
   left: 0;
@@ -3442,6 +3488,18 @@ body.electron-chat-window.subtitle-web-host .compact-export-history-anchor {
 .compact-input-tool-fan .compact-input-tool-item > .composer-tool-btn {
   position: relative;
   z-index: 2;
+}
+
+.compact-input-tool-fan .compact-input-tool-item-avatar > .composer-emoji-btn,
+.compact-input-tool-fan .compact-input-tool-item-avatar > .composer-emoji-btn:hover,
+.compact-input-tool-fan .compact-input-tool-item-avatar > .composer-emoji-btn.is-active {
+  background: transparent;
+  border-radius: 999px;
+}
+
+.compact-input-tool-fan .compact-input-tool-item-avatar > .composer-emoji-btn:disabled {
+  opacity: 1;
+  cursor: inherit;
 }
 
 .compact-input-tool-fan[data-compact-input-tool-fan-open="true"] {
@@ -3496,7 +3554,7 @@ body.electron-chat-window.subtitle-web-host .compact-export-history-anchor {
 
 .compact-input-tool-fan[data-compact-input-tool-fan-open="true"] .compact-input-tool-item[data-compact-tool-wheel-slot="-2"] {
   opacity: 1;
-  transform: translate(var(--compact-tool-wheel-center-x), var(--compact-tool-wheel-center-y)) rotate(107.35deg) translateX(91.92px) rotate(-107.35deg) scale(0.86);
+  transform: translate(var(--compact-tool-wheel-center-x), var(--compact-tool-wheel-center-y)) rotate(107.35deg) translateX(var(--compact-tool-wheel-orbit-radius)) rotate(-107.35deg) scale(0.86);
   pointer-events: auto;
 }
 
@@ -3516,25 +3574,25 @@ body.electron-chat-window.subtitle-web-host .compact-export-history-anchor {
 
 .compact-input-tool-fan[data-compact-input-tool-fan-open="true"] .compact-input-tool-item[data-compact-tool-wheel-slot="-1"] {
   opacity: 1;
-  transform: translate(var(--compact-tool-wheel-center-x), var(--compact-tool-wheel-center-y)) rotate(75.82deg) translateX(91.92px) rotate(-75.82deg) scale(0.98);
+  transform: translate(var(--compact-tool-wheel-center-x), var(--compact-tool-wheel-center-y)) rotate(75.82deg) translateX(var(--compact-tool-wheel-orbit-radius)) rotate(-75.82deg) scale(0.98);
   pointer-events: auto;
 }
 
 .compact-input-tool-fan[data-compact-input-tool-fan-open="true"] .compact-input-tool-item[data-compact-tool-wheel-slot="0"] {
   opacity: 1;
-  transform: translate(var(--compact-tool-wheel-center-x), var(--compact-tool-wheel-center-y)) rotate(45deg) translateX(91.92px) rotate(-45deg) scale(1.04);
+  transform: translate(var(--compact-tool-wheel-center-x), var(--compact-tool-wheel-center-y)) rotate(45deg) translateX(var(--compact-tool-wheel-orbit-radius)) rotate(-45deg) scale(1.04);
   pointer-events: auto;
 }
 
 .compact-input-tool-fan[data-compact-input-tool-fan-open="true"] .compact-input-tool-item[data-compact-tool-wheel-slot="1"] {
   opacity: 1;
-  transform: translate(var(--compact-tool-wheel-center-x), var(--compact-tool-wheel-center-y)) rotate(14.18deg) translateX(91.92px) rotate(-14.18deg) scale(0.98);
+  transform: translate(var(--compact-tool-wheel-center-x), var(--compact-tool-wheel-center-y)) rotate(14.18deg) translateX(var(--compact-tool-wheel-orbit-radius)) rotate(-14.18deg) scale(0.98);
   pointer-events: auto;
 }
 
 .compact-input-tool-fan[data-compact-input-tool-fan-open="true"] .compact-input-tool-item[data-compact-tool-wheel-slot="2"] {
   opacity: 1;
-  transform: translate(var(--compact-tool-wheel-center-x), var(--compact-tool-wheel-center-y)) rotate(-17.35deg) translateX(91.92px) rotate(17.35deg) scale(0.86);
+  transform: translate(var(--compact-tool-wheel-center-x), var(--compact-tool-wheel-center-y)) rotate(-17.35deg) translateX(var(--compact-tool-wheel-orbit-radius)) rotate(17.35deg) scale(0.86);
   pointer-events: auto;
 }
 
@@ -3560,15 +3618,15 @@ body.electron-chat-window.subtitle-web-host .compact-export-history-anchor {
 }
 
 .compact-input-tool-fan[data-compact-input-tool-fan-open="true"] .compact-input-tool-item[data-compact-tool-wheel-slot="hidden"] {
-  transform: translate(var(--compact-tool-wheel-center-x), var(--compact-tool-wheel-center-y)) rotate(45deg) translateX(18.38px) rotate(-45deg) scale(0.56);
+  transform: translate(var(--compact-tool-wheel-center-x), var(--compact-tool-wheel-center-y)) rotate(45deg) translateX(calc(var(--compact-tool-wheel-orbit-radius) * 0.2)) rotate(-45deg) scale(0.56);
 }
 
 .compact-input-tool-fan[data-compact-input-tool-fan-open="true"] .compact-input-tool-item[data-compact-tool-wheel-slot="hidden-forward"] {
-  transform: translate(var(--compact-tool-wheel-center-x), var(--compact-tool-wheel-center-y)) rotate(-48.51deg) translateX(91.92px) rotate(48.51deg) scale(0.56);
+  transform: translate(var(--compact-tool-wheel-center-x), var(--compact-tool-wheel-center-y)) rotate(-48.51deg) translateX(var(--compact-tool-wheel-orbit-radius)) rotate(48.51deg) scale(0.56);
 }
 
 .compact-input-tool-fan[data-compact-input-tool-fan-open="true"] .compact-input-tool-item[data-compact-tool-wheel-slot="hidden-backward"] {
-  transform: translate(var(--compact-tool-wheel-center-x), var(--compact-tool-wheel-center-y)) rotate(138.51deg) translateX(91.92px) rotate(-138.51deg) scale(0.56);
+  transform: translate(var(--compact-tool-wheel-center-x), var(--compact-tool-wheel-center-y)) rotate(138.51deg) translateX(var(--compact-tool-wheel-orbit-radius)) rotate(-138.51deg) scale(0.56);
 }
 
 .compact-input-tool-fan .composer-tool-btn img {
@@ -3952,6 +4010,12 @@ body.electron-chat-window.subtitle-web-host .compact-export-history-anchor {
   background: rgba(68, 183, 254, 0.26);
 }
 
+[data-theme="dark"] .compact-input-tool-fan .compact-input-tool-item-avatar > .composer-emoji-btn,
+[data-theme="dark"] .compact-input-tool-fan .compact-input-tool-item-avatar > .composer-emoji-btn:hover,
+[data-theme="dark"] .compact-input-tool-fan .compact-input-tool-item-avatar > .composer-emoji-btn.is-active {
+  background: transparent;
+}
+
 [data-theme="dark"] .composer-tool-clear-btn {
   border-color: rgba(28, 28, 46, 0.92);
   box-shadow: 0 2px 7px rgba(0, 0, 0, 0.44);
@@ -4197,23 +4261,36 @@ body.electron-chat-window.subtitle-web-host .compact-export-history-anchor {
   color: #cfe5ff;
 }
 
-[data-theme="dark"] .compact-export-history-control,
-[data-theme="dark"] .compact-export-history-controls-toggle {
+[data-theme="dark"] .compact-export-history-control {
   background: rgba(26, 48, 70, 0.82);
   color: #bfe2ff;
 }
 
-[data-theme="dark"] .compact-export-history-controls.is-collapsed .compact-export-history-controls-toggle {
+[data-theme="dark"] .compact-history-visibility-handle {
   background: transparent;
-  color: #a6d8ff;
+  color: rgba(0, 196, 255, 0.88);
 }
 
-[data-theme="dark"] .compact-export-history-controls.is-collapsed .compact-export-history-controls-toggle::before {
-  background: linear-gradient(90deg, transparent, rgba(132, 205, 255, 0.42));
+[data-theme="dark"] .compact-history-visibility-handle::before {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 184, 255, 0) 0%,
+    rgba(0, 184, 255, 0.72) 18%,
+    rgba(0, 196, 255, 0.88) 50%,
+    rgba(0, 184, 255, 0.72) 82%,
+    rgba(0, 184, 255, 0) 100%
+  );
 }
 
-[data-theme="dark"] .compact-export-history-controls.is-collapsed .compact-export-history-controls-toggle::after {
-  background: linear-gradient(90deg, rgba(132, 205, 255, 0.42), transparent);
+[data-theme="dark"] .compact-history-visibility-handle::after {
+  background: linear-gradient(
+    90deg,
+    rgba(116, 220, 255, 0) 0%,
+    rgba(116, 220, 255, 0.24) 22%,
+    rgba(164, 236, 255, 0.54) 50%,
+    rgba(116, 220, 255, 0.24) 78%,
+    rgba(116, 220, 255, 0) 100%
+  );
 }
 
 [data-theme="dark"] .compact-export-history-empty {
@@ -4262,19 +4339,23 @@ body.electron-chat-window.subtitle-web-host .compact-export-history-anchor {
   color: rgba(210, 225, 244, 0.68);
 }
 
-[data-theme="dark"] .compact-export-history-control:hover:not(:disabled),
-[data-theme="dark"] .compact-export-history-controls-toggle:hover {
+[data-theme="dark"] .compact-export-history-control:hover:not(:disabled) {
   background: rgba(40, 77, 108, 0.94);
   color: #e0f2ff;
 }
 
-[data-theme="dark"] .compact-export-history-controls.is-collapsed .compact-export-history-controls-toggle:hover {
+[data-theme="dark"] .compact-history-visibility-handle:hover {
   background: transparent;
   color: #e0f2ff;
 }
 
 
 @media (prefers-reduced-motion: reduce) {
+  .compact-export-history-anchor[data-compact-export-history-visibility="closing"] {
+    opacity: 0 !important;
+    visibility: hidden !important;
+  }
+
   .avatar-cursor-overlay-stage,
   .hammer-cursor-overlay-stage,
   .fist-floating-drop,
@@ -4284,6 +4365,10 @@ body.electron-chat-window.subtitle-web-host .compact-export-history-anchor {
   .hammer-cursor-overlay-visual.is-active,
   .message-row-user,
   .message-row-assistant,
+  .compact-export-history-message,
+  .compact-export-history-bubble,
+  .compact-history-visibility-handle::before,
+  .compact-history-visibility-handle::after,
   .text-chunk-reveal,
   .composer-icon-popover,
   .composer-icon-button,

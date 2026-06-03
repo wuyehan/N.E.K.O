@@ -285,6 +285,7 @@ def test_compact_surface_resize_handles_keep_width_in_dom_geometry_contract():
 def test_compact_tool_fan_uses_shell_local_anchor_not_fixed_viewport_position():
     styles = REACT_CHAT_STYLES_PATH.read_text(encoding="utf-8")
     script = APP_REACT_CHAT_WINDOW_PATH.read_text(encoding="utf-8")
+    app_source = REACT_CHAT_APP_PATH.read_text(encoding="utf-8")
 
     fan_block = css_block(styles, ".compact-input-tool-fan {", ".compact-chat-surface-shell *")
     wheel_block = styles.split(".compact-input-tool-fan .compact-input-tool-item {", 1)[1].split(
@@ -296,9 +297,17 @@ def test_compact_tool_fan_uses_shell_local_anchor_not_fixed_viewport_position():
         1,
     )[0]
     native_hit_block = collector_block.split("nativeRects.forEach", 1)[1].split("return items.concat", 1)[0]
+    geometry_sync_block = app_source.split(
+        "window.dispatchEvent(new CustomEvent('neko:compact-interaction-geometry-change'));",
+        1,
+    )[1].split(
+        "const openCompactInputToolFan",
+        1,
+    )[0]
 
     assert "position: absolute;" in fan_block
     assert "--compact-tool-wheel-hover-radius: 116px;" in fan_block
+    assert "--compact-tool-wheel-orbit-radius: 80px;" in fan_block
     assert "--compact-tool-fan-focus-x: var(--compact-tool-wheel-hover-radius);" in fan_block
     assert "--compact-tool-fan-focus-y: var(--compact-tool-wheel-hover-radius);" in fan_block
     assert "--compact-tool-wheel-center-x: var(--compact-tool-wheel-hover-radius);" in fan_block
@@ -345,10 +354,10 @@ def test_compact_tool_fan_uses_shell_local_anchor_not_fixed_viewport_position():
     assert '.compact-input-tool-item[data-compact-tool-wheel-slot="hidden"]' in styles
     assert '.compact-input-tool-item[data-compact-tool-wheel-slot="hidden-forward"]' in styles
     assert '.compact-input-tool-item[data-compact-tool-wheel-slot="hidden-backward"]' in styles
-    assert "rotate(107.35deg) translateX(91.92px) rotate(-107.35deg)" in styles
-    assert "rotate(-17.35deg) translateX(91.92px) rotate(17.35deg)" in styles
-    assert "rotate(-48.51deg) translateX(91.92px) rotate(48.51deg)" in styles
-    assert "rotate(138.51deg) translateX(91.92px) rotate(-138.51deg)" in styles
+    assert "rotate(107.35deg) translateX(var(--compact-tool-wheel-orbit-radius)) rotate(-107.35deg)" in styles
+    assert "rotate(-17.35deg) translateX(var(--compact-tool-wheel-orbit-radius)) rotate(17.35deg)" in styles
+    assert "rotate(-48.51deg) translateX(var(--compact-tool-wheel-orbit-radius)) rotate(48.51deg)" in styles
+    assert "rotate(138.51deg) translateX(var(--compact-tool-wheel-orbit-radius)) rotate(-138.51deg)" in styles
     assert "translateX(83.82px)" not in wheel_block
     assert "translateX(89.74px)" not in wheel_block
     assert "translateX(92.06px)" not in wheel_block
@@ -356,11 +365,19 @@ def test_compact_tool_fan_uses_shell_local_anchor_not_fixed_viewport_position():
     assert "scale(0.86)" in wheel_block
     assert "scale(0.98)" in wheel_block
     assert "scale(1.04)" in wheel_block
+    assert "bubbleFloat 3.2s ease-in-out infinite" in styles
     assert '.compact-input-tool-fan[data-compact-tool-wheel-fast-animation="true"]' in styles
     assert "--compact-tool-wheel-transform-duration: 0.07s;" in styles
     assert "pointer-events: none;" in styles
+    assert "activeCursorToolId" in geometry_sync_block
+    assert "toolMenuOpen" in geometry_sync_block
+    assert "var COMPACT_TOOL_AVATAR_CHOICE_FLOAT_PADDING_X = 6;" in script
+    assert "var COMPACT_TOOL_AVATAR_CHOICE_FLOAT_PADDING_Y = 12;" in script
+    assert "function buildCompactAvatarToolChoiceHitRect(rect)" in script
     assert ".composer-icon-popover .composer-icon-button" in collector_block
     assert "toolFan:avatarToolChoice:" in collector_block
+    assert "var hitRect = isAvatarToolChoice ? buildCompactAvatarToolChoiceHitRect(rect) : rect;" in collector_block
+    assert "nativeRect: hitRect" in collector_block
     assert "slot.indexOf('hidden') === 0" in collector_block
     assert "style.pointerEvents !== 'none'" not in collector_block
     assert "hitRect: nativeRect" in native_hit_block
@@ -447,7 +464,7 @@ def test_compact_geometry_snapshot_separates_base_surface_from_extra_islands():
     assert "function isCompactSurfaceBaseAnchorKind(kind)" in script
     assert "return kind === 'surfaceShell' || kind === 'capsule' || kind === 'input';" in script
     assert "function getCompactSurfaceGeometryRole(kind)" in script
-    assert "if (kind === 'dragHandle') return 'baseHit';" in script
+    assert "if (kind === 'dragHandle') return 'baseHit';" not in script
     assert "return 'extraIsland';" in script
     assert "item.geometryRole = getCompactSurfaceGeometryRole(item.kind);" in script
 
@@ -467,6 +484,73 @@ def test_compact_geometry_snapshot_separates_base_surface_from_extra_islands():
     assert "extraIslandItems: extraIslandItems" in snapshot_block
     assert "extraIslandNativeRects:" in snapshot_block
     assert "extraIslandHitRects:" in snapshot_block
+
+
+def test_compact_surface_drag_uses_declared_surface_and_no_drag_exclusions():
+    script = APP_REACT_CHAT_WINDOW_PATH.read_text(encoding="utf-8")
+
+    assert "function isCompactDragSurfaceTarget(target)" in script
+    assert "target.closest('[data-compact-no-drag=\"true\"]')" in script
+    assert "target.closest('[data-compact-drag-surface=\"true\"]')" in script
+    assert "function isCompactDragHandleTarget(target)" not in script
+    assert "target.closest('[data-compact-drag-handle=\"true\"]')" not in script
+    assert "if (dragState.compactSurface && !dragState.moved) return;" in script
+
+    drag_block = script.split("document.addEventListener('mousedown', function (event)", 1)[1].split(
+        "document.addEventListener('touchstart', function (event)",
+        1,
+    )[0]
+    assert "if (!isCompactDragSurfaceTarget(event.target)) return;" in drag_block
+    assert "compactSurface: true" in drag_block
+
+    touch_block = script.split("document.addEventListener('touchstart', function (event)", 1)[1].split(
+        "document.addEventListener('mousemove', function (event)",
+        1,
+    )[0]
+    assert "if (!isCompactDragSurfaceTarget(event.target)) return;" in touch_block
+    assert "compactSurface: true" in touch_block
+
+
+def test_moved_drag_suppresses_trailing_release_click():
+    # 移动过的拖拽（含 compact surface 本体拖拽）松开后，浏览器会在 mouseup 落点
+    # 补发一次 click；落点若是胶囊按钮会被误判为点击而展开输入框。守卫在 moved
+    # 时 arm，并在 document capture 阶段吞掉紧随的那一次 click。
+    script = APP_REACT_CHAT_WINDOW_PATH.read_text(encoding="utf-8")
+
+    assert "var suppressDragReleaseClick = false;" in script
+
+    stop_block = script.split("function stopDrag(options)", 1)[1].split(
+        "function bindDragging()",
+        1,
+    )[0]
+    assert "if (wasMoved) {" in stop_block
+    assert "armDragReleaseClickGuard();" in stop_block
+
+    arm_block = script.split("function armDragReleaseClickGuard()", 1)[1].split(
+        "function consumeDragReleaseClickGuard",
+        1,
+    )[0]
+    assert "suppressDragReleaseClick = true;" in arm_block
+    # setTimeout(…, 0) 兜底清旗：click 同任务先消费，无 click 时也不残留误吞后续点击。
+    assert "window.setTimeout(function () {" in arm_block
+    assert "suppressDragReleaseClick = false;" in arm_block
+
+    consume_block = script.split("function consumeDragReleaseClickGuard(event)", 1)[1].split(
+        "function getOverlay()",
+        1,
+    )[0]
+    assert "if (!suppressDragReleaseClick) return;" in consume_block
+    assert "suppressDragReleaseClick = false;" in consume_block
+    assert "event.preventDefault();" in consume_block
+    assert "event.stopPropagation();" in consume_block
+
+    # capture 阶段挂载，且排在 mobile 展开守卫之后（保留既有行为优先级）。
+    assert "document.addEventListener('click', consumeDragReleaseClickGuard, true);" in script
+    listeners_block = script.split(
+        "document.addEventListener('click', blockMobileExpandSyntheticPointerEvent, true);",
+        1,
+    )[1]
+    assert "document.addEventListener('click', consumeDragReleaseClickGuard, true);" in listeners_block
 
 
 def test_desktop_compact_layout_change_resets_anchor_only_when_base_surface_changes():
@@ -500,23 +584,31 @@ def test_desktop_compact_layout_change_resets_anchor_only_when_base_surface_chan
     assert "compactSurfaceAnchorSnapshot = '';" not in listener_block
 
 
-def test_electron_compact_chat_root_mask_does_not_clip_history_layer():
+def test_electron_compact_chat_retires_full_surface_chrome():
     template = CHAT_TEMPLATE_PATH.read_text(encoding="utf-8")
 
+    # The standalone /chat window renders the shared compact capsule (driven by
+    # static/css/index.css's `body.subtitle-web-host #react-chat-window-shell
+    # [data-chat-surface-mode="compact"]` rule set, which chat.html's
+    # subtitle-web-host body opts into) instead of a bespoke full-window glass
+    # panel. The retired full form used to paint an empty glass panel for one
+    # frame before React mounted and collapsed it to compact ("先 full 再
+    # compact" 的那一帧). chat.html must NOT re-introduce that full surface.
+    #
+    # Retired full-surface artifacts that must stay gone:
+    assert "@keyframes liquidFlow" not in template            # 玻璃流光关键帧
+    assert "@keyframes lightSweep" not in template
+    assert "-webkit-mask-image" not in template               # 全窗口 root 四边渐隐 mask
+    assert "#react-chat-window-shell:not(.is-minimized)::before" not in template
+    assert "#react-chat-window-shell:not(.is-minimized)::after" not in template
+    assert "inset: 40px 25px 25px 20px" not in template       # 全窗口 shell 几何
+
+    # The shell font tweak survives (compact still uses #react-chat-window-root).
     assert "#react-chat-window-root {" in template
-    assert (
-        'body.electron-chat-window.subtitle-web-host '
-        '#react-chat-window-shell[data-chat-surface-mode="compact"] #react-chat-window-root'
-    ) in template
-
-    compact_override_block = template.split(
-        'body.electron-chat-window.subtitle-web-host '
-        '#react-chat-window-shell[data-chat-surface-mode="compact"] #react-chat-window-root',
-        1,
-    )[1].split("@keyframes liquidFlow", 1)[0]
-
-    assert "-webkit-mask-image: none !important;" in compact_override_block
-    assert "mask-image: none !important;" in compact_override_block
+    # The overlay must start hidden so nothing paints before React mounts the
+    # compact surface — parity with templates/index.html, which is what kills the
+    # pre-mount full-form flash.
+    assert 'id="react-chat-window-overlay" hidden' in template
 
 
 def test_compact_history_controls_collapse_gives_height_back_to_history_scroll():
@@ -536,17 +628,12 @@ def test_compact_history_controls_collapse_gives_height_back_to_history_scroll()
     controls_block = css_block(
         styles,
         ".compact-export-history-controls {",
-        ".compact-export-history-controls.is-collapsed",
-    )
-    collapsed_block = css_block(
-        styles,
-        ".compact-export-history-controls.is-collapsed {",
         ".compact-export-history-controls-content",
     )
-    collapsed_toggle_block = css_block(
+    history_handle_block = css_block(
         styles,
-        ".compact-export-history-controls.is-collapsed .compact-export-history-controls-toggle {",
-        ".compact-export-history-controls.is-collapsed .compact-export-history-controls-toggle::before",
+        ".compact-history-visibility-handle {",
+        ".compact-history-visibility-handle::before",
     )
     control_button_block = css_block(styles, ".compact-export-history-control {", ".compact-export-history-control:hover")
 
@@ -557,12 +644,7 @@ def test_compact_history_controls_collapse_gives_height_back_to_history_scroll()
     assert "--compact-export-controls-expanded-block-size: calc(" in anchor_block
     assert "--compact-export-controls-collapsed-block-size: calc(" in anchor_block
     assert "--compact-export-controls-collapse-delta: 0px;" in anchor_block
-    assert (
-        "--compact-export-controls-collapse-delta: calc(\n"
-        "    var(--compact-export-controls-expanded-block-size) - "
-        "var(--compact-export-controls-collapsed-block-size)\n"
-        "  );"
-    ) in collapsed_anchor_block
+    assert "--compact-export-controls-collapse-delta: var(--compact-export-controls-expanded-block-size);" in collapsed_anchor_block
     assert "24px" not in collapsed_anchor_block
     assert (
         "height: calc(var(--compact-export-history-region-height) + "
@@ -576,9 +658,20 @@ def test_compact_history_controls_collapse_gives_height_back_to_history_scroll()
     assert "min-height: 40px;" not in controls_block
     assert "padding: var(--compact-export-controls-padding-y) 6px;" in controls_block
     assert "padding 0.16s ease" not in controls_block
-    assert "padding: 0;" in collapsed_block
-    assert "width: var(--compact-export-controls-collapsed-width);" in collapsed_block
-    assert "height: var(--compact-export-controls-collapsed-toggle-height);" in collapsed_toggle_block
+    assert ".compact-export-history-controls.is-collapsed" not in styles
+    assert ".compact-export-history-controls-toggle" not in styles
+    assert "position: fixed;" in history_handle_block
+    assert "--compact-history-handle-line-width: clamp(38px, calc(var(--compact-history-handle-surface-width) * 0.102), 50px);" in history_handle_block
+    assert ".compact-history-visibility-handle.is-open {" in history_handle_block
+    assert "--compact-history-handle-line-width: 100%;" in history_handle_block
+    assert "top: calc(var(--desktop-compact-surface-top, var(--compact-surface-top, 68vh)) + 8px);" in history_handle_block
+    assert "bottom: auto;" in history_handle_block
+    assert "bottom: calc(100vh - var(--desktop-compact-surface-top" not in history_handle_block
+    assert "transform: translate(-50%, -50%);" in history_handle_block
+    assert "z-index: 100002;" in history_handle_block
+    assert "pointer-events: auto;" in history_handle_block
+    assert "-webkit-app-region: no-drag;" in history_handle_block
+    assert ".compact-history-visibility-handle-triangle {\n  display: none;\n}" in styles
     assert "height: var(--compact-export-controls-action-height);" in control_button_block
 
 
@@ -595,7 +688,7 @@ def test_compact_history_layout_contract_avoids_jitter_feedback():
     controls_block = css_block(
         styles,
         ".compact-export-history-controls {",
-        ".compact-export-history-controls.is-collapsed",
+        ".compact-export-history-controls-content",
     )
     preview_block = css_block(
         styles.split(".compact-export-preview-region[hidden]", 1)[1],
@@ -612,6 +705,48 @@ def test_compact_history_layout_contract_avoids_jitter_feedback():
     assert "height: calc(var(--compact-export-history-region-height)" in scroll_block
     assert "max-height: calc(var(--compact-export-history-region-height)" in scroll_block
     assert "max-height: inherit;" in panel_block
+
+
+def test_compact_history_reduced_motion_closing_hides_immediately():
+    styles = REACT_CHAT_STYLES_PATH.read_text(encoding="utf-8")
+
+    reduced_motion_block = styles.rsplit("@media (prefers-reduced-motion: reduce)", 1)[1]
+    closing_block = css_block(
+        reduced_motion_block,
+        '.compact-export-history-anchor[data-compact-export-history-visibility="closing"] {',
+        ".avatar-cursor-overlay-stage",
+    )
+
+    assert "opacity: 0 !important;" in closing_block
+    assert "visibility: hidden !important;" in closing_block
+
+
+def test_compact_history_closing_bubbles_disable_pointer_events():
+    styles = REACT_CHAT_STYLES_PATH.read_text(encoding="utf-8")
+
+    closing_bubble_block = css_block(
+        styles,
+        '.compact-export-history-anchor[data-compact-export-history-visibility="closing"] .compact-export-history-bubble {',
+        ".compact-export-history-message.is-disabled",
+    )
+
+    assert "animation: compact-history-message-exit" in closing_bubble_block
+    assert "pointer-events: none;" in closing_bubble_block
+
+
+def test_compact_history_enter_animation_excludes_drag_sources():
+    styles = REACT_CHAT_STYLES_PATH.read_text(encoding="utf-8")
+    enter_selector = (
+        '.compact-export-history-anchor[data-compact-export-history-visibility="open"] '
+        ".compact-export-history-message:not([data-compact-history-drag-phase]) "
+        ".compact-export-history-bubble"
+    )
+
+    assert enter_selector in styles
+    assert (
+        '.compact-export-history-anchor[data-compact-export-history-visibility="open"] '
+        ".compact-export-history-bubble {"
+    ) not in styles
 
 
 def test_compact_history_hit_contract_keeps_transparent_wrappers_out_of_hit_regions():
@@ -642,6 +777,14 @@ def test_compact_history_hit_contract_keeps_transparent_wrappers_out_of_hit_regi
         'className="compact-export-history-scroll-content"',
         1,
     )[0]
+    message_hit_block = panel_source.split('className="compact-export-history-bubble"', 1)[1].split(
+        'compact-export-history-check',
+        1,
+    )[0]
+    controls_hit_block = panel_source.split('className="compact-export-history-controls"', 1)[1].split(
+        'compact-export-history-controls-content',
+        1,
+    )[0]
 
     assert "pointer-events: none;" in anchor_block
     assert "pointer-events: none;" in panel_block
@@ -655,8 +798,12 @@ def test_compact_history_hit_contract_keeps_transparent_wrappers_out_of_hit_regi
     assert "function getCompactHistoryScrollbarRect(element, parentRect)" in script
     assert "id: 'history:scrollbar'" in script
     assert "data-compact-hit-region" not in scroll_jsx_block
-    assert 'data-compact-hit-region-id={`history:message:${message.id}`}' in panel_source
-    assert 'data-compact-hit-region-id="history:controls"' in panel_source
+    assert 'data-compact-hit-region-id={historyInteractive ? `history:message:${message.id}` : undefined}' in panel_source
+    assert "data-compact-hit-region={historyInteractive ? 'true' : undefined}" in message_hit_block
+    assert "data-compact-hit-region-kind={historyInteractive ? 'message' : undefined}" in message_hit_block
+    assert "data-compact-hit-region-id={historyInteractive ? 'history:controls' : undefined}" in panel_source
+    assert "data-compact-hit-region={historyInteractive ? 'true' : undefined}" in controls_hit_block
+    assert "data-compact-hit-region-kind={historyInteractive ? 'controls' : undefined}" in controls_hit_block
     assert 'data-compact-hit-region-id="history:preview"' in panel_source
 
 
