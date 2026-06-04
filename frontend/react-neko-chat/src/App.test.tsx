@@ -2522,7 +2522,7 @@ describe('App', () => {
     });
   });
 
-  it('prefers the latest assistant text for compact preview instead of echoing the latest user message', () => {
+  it('does not use historical assistant or user messages as compact speech preview text', () => {
     const assistantMessage = parseChatMessage({
       id: 'assistant-compact-priority',
       role: 'assistant',
@@ -2544,7 +2544,8 @@ describe('App', () => {
       <App chatSurfaceMode="compact" composerHidden messages={[assistantMessage, userMessage]} />,
     );
 
-    expect(container.querySelector('.compact-chat-capsule-button')).toHaveTextContent('先看我这边的引导内容');
+    expect(container.querySelector('.compact-chat-capsule-button')).toHaveTextContent('Chat content will appear here.');
+    expect(container.querySelector('.compact-chat-capsule-button')).not.toHaveTextContent('先看我这边的引导内容');
     expect(container.querySelector('.compact-chat-capsule-button')).not.toHaveTextContent('这是我刚刚发出的内容');
   });
 
@@ -2564,7 +2565,7 @@ describe('App', () => {
 
     const preview = container.querySelector('.compact-chat-capsule-text');
     expect(preview).toHaveAttribute('data-compact-preview-streaming', 'true');
-    expect(preview).toHaveTextContent('');
+    expect(preview?.textContent ?? '').toBe('');
   });
 
   it('falls back to revealing compact streaming text when playback state never arrives', async () => {
@@ -2583,7 +2584,7 @@ describe('App', () => {
     try {
       const { container } = render(<App chatSurfaceMode="compact" composerHidden messages={[message]} />);
 
-      expect(container.querySelector('.compact-chat-capsule-text')).toHaveTextContent('');
+      expect(container.querySelector('.compact-chat-capsule-text')?.textContent ?? '').toBe('');
 
       await act(async () => {
         await vi.advanceTimersByTimeAsync(1400);
@@ -2765,12 +2766,15 @@ describe('App', () => {
       const secondStreaming = makeBubble('assistant-compact-speech-turn-bubble-2', secondBubbleText, 'streaming', 5);
       rerender(<App chatSurfaceMode="compact" composerHidden messages={[firstSent, secondStreaming]} />);
 
-      // First tick lets the fallback safety net engage (it arms a ~700ms timer,
-      // whose state update then schedules the reveal frame); the second drives
-      // the reveal forward into the appended bubble.
+      // The same-turn append should start moving immediately from the seeded
+      // prefix instead of waiting for the fallback safety timer.
       await act(async () => {
-        await vi.advanceTimersByTimeAsync(800);
+        await vi.advanceTimersByTimeAsync(250);
       });
+      const revealedImmediately = container.querySelector('.compact-chat-capsule-text')?.textContent ?? '';
+      expect(revealedImmediately.length).toBeGreaterThan(revealedBefore.length);
+      expect(`${firstBubbleText} ${secondBubbleText}`.startsWith(revealedImmediately)).toBe(true);
+
       await act(async () => {
         await vi.advanceTimersByTimeAsync(8000);
       });
@@ -2778,6 +2782,136 @@ describe('App', () => {
       const revealedLater = container.querySelector('.compact-chat-capsule-text')?.textContent ?? '';
       expect(revealedLater.length).toBeGreaterThan(firstBubbleText.length);
       expect(`${firstBubbleText} ${secondBubbleText}`.startsWith(revealedLater)).toBe(true);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('uses compact caption events as the live same-turn display source without waiting for message bubbles', async () => {
+    vi.useFakeTimers();
+    const firstCaption = '第一句由紧凑字幕事件直接驱动显示。';
+    const secondCaption = '第二句只通过同 turn 字幕事件追加，不等待历史气泡入队。';
+
+    try {
+      const { container } = render(<App chatSurfaceMode="compact" composerHidden messages={[]} />);
+
+      act(() => {
+        window.dispatchEvent(new CustomEvent('neko-assistant-turn-start', {
+          detail: {
+            turnId: 'compact-caption-event-turn',
+            source: 'test',
+          },
+        }));
+        window.dispatchEvent(new CustomEvent('neko-compact-caption-update', {
+          detail: {
+            turnId: 'compact-caption-event-turn',
+            segmentId: 'compact-caption-event-turn:segment:1',
+            text: firstCaption,
+          },
+        }));
+        window.dispatchEvent(new CustomEvent('neko-speech-playback-state', {
+          detail: {
+            active: true,
+            turnId: 'compact-caption-event-turn',
+            playbackTurnId: 'compact-caption-event-turn',
+            audioContextTime: 0,
+            playbackStartAudioTime: 0,
+            playbackEndAudioTime: 1,
+            updatedAt: Date.now(),
+          },
+        }));
+      });
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(1500);
+      });
+
+      const revealedBefore = container.querySelector('.compact-chat-capsule-text')?.textContent ?? '';
+      expect(revealedBefore.length).toBeGreaterThan(0);
+      expect(firstCaption.startsWith(revealedBefore)).toBe(true);
+
+      act(() => {
+        window.dispatchEvent(new CustomEvent('neko-compact-caption-update', {
+          detail: {
+            turnId: 'compact-caption-event-turn',
+            segmentId: 'compact-caption-event-turn:segment:2',
+            text: secondCaption,
+          },
+        }));
+      });
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(250);
+      });
+
+      const revealedAfter = container.querySelector('.compact-chat-capsule-text')?.textContent ?? '';
+      const mergedCaption = `${firstCaption} ${secondCaption}`;
+      expect(revealedAfter.length).toBeGreaterThan(revealedBefore.length);
+      expect(revealedAfter.startsWith(revealedBefore)).toBe(true);
+      expect(mergedCaption.startsWith(revealedAfter)).toBe(true);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('replaces compact caption updates for the same segment instead of repeating prefixes', async () => {
+    vi.useFakeTimers();
+    const firstCaption = '第一句。';
+    const secondPartialCaption = '第二句。';
+    const secondFullCaption = '第二句话补全。';
+    const mergedCaption = `${firstCaption} ${secondFullCaption}`;
+
+    try {
+      const { container } = render(<App chatSurfaceMode="compact" composerHidden messages={[]} />);
+
+      act(() => {
+        window.dispatchEvent(new CustomEvent('neko-assistant-turn-start', {
+          detail: {
+            turnId: 'compact-caption-segment-turn',
+            source: 'test',
+          },
+        }));
+        window.dispatchEvent(new CustomEvent('neko-compact-caption-update', {
+          detail: {
+            turnId: 'compact-caption-segment-turn',
+            segmentId: 'compact-caption-segment-turn:segment:1',
+            text: firstCaption,
+          },
+        }));
+        window.dispatchEvent(new CustomEvent('neko-compact-caption-update', {
+          detail: {
+            turnId: 'compact-caption-segment-turn',
+            segmentId: 'compact-caption-segment-turn:segment:2',
+            text: secondPartialCaption,
+          },
+        }));
+        window.dispatchEvent(new CustomEvent('neko-compact-caption-update', {
+          detail: {
+            turnId: 'compact-caption-segment-turn',
+            segmentId: 'compact-caption-segment-turn:segment:2',
+            text: secondFullCaption,
+          },
+        }));
+      });
+
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(0);
+      });
+
+      act(() => {
+        window.dispatchEvent(new CustomEvent('neko-assistant-speech-unavailable', {
+          detail: {
+            turnId: 'compact-caption-segment-turn',
+            source: 'test',
+          },
+        }));
+      });
+
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(3000);
+      });
+
+      const previewText = container.querySelector('.compact-chat-capsule-text')?.textContent ?? '';
+      expect(previewText).toBe(mergedCaption);
+      expect(previewText).not.toContain(`${secondPartialCaption} ${secondFullCaption}`);
     } finally {
       vi.useRealTimers();
     }
@@ -2799,7 +2933,7 @@ describe('App', () => {
     try {
       const { container } = render(<App chatSurfaceMode="compact" composerHidden messages={[message]} />);
 
-      expect(container.querySelector('.compact-chat-capsule-text')).toHaveTextContent('');
+      expect(container.querySelector('.compact-chat-capsule-text')?.textContent ?? '').toBe('');
 
       act(() => {
         window.dispatchEvent(new CustomEvent('neko-assistant-speech-unavailable', {
@@ -2859,6 +2993,428 @@ describe('App', () => {
       const visibleLength = container.querySelector('.compact-chat-capsule-text')?.textContent?.length ?? 0;
       expect(visibleLength).toBeGreaterThanOrEqual(7);
       expect(visibleLength).toBeLessThanOrEqual(8);
+      expect(container.querySelector('.compact-chat-capsule-text')).toHaveTextContent(
+        streamingText.slice(0, visibleLength),
+      );
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('ignores speech playback state from a different assistant turn', async () => {
+    vi.useFakeTimers();
+    const streamingText = '当前 turn 的语音播放状态才能推动这段紧凑字幕。';
+    const message = parseChatMessage({
+      id: 'assistant-compact-streaming-progress-turn',
+      role: 'assistant',
+      author: 'Neko',
+      time: '10:01',
+      createdAt: 2,
+      turnId: 'compact-current-playback-turn',
+      blocks: [{ type: 'text', text: streamingText }],
+      status: 'streaming',
+    });
+
+    try {
+      const { container } = render(<App chatSurfaceMode="compact" composerHidden messages={[message]} />);
+
+      act(() => {
+        window.dispatchEvent(new CustomEvent('neko-speech-playback-state', {
+          detail: {
+            active: true,
+            turnId: 'compact-previous-playback-turn',
+            playbackTurnId: 'compact-previous-playback-turn',
+            audioContextTime: 0,
+            playbackStartAudioTime: 0,
+            playbackEndAudioTime: 5,
+            updatedAt: Date.now(),
+          },
+        }));
+      });
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(500);
+      });
+
+      expect(container.querySelector('.compact-chat-capsule-text')?.textContent ?? '').toBe('');
+
+      act(() => {
+        window.dispatchEvent(new CustomEvent('neko-speech-playback-state', {
+          detail: {
+            active: true,
+            turnId: 'compact-current-playback-turn',
+            playbackTurnId: 'compact-current-playback-turn',
+            audioContextTime: 0,
+            playbackStartAudioTime: 0,
+            playbackEndAudioTime: 1,
+            updatedAt: Date.now(),
+          },
+        }));
+      });
+
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(1000);
+      });
+
+      const visibleLength = container.querySelector('.compact-chat-capsule-text')?.textContent?.length ?? 0;
+      expect(visibleLength).toBeGreaterThan(0);
+      expect(container.querySelector('.compact-chat-capsule-text')).toHaveTextContent(
+        streamingText.slice(0, visibleLength),
+      );
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('does not flash the previous sentence when the next assistant sentence streams under a new turn id', async () => {
+    vi.useFakeTimers();
+    const firstSentence = '第一句话已经说完了，不能在第二句话开始时闪回来。';
+    const secondSentence = '第二句话现在开始说，紧凑字幕只能显示这句的前缀。';
+    const firstStreaming = parseChatMessage({
+      id: 'assistant-compact-segment-first',
+      role: 'assistant',
+      author: 'Neko',
+      time: '10:01',
+      createdAt: 2,
+      turnId: 'compact-first-segment-turn',
+      blocks: [{ type: 'text', text: firstSentence }],
+      status: 'streaming',
+    });
+    const firstSent = parseChatMessage({
+      ...firstStreaming,
+      status: 'sent',
+    });
+    const secondStreaming = parseChatMessage({
+      id: 'assistant-compact-segment-second',
+      role: 'assistant',
+      author: 'Neko',
+      time: '10:02',
+      createdAt: 5,
+      turnId: 'compact-second-segment-turn',
+      blocks: [{ type: 'text', text: secondSentence }],
+      status: 'streaming',
+    });
+
+    try {
+      const { container, rerender } = render(
+        <App chatSurfaceMode="compact" composerHidden messages={[firstStreaming]} />,
+      );
+
+      act(() => {
+        window.dispatchEvent(new CustomEvent('neko-speech-playback-state', {
+          detail: {
+            active: true,
+            turnId: 'compact-first-segment-turn',
+            playbackTurnId: 'compact-first-segment-turn',
+            audioContextTime: 0,
+            playbackStartAudioTime: 0,
+            playbackEndAudioTime: 1,
+            updatedAt: Date.now(),
+          },
+        }));
+      });
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(1500);
+      });
+      const visibleBeforeFirstSettle = container.querySelector('.compact-chat-capsule-text')?.textContent ?? '';
+      expect(visibleBeforeFirstSettle.length).toBeGreaterThan(0);
+
+      act(() => {
+        window.dispatchEvent(new CustomEvent('neko-assistant-turn-ending', {
+          detail: {
+            turnId: 'compact-first-segment-turn',
+            source: 'test',
+          },
+        }));
+      });
+      rerender(<App chatSurfaceMode="compact" composerHidden messages={[firstSent]} />);
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(20);
+      });
+
+      expect(container.querySelector('.compact-chat-capsule-text')?.textContent ?? '').toBe(visibleBeforeFirstSettle);
+
+      act(() => {
+        window.dispatchEvent(new CustomEvent('neko-assistant-turn-start', {
+          detail: {
+            turnId: 'compact-second-segment-turn',
+            source: 'test',
+          },
+        }));
+      });
+      rerender(<App chatSurfaceMode="compact" composerHidden messages={[firstSent]} />);
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(20);
+      });
+
+      expect(container.querySelector('.compact-chat-capsule-text')?.textContent ?? '').toBe('');
+
+      rerender(<App chatSurfaceMode="compact" composerHidden messages={[firstSent, secondStreaming]} />);
+      act(() => {
+        window.dispatchEvent(new CustomEvent('neko-speech-playback-state', {
+          detail: {
+            active: true,
+            turnId: 'compact-second-segment-turn',
+            playbackTurnId: 'compact-second-segment-turn',
+            audioContextTime: 0,
+            playbackStartAudioTime: 0,
+            playbackEndAudioTime: 1,
+            updatedAt: Date.now(),
+          },
+        }));
+      });
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(100);
+      });
+
+      const previewText = container.querySelector('.compact-chat-capsule-text')?.textContent ?? '';
+      expect(previewText).not.toContain(firstSentence.slice(0, 6));
+      expect(secondSentence.startsWith(previewText)).toBe(true);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('does not use a stale streaming message from an older turn during a new-turn gap', async () => {
+    vi.useFakeTimers();
+    const previousTurnText = '上一轮残留的 streaming 气泡绝不能在新分句空窗里闪出来。';
+    const firstSentence = '当前第一句话刚说完，等待第二句话。';
+    const secondSentence = '当前第二句话开始后才可以显示这里。';
+    const stalePreviousStreaming = parseChatMessage({
+      id: 'assistant-compact-stale-previous-streaming',
+      role: 'assistant',
+      author: 'Neko',
+      time: '09:59',
+      createdAt: 1,
+      turnId: 'compact-stale-previous-turn',
+      blocks: [{ type: 'text', text: previousTurnText }],
+      status: 'streaming',
+    });
+    const firstSent = parseChatMessage({
+      id: 'assistant-compact-current-first-sent',
+      role: 'assistant',
+      author: 'Neko',
+      time: '10:01',
+      createdAt: 2,
+      turnId: 'compact-current-first-turn',
+      blocks: [{ type: 'text', text: firstSentence }],
+      status: 'sent',
+    });
+    const secondStreaming = parseChatMessage({
+      id: 'assistant-compact-current-second-streaming',
+      role: 'assistant',
+      author: 'Neko',
+      time: '10:02',
+      createdAt: 3,
+      turnId: 'compact-current-second-turn',
+      blocks: [{ type: 'text', text: secondSentence }],
+      status: 'streaming',
+    });
+
+    try {
+      const { container, rerender } = render(
+        <App chatSurfaceMode="compact" composerHidden messages={[stalePreviousStreaming, firstSent]} />,
+      );
+
+      act(() => {
+        window.dispatchEvent(new CustomEvent('neko-assistant-turn-ending', {
+          detail: {
+            turnId: 'compact-current-first-turn',
+            source: 'test',
+          },
+        }));
+      });
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(20);
+      });
+
+      expect(container.querySelector('.compact-chat-capsule-text')?.textContent ?? '').toBe('');
+      expect(container.querySelector('.compact-chat-capsule-text')).not.toHaveTextContent(previousTurnText);
+
+      act(() => {
+        window.dispatchEvent(new CustomEvent('neko-assistant-turn-start', {
+          detail: {
+            turnId: 'compact-current-second-turn',
+            source: 'test',
+          },
+        }));
+      });
+      rerender(<App chatSurfaceMode="compact" composerHidden messages={[stalePreviousStreaming, firstSent]} />);
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(20);
+      });
+
+      expect(container.querySelector('.compact-chat-capsule-text')?.textContent ?? '').toBe('');
+      expect(container.querySelector('.compact-chat-capsule-text')).not.toHaveTextContent(previousTurnText);
+
+      rerender(<App chatSurfaceMode="compact" composerHidden messages={[stalePreviousStreaming, firstSent, secondStreaming]} />);
+      act(() => {
+        window.dispatchEvent(new CustomEvent('neko-speech-playback-state', {
+          detail: {
+            active: true,
+            turnId: 'compact-current-second-turn',
+            playbackTurnId: 'compact-current-second-turn',
+            audioContextTime: 0,
+            playbackStartAudioTime: 0,
+            playbackEndAudioTime: 1,
+            updatedAt: Date.now(),
+          },
+        }));
+      });
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(1000);
+      });
+
+      const previewText = container.querySelector('.compact-chat-capsule-text')?.textContent ?? '';
+      expect(previewText).not.toContain(previousTurnText.slice(0, 8));
+      expect(secondSentence.startsWith(previewText)).toBe(true);
+      expect(previewText.length).toBeGreaterThan(0);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('keeps the same-turn compact caption merged after the turn-ending boundary', async () => {
+    vi.useFakeTimers();
+    const firstSentence = '同一轮第一句话已经结束。';
+    const secondSentence = '同一轮第二句话延迟进入队列后才应该显示。';
+    const firstStreaming = parseChatMessage({
+      id: 'assistant-compact-same-turn-first-streaming',
+      role: 'assistant',
+      author: 'Neko',
+      time: '10:01',
+      createdAt: 2,
+      turnId: 'compact-same-delayed-turn',
+      blocks: [{ type: 'text', text: firstSentence }],
+      status: 'streaming',
+    });
+    const firstSent = parseChatMessage({
+      ...firstStreaming,
+      status: 'sent',
+    });
+    const secondStreaming = parseChatMessage({
+      id: 'assistant-compact-same-turn-second-streaming',
+      role: 'assistant',
+      author: 'Neko',
+      time: '10:02',
+      createdAt: 3,
+      turnId: 'compact-same-delayed-turn',
+      blocks: [{ type: 'text', text: secondSentence }],
+      status: 'streaming',
+    });
+
+    try {
+      const { container, rerender } = render(
+        <App chatSurfaceMode="compact" composerHidden messages={[firstStreaming]} />,
+      );
+
+      act(() => {
+        window.dispatchEvent(new CustomEvent('neko-speech-playback-state', {
+          detail: {
+            active: true,
+            turnId: 'compact-same-delayed-turn',
+            playbackTurnId: 'compact-same-delayed-turn',
+            audioContextTime: 0,
+            playbackStartAudioTime: 0,
+            playbackEndAudioTime: 1,
+            updatedAt: Date.now(),
+          },
+        }));
+      });
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(1000);
+      });
+      const visibleBeforeFirstSettle = container.querySelector('.compact-chat-capsule-text')?.textContent ?? '';
+      expect(visibleBeforeFirstSettle.length).toBeGreaterThan(0);
+
+      act(() => {
+        window.dispatchEvent(new CustomEvent('neko-assistant-turn-ending', {
+          detail: {
+            turnId: 'compact-same-delayed-turn',
+            source: 'test',
+          },
+        }));
+      });
+      rerender(<App chatSurfaceMode="compact" composerHidden messages={[firstSent]} />);
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(20);
+      });
+
+      expect(container.querySelector('.compact-chat-capsule-text')?.textContent ?? '').toBe(visibleBeforeFirstSettle);
+
+      rerender(<App chatSurfaceMode="compact" composerHidden messages={[firstSent, secondStreaming]} />);
+      act(() => {
+        window.dispatchEvent(new CustomEvent('neko-speech-playback-state', {
+          detail: {
+            active: true,
+            turnId: 'compact-same-delayed-turn',
+            playbackTurnId: 'compact-same-delayed-turn',
+            audioContextTime: 0,
+            playbackStartAudioTime: 0,
+            playbackEndAudioTime: 1,
+            updatedAt: Date.now(),
+          },
+        }));
+      });
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(1000);
+      });
+
+      const previewText = container.querySelector('.compact-chat-capsule-text')?.textContent ?? '';
+      const mergedText = `${firstSentence} ${secondSentence}`;
+      expect(mergedText.startsWith(previewText)).toBe(true);
+      expect(previewText.length).toBeGreaterThan(0);
+      expect(container.querySelector('[data-compact-export-history-message-id="assistant-compact-same-turn-first-streaming"]')).not.toBeNull();
+      expect(container.querySelector('[data-compact-export-history-message-id="assistant-compact-same-turn-second-streaming"]')).not.toBeNull();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('ignores speech-unavailable events from a different assistant turn', async () => {
+    vi.useFakeTimers();
+    const streamingText = '当前 turn 的语音不可用事件才能触发紧凑字幕兜底。';
+    const message = parseChatMessage({
+      id: 'assistant-compact-streaming-unavailable-turn',
+      role: 'assistant',
+      author: 'Neko',
+      time: '10:01',
+      createdAt: 2,
+      turnId: 'compact-current-unavailable-turn',
+      blocks: [{ type: 'text', text: streamingText }],
+      status: 'streaming',
+    });
+
+    try {
+      const { container } = render(<App chatSurfaceMode="compact" composerHidden messages={[message]} />);
+
+      act(() => {
+        window.dispatchEvent(new CustomEvent('neko-assistant-speech-unavailable', {
+          detail: {
+            turnId: 'compact-previous-unavailable-turn',
+            source: 'test',
+          },
+        }));
+      });
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(500);
+      });
+
+      expect(container.querySelector('.compact-chat-capsule-text')?.textContent ?? '').toBe('');
+
+      act(() => {
+        window.dispatchEvent(new CustomEvent('neko-assistant-speech-unavailable', {
+          detail: {
+            turnId: 'compact-current-unavailable-turn',
+            source: 'test',
+          },
+        }));
+      });
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(1000);
+      });
+
+      const visibleLength = container.querySelector('.compact-chat-capsule-text')?.textContent?.length ?? 0;
+      expect(visibleLength).toBeGreaterThan(0);
       expect(container.querySelector('.compact-chat-capsule-text')).toHaveTextContent(
         streamingText.slice(0, visibleLength),
       );
@@ -3181,7 +3737,7 @@ describe('App', () => {
     }
   });
 
-  it('keeps settled compact preview text bounded after streaming ends', () => {
+  it('does not use a settled assistant message as compact speech preview text', () => {
     const settledText = '这是猫娘已经说完的一整段内容，用来确认紧凑态在非流式状态下仍然保持有限预览，不重新变成长聊天框。'.repeat(3);
     const message = parseChatMessage({
       id: 'assistant-compact-settled-bounded',
@@ -3197,8 +3753,8 @@ describe('App', () => {
 
     const preview = container.querySelector('.compact-chat-capsule-text');
     expect(preview).toHaveAttribute('data-compact-preview-streaming', 'false');
-    expect(preview?.textContent?.length).toBe(84);
-    expect(preview?.textContent?.endsWith('...')).toBe(true);
+    expect(preview).toHaveTextContent('Chat content will appear here.');
+    expect(preview).not.toHaveTextContent(settledText.slice(0, 20));
   });
 
   it('keeps compact speech display active when a playing message settles from streaming to sent', async () => {
@@ -3421,7 +3977,9 @@ describe('App', () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole('button', { name: '语音模式下不能进入输入态。' }));
+    const capsule = container.querySelector('.compact-chat-capsule-button');
+    expect(capsule).toHaveTextContent('Chat content will appear here.');
+    fireEvent.click(capsule as Element);
 
     expect(container.querySelector('.app-shell')).toHaveAttribute('data-compact-chat-state', 'default');
     expect(container.querySelector('.composer-input')).toBeNull();
@@ -4382,6 +4940,149 @@ describe('App', () => {
     } finally {
       fanRectSpy.mockRestore();
       vi.useRealTimers();
+    }
+  });
+
+  it('exposes a draggable left grip in compact input mode as part of the surface drag region', () => {
+    const { container, rerender } = render(
+      <App chatSurfaceMode="compact" compactChatState="input" />,
+    );
+    const grip = container.querySelector('.compact-chat-input-drag-grip');
+    expect(grip).not.toBeNull();
+    // 握把属于本体拖拽区：自身不是 no-drag，祖先是 drag-surface，且不在任何 no-drag 子树里。
+    expect(grip).not.toHaveAttribute('data-compact-no-drag');
+    expect(grip!.closest('[data-compact-drag-surface="true"]')).not.toBeNull();
+    expect(grip!.closest('[data-compact-no-drag="true"]')).toBeNull();
+    // 仅输入态出现；胶囊态本体本身可拖，不需要单独握把。
+    rerender(<App chatSurfaceMode="compact" compactChatState="default" />);
+    expect(container.querySelector('.compact-chat-input-drag-grip')).toBeNull();
+  });
+
+  it('dispatches a compact surface drag-grab from the tool toggle when pressed and moved past threshold', () => {
+    render(
+      <App
+        chatSurfaceMode="compact"
+        compactChatState="input"
+      />,
+    );
+    const toggle = document.body.querySelector('.compact-input-tool-toggle') as HTMLButtonElement;
+    expect(toggle).not.toBeNull();
+    const grabs: Array<Record<string, number>> = [];
+    const onGrab = (event: Event) => grabs.push((event as CustomEvent).detail);
+    window.addEventListener('neko:compact-surface-drag-grab', onGrab);
+    try {
+      fireEvent.pointerDown(toggle, {
+        pointerId: 7, clientX: 100, clientY: 100, screenX: 300, screenY: 320,
+        button: 0, buttons: 1, pointerType: 'mouse',
+      });
+      fireEvent.pointerMove(toggle, {
+        pointerId: 7, clientX: 122, clientY: 108, buttons: 1, pointerType: 'mouse',
+      });
+      // 拖动超阈值 → 派发一次抓取事件，锚点用按下点（不跳变）。
+      expect(grabs).toHaveLength(1);
+      expect(grabs[0]).toMatchObject({ clientX: 100, clientY: 100, screenX: 300, screenY: 320 });
+      fireEvent.pointerUp(toggle, {
+        pointerId: 7, clientX: 122, clientY: 108, buttons: 0, pointerType: 'mouse',
+      });
+      // 拖完补发的 click 被吞掉，不应展开轮盘。
+      fireEvent.click(toggle);
+      const fan = document.body.querySelector('.compact-input-tool-fan');
+      expect(fan).toHaveAttribute('data-compact-input-tool-fan-open', 'false');
+    } finally {
+      window.removeEventListener('neko:compact-surface-drag-grab', onGrab);
+    }
+  });
+
+  it('keeps origin drag click suppression armed across a slow drag (no timeout clear)', () => {
+    vi.useFakeTimers();
+    try {
+      render(
+        <App chatSurfaceMode="compact" compactChatState="input" />,
+      );
+      const toggle = document.body.querySelector('.compact-input-tool-toggle') as HTMLButtonElement;
+      fireEvent.pointerDown(toggle, {
+        pointerId: 31, clientX: 100, clientY: 100, screenX: 300, screenY: 300,
+        button: 0, buttons: 1, pointerType: 'mouse',
+      });
+      fireEvent.pointerMove(toggle, {
+        pointerId: 31, clientX: 130, clientY: 110, buttons: 1, pointerType: 'mouse',
+      });
+      // 慢速拖拽：跨过任何旧的固定时长窗口（曾经的 120ms 定时器会在此误清抑制标志）。
+      vi.advanceTimersByTime(1000);
+      fireEvent.pointerUp(toggle, {
+        pointerId: 31, clientX: 130, clientY: 110, buttons: 0, pointerType: 'mouse',
+      });
+      // 释放后补发的 click 仍应被吞掉，轮盘不被误展开。
+      fireEvent.click(toggle);
+      const fan = document.body.querySelector('.compact-input-tool-fan');
+      expect(fan).toHaveAttribute('data-compact-input-tool-fan-open', 'false');
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('treats a stationary tap on the tool toggle as open (no drag-grab)', () => {
+    render(
+      <App
+        chatSurfaceMode="compact"
+        compactChatState="input"
+      />,
+    );
+    const toggle = document.body.querySelector('.compact-input-tool-toggle') as HTMLButtonElement;
+    const grabs: Event[] = [];
+    const onGrab = (event: Event) => grabs.push(event);
+    window.addEventListener('neko:compact-surface-drag-grab', onGrab);
+    try {
+      fireEvent.pointerDown(toggle, {
+        pointerId: 8, clientX: 100, clientY: 100, screenX: 300, screenY: 320,
+        button: 0, buttons: 1, pointerType: 'mouse',
+      });
+      fireEvent.pointerUp(toggle, {
+        pointerId: 8, clientX: 101, clientY: 100, buttons: 0, pointerType: 'mouse',
+      });
+      expect(grabs).toHaveLength(0);
+      fireEvent.click(toggle);
+      const fan = document.body.querySelector('.compact-input-tool-fan');
+      expect(fan).toHaveAttribute('data-compact-input-tool-fan-open', 'true');
+    } finally {
+      window.removeEventListener('neko:compact-surface-drag-grab', onGrab);
+    }
+  });
+
+  it('dispatches a drag-grab from the open wheel origin and collapses the wheel', () => {
+    render(
+      <App
+        chatSurfaceMode="compact"
+        compactChatState="input"
+      />,
+    );
+    const toggle = document.body.querySelector('.compact-input-tool-toggle') as HTMLButtonElement;
+    fireEvent.click(toggle);
+    const fan = document.body.querySelector('.compact-input-tool-fan') as HTMLDivElement;
+    expect(fan).toHaveAttribute('data-compact-input-tool-fan-open', 'true');
+    const fanRectSpy = vi.spyOn(fan, 'getBoundingClientRect').mockReturnValue({
+      left: 0, top: 0, right: 232, bottom: 232, width: 232, height: 232, x: 0, y: 0,
+      toJSON: () => ({}),
+    } as DOMRect);
+    const grabs: Array<Record<string, number>> = [];
+    const onGrab = (event: Event) => grabs.push((event as CustomEvent).detail);
+    window.addEventListener('neko:compact-surface-drag-grab', onGrab);
+    try {
+      // 在轮盘中心（origin）按下并拖动 → 移动文本框而非旋转轮盘。
+      fireEvent.pointerDown(fan, {
+        pointerId: 9, clientX: 10, clientY: 10, screenX: 210, screenY: 210,
+        button: 0, buttons: 1, pointerType: 'mouse',
+      });
+      fireEvent.pointerMove(fan, {
+        pointerId: 9, clientX: 32, clientY: 16, buttons: 1, pointerType: 'mouse',
+      });
+      expect(grabs).toHaveLength(1);
+      expect(grabs[0]).toMatchObject({ clientX: 10, clientY: 10, screenX: 210, screenY: 210 });
+      // 拖动是移动手势 → 轮盘收起。
+      expect(fan).toHaveAttribute('data-compact-input-tool-fan-open', 'false');
+    } finally {
+      window.removeEventListener('neko:compact-surface-drag-grab', onGrab);
+      fanRectSpy.mockRestore();
     }
   });
 

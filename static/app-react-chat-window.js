@@ -1851,6 +1851,7 @@
             author: message.author,
             time: message.time,
             createdAt: message.createdAt,
+            turnId: message.turnId,
             avatarLabel: message.avatarLabel,
             avatarUrl: message.avatarUrl,
             blocks: Array.isArray(message.blocks) ? message.blocks.map(function (block) {
@@ -1910,6 +1911,7 @@
             author: sanitizeDisplayName(message.author) || getDefaultAuthorByRole(message.role || 'assistant'),
             time: time,
             createdAt: createdAt,
+            turnId: message.turnId ? String(message.turnId) : undefined,
             avatarLabel: message.avatarLabel,
             avatarUrl: message.avatarUrl,
             blocks: Array.isArray(message.blocks) ? message.blocks : [],
@@ -4955,6 +4957,18 @@
         });
         document.addEventListener('touchcancel', function (event) {
             stopDrag({ changedTouches: event.changedTouches, suppressClick: true });
+        });
+
+        // React 侧工具轮盘原点「按住拖动文本框」手势：轮盘 / toggle 是 no-drag，宿主的
+        // mousedown 命中判定不会自动起拖，所以由 React 检测到拖动意图后派发该事件，这里
+        // 以按下点为锚启动 compact surface 拖拽，复用上面的全局 mousemove/mouseup（含落点
+        // click 守卫）。Electron 下由 preload-chat-react.js 用原生窗口拖拽接管，这里早退。
+        window.addEventListener('neko:compact-surface-drag-grab', function (event) {
+            if (isElectronChatWindow()) return;
+            if (getCurrentChatSurfaceMode() !== 'compact' || minimized) return;
+            var detail = event && event.detail ? event.detail : {};
+            if (!Number.isFinite(detail.clientX) || !Number.isFinite(detail.clientY)) return;
+            startDrag(detail.clientX, detail.clientY, { compactSurface: true });
         });
     }
 
