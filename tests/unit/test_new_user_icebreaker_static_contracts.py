@@ -550,6 +550,26 @@ def test_icebreaker_handoff_waits_for_context_append_before_route_end():
     )
 
 
+def test_icebreaker_unload_ends_active_route_without_completing_day():
+    runtime = RUNTIME_PATH.read_text(encoding="utf-8")
+
+    assert "function endIcebreakerRouteOnPageExit(reason)" in runtime
+    assert "navigator.sendBeacon" in runtime
+    assert "keepalive: true" in runtime
+    assert "window.addEventListener('pagehide', function () {" in runtime
+    assert "window.addEventListener('beforeunload', function () {" in runtime
+    assert "endIcebreakerRouteOnPageExit('icebreaker_pagehide')" in runtime
+    assert "endIcebreakerRouteOnPageExit('icebreaker_beforeunload')" in runtime
+
+    cleanup_block = runtime.split("function endIcebreakerRouteOnPageExit(reason)", 1)[1].split(
+        "function loadScripts()",
+        1,
+    )[0]
+    assert "session.routeEnded = true;" in cleanup_block
+    assert "completed: true" not in cleanup_block
+    assert "markDay(" not in cleanup_block
+
+
 def test_icebreaker_waits_long_enough_for_react_chat_host():
     runtime = RUNTIME_PATH.read_text(encoding="utf-8")
 
@@ -932,11 +952,14 @@ def test_react_chat_assets_use_react_chat_cache_version():
         "/static/app-react-chat-window.js",
         "/static/app-chat-adapter.js",
         "/static/app-buttons.js",
-        "/static/app-interpage.js",
     ]
 
     for asset in react_chat_assets:
         assert f'{asset}?v={{{{ react_chat_asset_version }}}}' in index_html
         assert f'{asset}?v={{{{ react_chat_asset_version }}}}' in chat_html
 
+    assert '/static/app-interpage.js?v={{ static_asset_version }}' in index_html
+    assert '/static/app-interpage.js?v={{ static_asset_version }}' in chat_html
+    assert '/static/app-interpage.js?v={{ react_chat_asset_version }}' not in index_html
+    assert '/static/app-interpage.js?v={{ react_chat_asset_version }}' not in chat_html
     assert pages_router.count('_PROJECT_ROOT / "static/app-interpage.js"') == 1
